@@ -1,0 +1,117 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.flex-container-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.flex-container-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-end;
+  align-content: space-around;
+}
+.container {
+  height: 100vh;
+  width: 100vw;
+  background-color: green;
+  text-align: center;
+  color: white;
+}
+
+.header {
+  height: 10vh;
+  background-color: rgb(151, 74, 74);
+  text-align: center;
+}
+
+.header .navbar {
+  list-style: none;
+}
+
+.header .navbar li {
+  padding: 25px;
+  display: inline-flex;
+  font-weight: bolder;
+  font-size: large;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
+.header .navbar li:hover {
+  background-color: rgb(187, 86, 88);
+  cursor: pointer;
+}
+
+.body {
+  height: 80vh;
+  background-color: rgb(80, 80, 146);
+}
+
+.graph {
+  flex: 75%;
+  position: relative;
+  padding-bottom: 100px;
+}
+
+.graph div {
+  position: absolute;
+  background-color: green;
+  min-width: 40px;
+  height: 200px;
+  margin: 10px;
+}
+
+.graph .one {
+  left: -250px;
+}
+.graph .two {
+  left: -200px;
+}
+.graph .three {
+  left: -150px;
+}
+.graph .four {
+  left: -100px;
+}
+.graph .five {
+  left: -50px;
+}
+.graph .six {
+  left: 0px;
+}
+.graph .seven {
+  left: 50px;
+}
+.graph .eight {
+  left: 100px;
+}
+.graph .nine {
+  left: 150px;
+}
+.graph .ten {
+  left: 200px;
+}
+
+.user-controls {
+}
+
+.user-controls * {
+  margin: 10px;
+  padding: 10px;
+}
+
+.user-controls #userNumbers {
+  width: 200px;
+}
+
+.footer {
+  height: 10vh;
+  background-color: rgb(80, 80, 146);
+}
