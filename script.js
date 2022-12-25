@@ -76,11 +76,8 @@ function calcHeight(number, maxValue) {
     return (((number / maxValue) * maxHeight) + minHeight) + "px";
 }
 
-function glowView(inedx1, index2) {
-    var elem1 = $("#" + FIXED + inedx1);
-    var elem2 = $("#" + FIXED + index2);
-    elem1.css({ 'background-color': 'red' })
-    elem2.css({ 'background-color': 'red' })
+function glowView(index, color) {
+    $("#" + FIXED + index).css({'background-color': color });
 }
 
 function swapView(inedx1, index2) {
@@ -89,24 +86,24 @@ function swapView(inedx1, index2) {
     var elem2 = $("#" + FIXED + index2);
     console.log(inedx1, elem1, index2, elem2);
     if (!swapping) {
-
         swapping = true;
-
+    
         var pos1 = parseInt(elem1.css("left"));
         var pos2 = parseInt(elem2.css("left"));
-
+    
         elem1.attr("id", FIXED + index2)
         elem2.attr("id", FIXED + inedx1)
-
+    
         // swap left position of both elements
         elem1.animate({
             left: `${pos2}px`
-        }, 200, "linear");
+        }, 500, "linear");
         elem2.animate({
             left: `${[pos1]}px`
-        }, 200, "linear", function () {
+        }, 500, "linear", function () {
             swapping = false;
         });
+
     }
 }
 
@@ -157,25 +154,39 @@ function bubbleSort2(arr) {
     }
     doOP();
 }
-// function bubbleSort3(arr) {
-//     var i = 0, j = 0;
-//     interval = setInterval(function () {
-//         glowView(i, j)
-//         j++;
-//         console.log(i, j);
-//         if (arr[j] > arr[j + 1]) {
+function bubbleSort3(arr) {
+    var i = 0, j = 0;
+    var sorted = true;
+    interval = setInterval(function () {
+        glowView(j, 'green');
+        glowView(j - 1, 'green');
+        glowView(j, 'red');
+        glowView(j+1, 'red');
+        
+        console.log(j, j+1);
+        if (arr[j] > arr[j + 1]) {
+            swapView(j, j+1);
+            swapNumber(arr, j, j+1);
+            sorted = false;
+        }
+        j++;
+        if (j == arr.length - i - 1) {
+            glowView(j, 'yellow')
+            glowView(j-1, 'green')
+            i++;
+            j = 0
+            if (i == arr.length - 1 || (sorted)) {
+                clearInterval(interval);
+                $("#graph div").animate({
+                    'background-color':"green"
+                },100);
+            }
+            
 
-//             swapView(j, j + 1);
-//             swapNumber(arr, j, j + 1);
-//         }
-//         if (j == arr.length - i) {
-//             i++;
-//             j = 0
-//         }
-//         if (i > arr.length)
-//             clearInterval(interval);
-//     }, 300);
-// }
+        }
+    }, 600);
+}
+
 var interval;
 var opIndex = 0;
 function doOP() {
