@@ -12,6 +12,7 @@ $(function () {
     });
 
 
+
     $("#test").click(function (first, second) {
         if (!swapping) {
             swapping = true;
@@ -23,7 +24,7 @@ $(function () {
             }, 500, "linear");
             $(".five").animate({
                 left: `${left}px`
-            }, 500, "linear", () => (swapping = false));
+            }, 500, "linear", function () { swapping = false });
         }
     })
 })
@@ -40,7 +41,7 @@ function getMax(arr) {
 
 function getRandomArr(min = 1, max = 50, elementsCount = 10) {
     var result = [];
-    for (let i = 0; i < elementsCount; i++) {
+    for (var i = 0; i < elementsCount; i++) {
         var randomNumber = Math.floor(Math.random() * (max - min)) + min;
         result.push(randomNumber);
     }
@@ -61,7 +62,12 @@ function generateDivs(arr) {
 }
 
 function generateDiv(index, number, position, maxValue) {
-    return $("<div>").attr("id", FIXED + index).text(number).css({ left: position + "px", height: calcHeight(number, maxValue) });
+    return $("<div>")
+        .attr("id", FIXED + index).text(number)
+        .css({
+            left: position + "px",
+            height: calcHeight(number, maxValue)
+        });
 }
 
 function calcHeight(number, maxValue) {
@@ -70,7 +76,12 @@ function calcHeight(number, maxValue) {
     return (((number / maxValue) * maxHeight) + minHeight) + "px";
 }
 
-
+function glowView(inedx1, index2) {
+    var elem1 = $("#" + FIXED + inedx1);
+    var elem2 = $("#" + FIXED + index2);
+    elem1.css({ 'background-color': 'red' })
+    elem2.css({ 'background-color': 'red' })
+}
 
 function swapView(inedx1, index2) {
     // Get A strings of id of both elements
@@ -90,10 +101,10 @@ function swapView(inedx1, index2) {
         // swap left position of both elements
         elem1.animate({
             left: `${pos2}px`
-        }, 500, "linear");
+        }, 200, "linear");
         elem2.animate({
             left: `${[pos1]}px`
-        }, 500, "linear", function () {
+        }, 200, "linear", function () {
             swapping = false;
         });
     }
@@ -101,28 +112,28 @@ function swapView(inedx1, index2) {
 
 
 
-function test() {
-    var all = $("#graph div");
-    for (let i = 0; i < all.length - 1; i++) {
-        for (let j = 0; j < all.length - i - 1; j++) {
-            if (parseInt(all.get(j).innerText) > parseInt(all.get(j + 1).innerText)) {
-                setTimeout(() => {
-                    console.log(parseInt(all.get(j).innerText), parseInt(all.get(j + 1).innerText));
-                    swapView(j, j + 1);
-                }, 1000 * (j + 1) * (i + 1));
-            }
-        }
-    }
-}
+// function test() {
+//     var all = $("#graph div");
+//     for (var i = 0; i < all.length - 1; i++) {
+//         for (var j = 0; j < all.length - i - 1; j++) {
+//             if (parseInt(all.get(j).innerText) > parseInt(all.get(j + 1).innerText)) {
+//                 setTimeout(() => {
+//                     console.log(parseInt(all.get(j).innerText), parseInt(all.get(j + 1).innerText));
+//                     swapView(j, j + 1);
+//                 }, 1000 * (j + 1) * (i + 1));
+//             }
+//         }
+//     }
+// }
 
 var funArr = [];
 function bubbleSort(arr) {
-    for (let i = 0; i < arr.length; i++) {
-        for (let j = 0; j < arr.length - i - 1; j++) {
+    for (var i = 0; i < arr.length; i++) {
+        for (var j = 0; j < arr.length - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
-                setTimeout(() => {
+                setTimeout(function () {
                     swapView(j, j + 1);
-                }, 500 * (j + 1) * (i + 1));
+                }, 600 * (j + 1) * (i + 1));
                 swapNumber(arr, j, j + 1);
             }
         }
@@ -130,12 +141,13 @@ function bubbleSort(arr) {
     }
 }
 
+
 var operation = [];
 var all = $("#graph div");
 
 function bubbleSort2(arr) {
-    for (let i = 0; i < arr.length; i++) {
-        for (let j = 0; j < arr.length - i - 1; j++) {
+    for (var i = 0; i < arr.length; i++) {
+        for (var j = 0; j < arr.length - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
                 operation.push([j, j + 1])
                 swapNumber(arr, j, j + 1);
@@ -145,11 +157,29 @@ function bubbleSort2(arr) {
     }
     doOP();
 }
+// function bubbleSort3(arr) {
+//     var i = 0, j = 0;
+//     interval = setInterval(function () {
+//         glowView(i, j)
+//         j++;
+//         console.log(i, j);
+//         if (arr[j] > arr[j + 1]) {
 
-var opIndex = 0;
+//             swapView(j, j + 1);
+//             swapNumber(arr, j, j + 1);
+//         }
+//         if (j == arr.length - i) {
+//             i++;
+//             j = 0
+//         }
+//         if (i > arr.length)
+//             clearInterval(interval);
+//     }, 300);
+// }
 var interval;
+var opIndex = 0;
 function doOP() {
-    interval = setInterval(() => {
+    interval = setInterval(function () {
         console.log(operation[opIndex]);
         swapView(operation[opIndex][0], operation[opIndex][1])
         opIndex++;
