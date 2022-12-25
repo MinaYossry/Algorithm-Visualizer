@@ -1,6 +1,6 @@
 var swapping = false;
 var FIXED = "n";
-var ELEMENTWIDTH = 50;
+var ELEMENTWIDTH = 80;
 var arr;
 
 $(function () {
