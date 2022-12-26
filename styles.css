@@ -25,6 +25,10 @@
   color: white;
 }
 
+.selected {
+  background-color: #cdc2ae;
+}
+
 .header {
   height: 10vh;
   background-color: #181d31;
