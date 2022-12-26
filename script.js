@@ -1,6 +1,4 @@
-var swapping = false;
-var FIXED = "n";
-var ELEMENTWIDTH = 80;
+
 
 var arr;
 var view = new View();

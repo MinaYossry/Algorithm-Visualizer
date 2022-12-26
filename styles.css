@@ -20,14 +20,14 @@
 .container {
   height: 100vh;
   width: 100vw;
-  background-color:#CDC2AE;
+  background-color: #cdc2ae;
   text-align: center;
   color: white;
 }
 
 .header {
   height: 10vh;
-  background-color:#181D31;
+  background-color: #181d31;
   text-align: center;
 }
 
@@ -39,13 +39,13 @@
   padding: 25px;
   display: inline-flex;
   font-weight: bolder;
-  font-size: large;
+  font-size: x-large;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
 }
 
 .header .navbar li:hover {
-  background-color: #CDC2AE;
+  background-color: #cdc2ae;
   cursor: pointer;
 }
 
@@ -65,41 +65,11 @@
   min-width: 40px;
   height: 200px;
   margin: 10px;
-  padding:8px;
-}
-
-.graph .one {
-  left: -250px;
-}
-.graph .two {
-  left: -200px;
-}
-.graph .three {
-  left: -150px;
-}
-.graph .four {
-  left: -100px;
-}
-.graph .five {
-  left: -50px;
-}
-.graph .six {
-  left: 0px;
-}
-.graph .seven {
-  left: 50px;
-}
-.graph .eight {
-  left: 100px;
-}
-.graph .nine {
-  left: 150px;
-}
-.graph .ten {
-  left: 200px;
-}
-
-.user-controls {
+  padding: 8px;
+  font-weight: bolder;
+  font-size: 18px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
 }
 
 .user-controls * {
@@ -113,10 +83,9 @@
 
 .footer {
   height: 10vh;
-  background-color:#CDC2AE;
-  
+  background-color: #cdc2ae;
 }
-button{
+button {
   border: none;
   background-color: white;
   border-radius: 8px;
@@ -127,9 +96,8 @@ button{
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
-font-family:'Times New Roman', Times, serif;
-width: 150px;
-font-size: 25px;
-
-  
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  width: 150px;
+  font-size: 25px;
 }

@@ -1,7 +1,7 @@
 function View() {
     var swapping = false;
     var FIXED = "n";
-    var ELEMENTWIDTH = 50;
+    var ELEMENTWIDTH = 80;
     var calc = new Calcualtion();
     this.generateDivs = function (arr) {
 
@@ -34,11 +34,11 @@ function View() {
         $("#" + FIXED + index).css({ 'background-color': color });
     }
 
-    this.swapView = function (inedx1, index2) {
+    this.swapView = function (index1, index2) {
         // Get A strings of id of both elements
-        var elem1 = $("#" + FIXED + inedx1);
+        var elem1 = $("#" + FIXED + index1);
         var elem2 = $("#" + FIXED + index2);
-        console.log(inedx1, elem1, index2, elem2);
+        console.log(index1, elem1, index2, elem2);
         if (!swapping) {
             swapping = true;
 
@@ -46,7 +46,7 @@ function View() {
             var pos2 = parseInt(elem2.css("left"));
 
             elem1.attr("id", FIXED + index2)
-            elem2.attr("id", FIXED + inedx1)
+            elem2.attr("id", FIXED + index1)
 
             // swap left position of both elements
             elem1.animate({
