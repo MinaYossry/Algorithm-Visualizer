@@ -1,17 +1,13 @@
 function Sort() {
-    var view = new View();
-    var calc = new Calcualtion();
-
-    this.bubbleSort3 = function (arr) {
-        let i = 0, j = 0;
-        let sorted = true;
+    this.bubbleSort = function (arr, view, calc) {
+        var i = 0, j = 0;
+        var sorted = true;
         interval = setInterval(function () {
-            view.glowView(j, '#678983');
-            view.glowView(j - 1, '#678983');
-            view.glowView(j, 'red');
-            view.glowView(j + 1, 'red');
+            view.glowView(j - 1, view.defaultColor);
 
-            console.log(j, j + 1);
+            view.glowView(j, view.focusedColor);
+            view.glowView(j + 1, view.focusedColor);
+
             if (arr[j] > arr[j + 1]) {
                 view.swapView(j, j + 1);
                 calc.swap(arr, j, j + 1);
@@ -22,19 +18,19 @@ function Sort() {
                 if (sorted) {
                     clearInterval(interval);
                     $("#graph div").animate({
-                        'background-color': "#181D31"
+                        'background-color': view.finishColor
                     }, 100);
                 }
                 else {
-                    view.glowView(j, 'rgb(200 94 21)')
-                    view.glowView(j - 1, '#678983')
+                    view.glowView(j, view.sortedColor)
+                    view.glowView(j - 1, view.defaultColor)
                     i++;
                     j = 0;
                     sorted = true;
                     if (i == arr.length - 1) {
                         clearInterval(interval);
                         $("#graph div").animate({
-                            'background-color': "#181D31"
+                            'background-color': view.finishColor
                         }, 100);
                     }
                 }

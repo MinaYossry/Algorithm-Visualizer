@@ -79,6 +79,10 @@
 
 .user-controls #userNumbers {
   width: 200px;
+  border-radius: 8px;
+  border: none;
+  height: 29px;
+  font-family: Georgia, "Times New Roman", Times, serif;
 }
 
 .footer {
