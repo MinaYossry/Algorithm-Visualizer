@@ -33,11 +33,11 @@ function View() {
         return (((number / maxValue) * maxHeight) + minHeight) + "px";
     }
 
-    this.glowView = function (index, color) {
+    this.glow = function (index, color) {
         $("#" + FIXED + index).css({ 'background-color': color });
     }
 
-    this.swapView = function (index1, index2) {
+    this.swap= function (index1, index2) {
         // Get A strings of id of both elements
         var elem1 = $("#" + FIXED + index1);
         var elem2 = $("#" + FIXED + index2);
