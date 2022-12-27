@@ -4,7 +4,7 @@ function View() {
     var ELEMENTWIDTH = 80;
 
     this.defaultColor = '#678983';
-    this.focusedColor = '#0099cc';
+    this.focusedColor = 'red';
     this.sortedColor = 'rgb(200 94 21)';
     this.finishColor = "#181D31";
 

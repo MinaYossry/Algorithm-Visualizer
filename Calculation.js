@@ -37,44 +37,44 @@ function Calcualtion() {
         arr[index2] = temp;
     }
 
-    // this.sortype = function (viewObj) {
-    //     let i = 0, j = 0;
-    //     let sorted = true;
-    //     interval = setInterval(function () {
-    //         viewObj.glow(j, '#678983');
-    //         viewObj.glow(j - 1, '#678983');
-    //         viewObj.glow(j, '#0099cc');
-    //         viewObj.glow(j + 1, '#0099cc');
+    this.sortype = function (viewObj) {
+        let i = 0, j = 0;
+        let sorted = true;
+        interval = setInterval(function () {
+            viewObj.glow(j, '#678983');
+            viewObj.glow(j - 1, '#678983');
+            viewObj.glow(j, 'red');
+            viewObj.glow(j + 1, 'red');
 
-    //         if (arr[j] > this.generatedArr[j + 1]) {
-    //             viewObj.swap(j, j + 1);
-    //             calc.swap(this.generatedArr, j, j + 1);
-    //             sorted = false;
-    //         }
-    //         j++;
-    //         if (j == this.generatedArr.length - i - 1) {
-    //             if (sorted) {
-    //                 clearInterval(interval);
-    //                 $("#graph div").animate({
-    //                     'background-color': "#181D31"
-    //                 }, 100);
-    //             }
-    //             else {
-    //                 viewObj.glow(j, 'rgb(200 94 21)')
-    //                 viewObj.glow(j - 1, '#678983')
-    //                 i++;
-    //                 j = 0;
-    //                 sorted = true;
-    //                 if (i == this.generatedArr.length - 1) {
-    //                     clearInterval(interval);
-    //                     $("#graph div").animate({
-    //                         'background-color': "#181D31"
-    //                     }, 100);
-    //                 }
-    //             }
-    //         }
-    //     }, 600);
-    // }
+            if (arr[j] > this.generatedArr[j + 1]) {
+                viewObj.swap(j, j + 1);
+                calc.swap(this.generatedArr, j, j + 1);
+                sorted = false;
+            }
+            j++;
+            if (j == this.generatedArr.length - i - 1) {
+                if (sorted) {
+                    clearInterval(interval);
+                    $("#graph div").animate({
+                        'background-color': "#181D31"
+                    }, 100);
+                }
+                else {
+                    viewObj.glow(j, 'rgb(200 94 21)')
+                    viewObj.glow(j - 1, '#678983')
+                    i++;
+                    j = 0;
+                    sorted = true;
+                    if (i == this.generatedArr.length - 1) {
+                        clearInterval(interval);
+                        $("#graph div").animate({
+                            'background-color': "#181D31"
+                        }, 100);
+                    }
+                }
+            }
+        }, 600);
+    }
 
     /*
         var interval;
