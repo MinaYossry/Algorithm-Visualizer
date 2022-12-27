@@ -41,13 +41,13 @@ function Calcualtion() {
         let i = 0, j = 0;
         let sorted = true;
         interval = setInterval(function () {
-            viewObj.glowView(j, '#678983');
-            viewObj.glowView(j - 1, '#678983');
-            viewObj.glowView(j, 'red');
-            viewObj.glowView(j + 1, 'red');
+            viewObj.glow(j, '#678983');
+            viewObj.glow(j - 1, '#678983');
+            viewObj.glow(j, 'red');
+            viewObj.glow(j + 1, 'red');
 
             if (arr[j] > this.generatedArr[j + 1]) {
-                viewObj.swapView(j, j + 1);
+                viewObj.swap(j, j + 1);
                 calc.swap(this.generatedArr, j, j + 1);
                 sorted = false;
             }
@@ -60,8 +60,8 @@ function Calcualtion() {
                     }, 100);
                 }
                 else {
-                    viewObj.glowView(j, 'rgb(200 94 21)')
-                    viewObj.glowView(j - 1, '#678983')
+                    viewObj.glow(j, 'rgb(200 94 21)')
+                    viewObj.glow(j - 1, '#678983')
                     i++;
                     j = 0;
                     sorted = true;
@@ -82,7 +82,7 @@ function Calcualtion() {
         this.doOP = function (operationArr) {
             interval = setInterval(function () {
                 console.log(operationArr[opIndex]);
-                swapView(operationArr[opIndex][0], operationArr[opIndex][1])
+                swap(operationArr[opIndex][0], operationArr[opIndex][1])
                 opIndex++;
                 if (opIndex == operationArr.length)
                     clearInterval(interval);

@@ -1,7 +1,7 @@
 $(function () {
     var view = new View();
     var calc = new Calcualtion();
-
+    var sort = new Sort(view, calc);
     calc.generateRandomArr();
     view.generateDivs(calc.generatedArr, calc.maxValue);
 
