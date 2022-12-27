@@ -1,104 +1,44 @@
-var Sort = function (view, calc) {
-    this.isSorting = false;
-    this.interval = null;
-    this.operations = [];
-
+var Sort = function (view, calc, sortOperations) {
     this.insertionSort2 = function (arr) {
-        this.operations = [];
+        sortOperations.empty();
         var lastSortedIndex = 0;
         $("#n0").addClass("sorted").css("backgroundColor", view.sortedColor)
         for (var currentIndex = 1; currentIndex < arr.length; currentIndex++) {
             if (arr[currentIndex] >= arr[lastSortedIndex]) {
                 lastSortedIndex = currentIndex;
-                this.operations.push({
-                    firstIndex: currentIndex,
-                    secondIndex: lastSortedIndex,
-                    lastIndex: currentIndex,
-                    swap: false
-                });
+                sortOperations.push(new Operation(currentIndex, lastSortedIndex, currentIndex, false))
             }
             else {
-
                 var temp = currentIndex;
                 for (var prevIndex = lastSortedIndex; prevIndex >= 0; prevIndex--) {
                     if (arr[temp] < arr[prevIndex]) {
-                        this.operations.push({
-                            firstIndex: temp,
-                            secondIndex: prevIndex,
-                            lastIndex: prevIndex,
-                            swap: true
-                        });
+                        sortOperations.push(new Operation(temp, prevIndex, prevIndex, true))
                         calc.swap(arr, temp--, prevIndex)
                     }
                 }
                 lastSortedIndex = currentIndex;
             }
         }
-        this.doOP();
+        sortOperations.startSortingAnimations(view);
     }
 
     this.bubbleSort2 = function (arr) {
-        this.operations = [];
+        sortOperations.empty();
         for (var i = 0; i < arr.length; i++) {
             for (var j = 0; j < arr.length - 1 - i; j++) {
-                var obj = {
-                    firstIndex: j,
-                    secondIndex: j + 1,
-                    swap: false,
-                    lastIndex: null
-                }
+                var operationObj = new Operation(j, j + 1, null, false);
                 if (arr[j] > arr[j + 1]) {
                     calc.swap(arr, j, j + 1);
-                    obj.swap = true;
+                    operationObj.swap = true;
                 }
                 if (j == arr.length - 2 - i) {
-                    obj.lastIndex = j + 1;
+                    operationObj.lastSortedIndex = j + 1;
                 }
-                this.operations.push(obj);
+                sortOperations.push(operationObj);
             }
         }
-        this.doOP();
+        sortOperations.startSortingAnimations(view);
     }
-
-
-
-
-    this.doOP = function () {
-        this.isSorting = true;
-        var i = 0;
-        var that = this;
-        this.interval = setInterval((function () {
-            if (i > 0) {
-                view.glow(this.operations[i - 1].firstIndex, view.defaultColor);
-                view.glow(this.operations[i - 1].secondIndex, view.defaultColor);
-                $(".sorted").css("backgroundColor", view.sortedColor);
-            }
-
-            view.glow(this.operations[i].firstIndex, view.focusedColor);
-            view.glow(this.operations[i].secondIndex, view.focusedColor);
-
-            if (this.operations[i].swap)
-                view.swap(this.operations[i].firstIndex, this.operations[i].secondIndex);
-
-            if (this.operations[i].lastIndex)
-                $("#n" + this.operations[i].lastIndex).addClass("sorted");
-
-
-
-            i++;
-            if (i == this.operations.length) {
-                this.stopSorting();
-            }
-
-        }).bind(that), 600);
-
-    }
-
-    this.stopSorting = function () {
-        this.isSorting = false;
-        clearInterval(this.interval);
-        view.finishAnimation();
-    };
 
     this.bubbleSort = function (arr) {
         this.isSorting = true;

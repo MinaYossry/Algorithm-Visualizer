@@ -110,8 +110,11 @@
 
 .footer {
   height: 10vh;
-  background-color: #cdc2ae;
+  background-color: #000000;
+  justify-content: center;
+  align-items: center;
 }
+
 button {
   border: none;
   background-color: white;
@@ -135,4 +138,11 @@ button {
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
   display: none;
+}
+
+.footer button {
+  max-width: fit-content;
+  max-height: fit-content;
+  font-size: small;
+  margin-left: 10px;
 }
