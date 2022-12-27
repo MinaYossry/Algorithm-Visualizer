@@ -3,7 +3,6 @@ var Sort = function (view, calc) {
     this.interval = null;
 
     this.stopSorting = function (finishColor) {
-        console.log(this);
         this.isSorting = false;
         clearInterval(this.interval);
         $("#graph div").animate({
@@ -17,7 +16,6 @@ var Sort = function (view, calc) {
         var sorted = true;
         var that = this;
         this.interval = setInterval((function () {
-            console.log(this);
             view.glow(j - 1, view.defaultColor);
             view.glow(j, view.focusedColor);
             view.glow(j + 1, view.focusedColor);

@@ -4,7 +4,7 @@ function View() {
     var ELEMENTWIDTH = 80;
 
     this.defaultColor = '#678983';
-    this.focusedColor = 'red';
+    this.focusedColor = '#0099cc';
     this.sortedColor = 'rgb(200 94 21)';
     this.finishColor = "#181D31";
 
@@ -37,7 +37,7 @@ function View() {
         $("#" + FIXED + index).css({ 'background-color': color });
     }
 
-    this.swap= function (index1, index2) {
+    this.swap = function (index1, index2) {
         // Get A strings of id of both elements
         var elem1 = $("#" + FIXED + index1);
         var elem2 = $("#" + FIXED + index2);
