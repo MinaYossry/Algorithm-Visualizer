@@ -1,13 +1,74 @@
 var Sort = function (view, calc) {
     this.isSorting = false;
     this.interval = null;
+    this.operations = [];
 
-    this.stopSorting = function (finishColor) {
+    this.insertionSort2 = function (arr) {
+        for (var step = 1; step < arr.length; step++) {
+            var key = arr[step];
+            var j = step - 1;
+
+            while (key < arr[j] && j >= 0) {
+                arr[j + 1] == arr[j];
+                --j;
+            }
+
+            arr[j + 1] = key;
+        }
+    }
+
+    this.bubbleSort2 = function (arr) {
+        for (var i = 0; i < arr.length; i++) {
+            for (var j = 0; j < arr.length - 1 - i; j++) {
+                var obj = {
+                    firstIndex: j,
+                    secondIndex: j + 1,
+                    swap: false,
+                    lastIndex: null
+                }
+                if (arr[j] > arr[j + 1]) {
+                    calc.swap(arr, j, j + 1);
+                    obj.swap = true;
+                }
+                if (j == arr.length - 2 - i) {
+                    obj.lastIndex = j + 1;
+                }
+                this.operations.push(obj);
+            }
+        }
+    }
+
+    this.doOP = function () {
+        var i = 0;
+        var that = this;
+        var interval = setInterval((function () {
+            if (i > 0) {
+                view.glow(this.operations[i - 1].firstIndex, view.defaultColor);
+                view.glow(this.operations[i - 1].secondIndex, view.defaultColor);
+                view.glow(this.operations[i - 1].lastIndex, view.sortedColor)
+            }
+
+            view.glow(this.operations[i].firstIndex, view.focusedColor);
+            view.glow(this.operations[i].secondIndex, view.focusedColor);
+
+            if (this.operations[i].swap)
+                view.swap(this.operations[i].firstIndex, this.operations[i].secondIndex);
+
+
+            i++;
+            if (i == this.operations.length) {
+                this.stopSorting();
+                clearInterval(interval);
+            }
+
+        }).bind(that), 600);
+
+    }
+
+    this.stopSorting = function () {
         this.isSorting = false;
         clearInterval(this.interval);
-        $("#graph div").animate({
-            'background-color': finishColor
-        }, 100);
+        view.finishAnimation();
     };
 
     this.bubbleSort = function (arr) {

@@ -8,6 +8,12 @@ function View() {
     this.sortedColor = 'rgb(200 94 21)';
     this.finishColor = "#181D31";
 
+    this.finishAnimation = function () {
+        $("#graph div").animate({
+            'background-color': this.finishColor
+        }, 100);
+    }
+
     this.generateDivs = function (arr, maxValue) {
         $("#graph").empty();
         var totalWidth = ELEMENTWIDTH * arr.length;
