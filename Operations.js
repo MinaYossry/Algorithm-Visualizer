@@ -20,7 +20,7 @@ var Operations = function () {
         view.finishAnimation();
     };
 
-    this.step = function (view) {
+    this.stepForward = function (view) {
         if (this.currentIndex > 0) {
             view.glow(this.sortOperations[this.currentIndex - 1].firstIndex, view.defaultColor);
             view.glow(this.sortOperations[this.currentIndex - 1].secondIndex, view.defaultColor);
@@ -49,7 +49,7 @@ var Operations = function () {
         this.isSorting = true;
         var that = this;
         this.interval = setInterval((function () {
-            this.step(view);
+            this.stepForward(view);
         }).bind(that), 600);
 
     }
@@ -66,13 +66,20 @@ var Operations = function () {
     this.backward = function (view) {
         if (!this.moving && this.currentIndex > 0) {
             this.currentIndex--;
-            this.forward(view);
+            this.forward(view)
+
+            view.glow(this.sortOperations[this.currentIndex + 1].firstIndex, view.defaultColor);
+            view.glow(this.sortOperations[this.currentIndex + 1].secondIndex, view.defaultColor);
+
             this.currentIndex--;
+        } else if (!this.moving && this.currentIndex == 0) {
+            view.glow(this.sortOperations[this.currentIndex].firstIndex, view.defaultColor);
+            view.glow(this.sortOperations[this.currentIndex].secondIndex, view.defaultColor);
         }
     }
     this.forward = function (view) {
         if (!this.moving) {
-            this.step(view);
+            this.stepForward(view);
             this.moving = true;
             setTimeout(() => {
                 this.moving = false;
