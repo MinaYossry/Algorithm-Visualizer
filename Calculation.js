@@ -43,8 +43,8 @@ function Calcualtion() {
         interval = setInterval(function () {
             viewObj.glow(j, '#678983');
             viewObj.glow(j - 1, '#678983');
-            viewObj.glow(j, 'red');
-            viewObj.glow(j + 1, 'red');
+            viewObj.glow(j, '#0099cc');
+            viewObj.glow(j + 1, '#0099cc');
 
             if (arr[j] > this.generatedArr[j + 1]) {
                 viewObj.swap(j, j + 1);
