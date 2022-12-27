@@ -53,10 +53,10 @@ function View() {
             // swap left position of both elements
             elem1.animate({
                 left: `${pos2}px`
-            }, 500, "linear");
+            }, 500, "easeOutQuart");
             elem2.animate({
                 left: `${[pos1]}px`
-            }, 500, "linear", function () {
+            }, 500, "easeOutQuart", function () {
                 swapping = false;
             });
         }
