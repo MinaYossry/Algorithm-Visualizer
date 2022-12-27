@@ -18,20 +18,21 @@ var Sort = function (view, calc) {
                 });
             }
             else {
-            }
-            var temp = currentIndex;
-            for (var prevIndex = lastSortedIndex; prevIndex >= 0; prevIndex--) {
-                if (arr[temp] < arr[prevIndex]) {
-                    this.operations.push({
-                        firstIndex: temp,
-                        secondIndex: prevIndex,
-                        lastIndex: prevIndex,
-                        swap: true
-                    });
-                    calc.swap(arr, temp--, prevIndex)
+
+                var temp = currentIndex;
+                for (var prevIndex = lastSortedIndex; prevIndex >= 0; prevIndex--) {
+                    if (arr[temp] < arr[prevIndex]) {
+                        this.operations.push({
+                            firstIndex: temp,
+                            secondIndex: prevIndex,
+                            lastIndex: prevIndex,
+                            swap: true
+                        });
+                        calc.swap(arr, temp--, prevIndex)
+                    }
                 }
+                lastSortedIndex = currentIndex;
             }
-            lastSortedIndex = currentIndex;
         }
         this.doOP();
     }
