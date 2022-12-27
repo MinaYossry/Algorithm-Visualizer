@@ -110,3 +110,11 @@ button {
   width: 150px;
   font-size: 25px;
 }
+
+#error {
+  color: red;
+  font-size: larger;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  display: none;
+}

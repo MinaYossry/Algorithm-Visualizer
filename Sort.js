@@ -1,8 +1,20 @@
 var Sort = {
+    isSorting: false,
+    interval: null,
+
+    stopSorting: function (finishColor) {
+        Sort.isSorting = false;
+        clearInterval(Sort.interval);
+        $("#graph div").animate({
+            'background-color': finishColor
+        }, 100);
+    },
+
     bubbleSort: function (arr, view, calc) {
+        Sort.isSorting = true;
         var i = 0, j = 0;
         var sorted = true;
-        interval = setInterval(function () {
+        Sort.interval = setInterval(function () {
             view.glowView(j - 1, view.defaultColor);
 
             view.glowView(j, view.focusedColor);
@@ -16,10 +28,7 @@ var Sort = {
             j++;
             if (j == arr.length - i - 1) {
                 if (sorted) {
-                    clearInterval(interval);
-                    $("#graph div").animate({
-                        'background-color': view.finishColor
-                    }, 100);
+                    Sort.stopSorting(view.finishColor);
                 }
                 else {
                     view.glowView(j, view.sortedColor)
@@ -28,10 +37,7 @@ var Sort = {
                     j = 0;
                     sorted = true;
                     if (i == arr.length - 1) {
-                        clearInterval(interval);
-                        $("#graph div").animate({
-                            'background-color': view.finishColor
-                        }, 100);
+                        Sort.stopSorting(view.finishColor);
                     }
                 }
             }
@@ -39,10 +45,11 @@ var Sort = {
     },
 
     insertionSort: function (arr, view, calc) {
+        Sort.isSorting = true;
         var currentIndex = 1, lastSortedNum = arr[0], lastSortedIndex = 0, prevIndex = 0;
         var innerLoop = false;
 
-        var interval = setInterval(() => {
+        Sort.interval = setInterval(() => {
             view.glowView(currentIndex, view.focusedColor);
             view.glowView(prevIndex, view.sortedColor);
             console.log(currentIndex, prevIndex, lastSortedIndex);
@@ -69,11 +76,7 @@ var Sort = {
                 currentIndex++;
             }
             if (currentIndex == arr.length) {
-
-                clearInterval(interval);
-                $("#graph div").animate({
-                    'background-color': view.finishColor
-                }, 100);
+                Sort.stopSorting(view.finishColor);
             }
 
 
