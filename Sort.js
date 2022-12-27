@@ -1,8 +1,21 @@
 var Sort = function (view, calc) {
+    this.isSorting = false;
+    this.interval = null;
+
+    this.stopSorting = function (finishColor) {
+        this.isSorting = false;
+        clearInterval(this.interval);
+        $("#graph div").animate({
+            'background-color': finishColor
+        }, 100);
+    };
+
     this.bubbleSort = function (arr) {
+        this.isSorting = true;
         var i = 0, j = 0;
         var sorted = true;
-        interval = setInterval(function () {
+        var that = this;
+        this.interval = setInterval((function () {
             view.glow(j - 1, view.defaultColor);
             view.glow(j, view.focusedColor);
             view.glow(j + 1, view.focusedColor);
@@ -15,10 +28,7 @@ var Sort = function (view, calc) {
             j++;
             if (j == arr.length - i - 1) {
                 if (sorted) {
-                    clearInterval(interval);
-                    $("#graph div").animate({
-                        'background-color': view.finishColor
-                    }, 100);
+                    this.stopSorting(view.finishColor);
                 }
                 else {
                     view.glow(j, view.sortedColor)
@@ -27,21 +37,20 @@ var Sort = function (view, calc) {
                     j = 0;
                     sorted = true;
                     if (i == arr.length - 1) {
-                        clearInterval(interval);
-                        $("#graph div").animate({
-                            'background-color': view.finishColor
-                        }, 100);
+                        this.stopSorting(view.finishColor);
                     }
                 }
             }
-        }, 600);
+        }).bind(that), 600);
     };
 
     this.insertionSort = function (arr) {
+        this.isSorting = true;
         var currentIndex = 1, lastSortedNum = arr[0], lastSortedIndex = 0, prevIndex = 0;
         var innerLoop = false;
 
-        var interval = setInterval(() => {
+        var that = this;
+        this.interval = setInterval((function () {
             view.glow(currentIndex, view.focusedColor);
             view.glow(prevIndex, view.sortedColor);
             console.log(currentIndex, prevIndex, lastSortedIndex);
@@ -69,14 +78,11 @@ var Sort = function (view, calc) {
             }
             if (currentIndex == arr.length) {
 
-                clearInterval(interval);
-                $("#graph div").animate({
-                    'background-color': view.finishColor
-                }, 100);
+                this.stopSorting(view.finishColor);
             }
 
 
-        }, 600);
+        }).bind(that), 600);
 
     };
     var merge = function (arr, l, m, r) {
