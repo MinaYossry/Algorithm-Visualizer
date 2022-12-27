@@ -28,7 +28,7 @@ $(function () {
             $("#error").css("display", "none");
         }
         else {
-            $("#error").css("display", "inline-block");
+            $("#error").css("display", "block");
         }
     });
 
