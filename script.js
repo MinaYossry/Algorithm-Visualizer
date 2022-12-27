@@ -1,7 +1,7 @@
 $(function () {
     var view = new View();
     var calc = new Calcualtion();
-
+    var sort = new Sort(view, calc);
     calc.generateRandomArr();
     view.generateDivs(calc.generatedArr, calc.maxValue);
 
@@ -12,7 +12,7 @@ $(function () {
 
     $("#startSort").click(function () {
         var selectedSort = $(".selected").attr("id");
-        Sort[selectedSort](calc.generatedArr, view, calc);
+        sort[selectedSort](calc.generatedArr);
     });
 
     $("#enterNumbers").click(function () {
