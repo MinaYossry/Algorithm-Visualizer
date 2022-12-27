@@ -13,10 +13,10 @@
     <div class="container">
       <div class="header flex-container-col">
         <ul class="navbar">
-          <li>Bubble Sort</li>
-          <li>Selection Sort</li>
-          <li>Insertion Sort</li>
-          <li>Merge Sort</li>
+          <li id="bubbleSort" class="selected">Bubble Sort</li>
+          <li id="selectionSort">Selection Sort</li>
+          <li id="insertionSort">Insertion Sort</li>
+          <li id="mergeSort">Merge Sort</li>
         </ul>
       </div>
       <div class="body flex-container-col">
@@ -27,16 +27,11 @@
           <input
             type="text"
             id="userNumbers"
-            style="
-              width: 200px;
-              border-radius: 8px;
-              border: none;
-              height: 29px;
-              font-family: Georgia, 'Times New Roman', Times, serif;
-            "
             placeholder="Enter comma seperated numbers"
           />
           <button id="enterNumbers">Create</button>
+          <p id="error">Input must be between 5 and 15 numbers</p>
+        </div>
         </div>
       </div>
       <div class="footer flex-container-col"></div>

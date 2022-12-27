@@ -25,6 +25,10 @@
   color: white;
 }
 
+.selected {
+  background-color: #cdc2ae;
+}
+
 .header {
   height: 10vh;
   background-color: #181d31;
@@ -68,6 +72,7 @@
   padding: 8px;
   font-weight: bolder;
   font-size: 18px;
+  border-radius: 10px 10px 5px 5px;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
 }
@@ -79,6 +84,10 @@
 
 .user-controls #userNumbers {
   width: 200px;
+  border-radius: 8px;
+  border: none;
+  height: 29px;
+  font-family: Georgia, "Times New Roman", Times, serif;
 }
 
 .footer {
@@ -100,4 +109,12 @@ button {
     "Lucida Sans", Arial, sans-serif;
   width: 150px;
   font-size: 25px;
+}
+
+#error {
+  color: red;
+  font-size: larger;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  display: none;
 }

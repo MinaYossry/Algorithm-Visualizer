@@ -2,16 +2,19 @@ function View() {
     var swapping = false;
     var FIXED = "n";
     var ELEMENTWIDTH = 80;
-    var calc = new Calcualtion();
-    this.generateDivs = function (arr) {
 
+    this.defaultColor = '#678983';
+    this.focusedColor = 'red';
+    this.sortedColor = 'rgb(200 94 21)';
+    this.finishColor = "#181D31";
+
+    this.generateDivs = function (arr, maxValue) {
         $("#graph").empty();
         var totalWidth = ELEMENTWIDTH * arr.length;
-        var startItem = Math.trunc(totalWidth / -2);
-        var maxValue = calc.getMax(arr);
+        var leftPos = Math.trunc(totalWidth / -2);
         for (var i = 0; i < arr.length; i++) {
-            $("#graph").append(generateDiv(i, arr[i], startItem, maxValue));
-            startItem += ELEMENTWIDTH;
+            $("#graph").append(generateDiv(i, arr[i], leftPos, maxValue));
+            leftPos += ELEMENTWIDTH;
         }
     }
 
@@ -30,15 +33,14 @@ function View() {
         return (((number / maxValue) * maxHeight) + minHeight) + "px";
     }
 
-    this.glowView = function (index, color) {
+    this.glow = function (index, color) {
         $("#" + FIXED + index).css({ 'background-color': color });
     }
 
-    this.swapView = function (index1, index2) {
+    this.swap= function (index1, index2) {
         // Get A strings of id of both elements
         var elem1 = $("#" + FIXED + index1);
         var elem2 = $("#" + FIXED + index2);
-        console.log(index1, elem1, index2, elem2);
         if (!swapping) {
             swapping = true;
 
@@ -51,10 +53,10 @@ function View() {
             // swap left position of both elements
             elem1.animate({
                 left: `${pos2}px`
-            }, 500, "linear");
+            }, 500, "easeOutQuart");
             elem2.animate({
                 left: `${[pos1]}px`
-            }, 500, "linear", function () {
+            }, 500, "easeOutQuart", function () {
                 swapping = false;
             });
         }
