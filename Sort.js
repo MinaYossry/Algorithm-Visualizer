@@ -4,20 +4,40 @@ var Sort = function (view, calc) {
     this.operations = [];
 
     this.insertionSort2 = function (arr) {
-        for (var step = 1; step < arr.length; step++) {
-            var key = arr[step];
-            var j = step - 1;
-
-            while (key < arr[j] && j >= 0) {
-                arr[j + 1] == arr[j];
-                --j;
+        this.operations = [];
+        var lastSortedIndex = 0;
+        $("#n0").addClass("sorted").css("backgroundColor", view.sortedColor)
+        for (var currentIndex = 1; currentIndex < arr.length; currentIndex++) {
+            if (arr[currentIndex] >= arr[lastSortedIndex]) {
+                lastSortedIndex = currentIndex;
+                this.operations.push({
+                    firstIndex: currentIndex,
+                    secondIndex: lastSortedIndex,
+                    lastIndex: currentIndex,
+                    swap: false
+                });
             }
-
-            arr[j + 1] = key;
+            else {
+            }
+            var temp = currentIndex;
+            for (var prevIndex = lastSortedIndex; prevIndex >= 0; prevIndex--) {
+                if (arr[temp] < arr[prevIndex]) {
+                    this.operations.push({
+                        firstIndex: temp,
+                        secondIndex: prevIndex,
+                        lastIndex: prevIndex,
+                        swap: true
+                    });
+                    calc.swap(arr, temp--, prevIndex)
+                }
+            }
+            lastSortedIndex = currentIndex;
         }
+        this.doOP();
     }
 
     this.bubbleSort2 = function (arr) {
+        this.operations = [];
         for (var i = 0; i < arr.length; i++) {
             for (var j = 0; j < arr.length - 1 - i; j++) {
                 var obj = {
@@ -36,16 +56,21 @@ var Sort = function (view, calc) {
                 this.operations.push(obj);
             }
         }
+        this.doOP();
     }
 
+
+
+
     this.doOP = function () {
+        this.isSorting = true;
         var i = 0;
         var that = this;
-        var interval = setInterval((function () {
+        this.interval = setInterval((function () {
             if (i > 0) {
                 view.glow(this.operations[i - 1].firstIndex, view.defaultColor);
                 view.glow(this.operations[i - 1].secondIndex, view.defaultColor);
-                view.glow(this.operations[i - 1].lastIndex, view.sortedColor)
+                $(".sorted").css("backgroundColor", view.sortedColor);
             }
 
             view.glow(this.operations[i].firstIndex, view.focusedColor);
@@ -54,11 +79,14 @@ var Sort = function (view, calc) {
             if (this.operations[i].swap)
                 view.swap(this.operations[i].firstIndex, this.operations[i].secondIndex);
 
+            if (this.operations[i].lastIndex)
+                $("#n" + this.operations[i].lastIndex).addClass("sorted");
+
+
 
             i++;
             if (i == this.operations.length) {
                 this.stopSorting();
-                clearInterval(interval);
             }
 
         }).bind(that), 600);

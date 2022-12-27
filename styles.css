@@ -29,6 +29,10 @@
   background-color: #cdc2ae;
 }
 
+.sorted {
+  background-color: rgb(200 94 21);
+}
+
 .header {
   height: 10vh;
   background-color: #181d31;
