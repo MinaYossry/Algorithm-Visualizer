@@ -1,11 +1,25 @@
-var Sort = function (view, calc) {
-    this.bubbleSort = function (arr) {
+
+var Sort = {
+    isSorting: false,
+    interval: null,
+
+    stopSorting: function (finishColor) {
+        Sort.isSorting = false;
+        clearInterval(Sort.interval);
+        $("#graph div").animate({
+            'background-color': finishColor
+        }, 100);
+    },
+
+    bubbleSort: function (arr, view, calc) {
+        Sort.isSorting = true;
         var i = 0, j = 0;
         var sorted = true;
-        interval = setInterval(function () {
-            view.glow(j - 1, view.defaultColor);
-            view.glow(j, view.focusedColor);
-            view.glow(j + 1, view.focusedColor);
+        Sort.interval = setInterval(function () {
+            view.glowView(j - 1, view.defaultColor);
+
+            view.glowView(j, view.focusedColor);
+            view.glowView(j + 1, view.focusedColor);
 
             if (arr[j] > arr[j + 1]) {
                 view.swap(j, j + 1);
@@ -15,10 +29,7 @@ var Sort = function (view, calc) {
             j++;
             if (j == arr.length - i - 1) {
                 if (sorted) {
-                    clearInterval(interval);
-                    $("#graph div").animate({
-                        'background-color': view.finishColor
-                    }, 100);
+                    Sort.stopSorting(view.finishColor);
                 }
                 else {
                     view.glow(j, view.sortedColor)
@@ -27,23 +38,21 @@ var Sort = function (view, calc) {
                     j = 0;
                     sorted = true;
                     if (i == arr.length - 1) {
-                        clearInterval(interval);
-                        $("#graph div").animate({
-                            'background-color': view.finishColor
-                        }, 100);
+                        Sort.stopSorting(view.finishColor);
                     }
                 }
             }
         }, 600);
     };
 
-    this.insertionSort = function (arr) {
+    insertionSort: function (arr, view, calc) {
+        Sort.isSorting = true;
         var currentIndex = 1, lastSortedNum = arr[0], lastSortedIndex = 0, prevIndex = 0;
         var innerLoop = false;
 
-        var interval = setInterval(() => {
-            view.glow(currentIndex, view.focusedColor);
-            view.glow(prevIndex, view.sortedColor);
+        Sort.interval = setInterval(() => {
+            view.glowView(currentIndex, view.focusedColor);
+            view.glowView(prevIndex, view.sortedColor);
             console.log(currentIndex, prevIndex, lastSortedIndex);
             if (innerLoop && arr[currentIndex] < arr[prevIndex]) {
                 view.swap(currentIndex, prevIndex)
@@ -68,11 +77,7 @@ var Sort = function (view, calc) {
                 currentIndex++;
             }
             if (currentIndex == arr.length) {
-
-                clearInterval(interval);
-                $("#graph div").animate({
-                    'background-color': view.finishColor
-                }, 100);
+                Sort.stopSorting(view.finishColor);
             }
 
 
