@@ -16,7 +16,21 @@
   justify-content: space-around;
   align-items: flex-end;
   align-content: space-around;
+  flex-wrap: nowrap;
 }
+
+.over {
+  position: fixed;
+  width: 500px;
+  right: -450px;
+  top: 12vh;
+  background-color: rgb(18, 95, 95);
+  color: white;
+  font-weight: bolder;
+  text-align: right;
+  align-items: center;
+}
+
 .container {
   height: 100vh;
   width: 100vw;

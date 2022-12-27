@@ -2,6 +2,20 @@ var view = new View();
 var calc = new Calcualtion();
 var sort = new Sort(view, calc);
 $(function () {
+    $("#displayOver").click(function () {
+        if ($("#displayOver").hasClass("on")) {
+            $(".over").animate({
+                right: "-450px"
+            }, 500, "linear");
+
+            $("#displayOver").removeClass("on")
+        } else {
+            $("#displayOver").addClass("on");
+            $(".over").animate({
+                right: "0px"
+            }, 500, "linear")
+        }
+    })
     calc.generateRandomArr();
     view.generateDivs(calc.generatedArr, calc.maxValue);
 
