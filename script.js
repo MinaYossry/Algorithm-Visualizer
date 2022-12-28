@@ -19,15 +19,12 @@ $(function () {
             }, 500, "linear")
         }
     })
+
     calc.generateRandomArr();
     view.generateDivs(calc.generatedArr, calc.maxValue);
-    view.generatePseudoCode(sort[selectedSort + 'OP'])
-    $("#random").click(function () {
-        sortOperations.stopSorting();
-        calc.generateRandomArr();
-        view.generateDivs(calc.generatedArr, calc.maxValue);
-        $("#error").css("display", "none");
-    });
+
+
+    $("#random").click(handleRandom);
 
     $("#startSort").click(function () {
         if (!sortOperations.isSorting) {
@@ -50,8 +47,11 @@ $(function () {
     });
 
     $("ul li").click(function (e) {
+        handleRandom();
         $(".selected").removeClass("selected")
         $(e.target).addClass("selected");
+        selectedSort = $(".selected").attr("id");
+        view.generatePseudoCode(sort[selectedSort + 'OP'])
     });
 
     $("#pause").click(sortOperations.pause.bind(sortOperations));
@@ -65,6 +65,13 @@ $(function () {
     $("#back").click(sortOperations.backward.bind(sortOperations, view));
 })
 
+
+function handleRandom() {
+    sortOperations.stopSorting();
+    calc.generateRandomArr();
+    view.generateDivs(calc.generatedArr, calc.maxValue);
+    $("#error").css("display", "none");
+}
 
 
 

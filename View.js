@@ -16,7 +16,7 @@ function View() {
     this.generatePseudoCode = function (arr) {
         $("#code").empty();
 
-        for (const i in arr) {
+        for (var i in arr) {
             var sentence = arr[i];
             $("#code").append('<pre>' + sentence + '</pre>')
         }
