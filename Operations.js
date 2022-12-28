@@ -19,6 +19,7 @@ var Operations = function () {
         this.isSorting = false;
         clearInterval(this.interval);
         view.finishAnimation();
+        view.offCode();
     };
 
 

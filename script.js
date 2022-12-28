@@ -7,22 +7,15 @@ var selectedSort = $(".selected").attr("id");
 $(function () {
     $("#displayOver").click(function () {
         if ($("#displayOver").hasClass("on")) {
-            $(".over").animate({
-                right: "-400px"
-            }, 500, "linear");
-
-            $("#displayOver").removeClass("on")
+            view.closePseudoCode();
         } else {
-            $("#displayOver").addClass("on");
-            $(".over").animate({
-                right: "0px"
-            }, 500, "linear")
+            view.openPseudoCode();
         }
     })
 
     calc.generateRandomArr();
     view.generateDivs(calc.generatedArr, calc.maxValue);
-
+    view.generatePseudoCode(sort[selectedSort + 'OP'])
 
     $("#random").click(handleRandom);
 
@@ -30,6 +23,7 @@ $(function () {
         if (!sortOperations.isSorting) {
             selectedSort = $(".selected").attr("id");
             sort[selectedSort](calc.generatedArr);
+            view.openPseudoCode();
         }
     });
 

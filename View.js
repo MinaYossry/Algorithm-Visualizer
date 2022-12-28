@@ -21,11 +21,27 @@ function View() {
             $("#code").append('<pre>' + sentence + '</pre>')
         }
     }
+
     this.onCode = function (id) {
         $("#code").children().eq(id).css('background-color', 'red')
     }
     this.offCode = function () {
         $("#code").children().css('background-color', 'rgb(18, 95, 95)')
+    }
+
+    this.closePseudoCode = function () {
+        $(".over").animate({
+            right: "-400px"
+        }, 500, "linear");
+
+        $("#displayOver").removeClass("on")
+    }
+
+    this.openPseudoCode = function () {
+        $("#displayOver").addClass("on");
+        $(".over").animate({
+            right: "0px"
+        }, 500, "linear")
     }
     this.generateDivs = function (arr, maxValue) {
         $("#graph").empty();
