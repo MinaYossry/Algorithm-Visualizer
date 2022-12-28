@@ -15,7 +15,15 @@ var Sort = function (view, calc, sortOperations) {
         ]
         ,
         insertionSort: [
+            'mark first element as sorted',
 
+            'for each unsorted element X<br>    "extract" the element X',
+
+            '   for j = lastSortedIndex down to 0',
+
+            '       if current element j > X<br>       move sorted element to the right by 1',
+
+            '   break loop and insert X here',
         ],
 
     }
@@ -80,7 +88,10 @@ var Sort = function (view, calc, sortOperations) {
         sortOperations.PseudoCode = ['']
         var lastSortedIndex = 0;
         $("#n0").addClass("sorted").css("backgroundColor", view.sortedColor)
+        sortOperations.push(new Operation(-1, -1, null, false, 0))
+
         for (var currentIndex = 1; currentIndex < arr.length; currentIndex++) {
+            sortOperations.push(new Operation(-1, -1, null, false, 2))
             if (arr[currentIndex] >= arr[lastSortedIndex]) {
                 lastSortedIndex = currentIndex;
                 sortOperations.push(new Operation(currentIndex, lastSortedIndex, currentIndex, false))
