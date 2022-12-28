@@ -4,7 +4,7 @@ var Operations = function () {
     this.isSorting = false;
     this.currentIndex = 0;
     this.moving = false;
-    this.op = []
+    this.PseudoCode = [];
     this.push = function (operation) {
         this.sortOperations.push(operation);
     };

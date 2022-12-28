@@ -1,40 +1,25 @@
 var Sort = function (view, calc, sortOperations) {
-    this.OperationType = {
+    this.PseudoCode = {
         bubbleSort: [
             'do',
             '   swapped = false<br>   for i = 1 to indexOfLastUnsortedElement-1',
             '       if leftElement > rightElement',
             '           swap(leftElement, rightElement)<br>           swapped = true; ++swapCounter',
             'while swapped',
+        ],
+        selectionSort: [
+
         ]
-    }
-    this.insertionSort2 = function (arr) {
-        sortOperations.empty();
-        sortOperations.op = ['']
-        var lastSortedIndex = 0;
-        $("#n0").addClass("sorted").css("backgroundColor", view.sortedColor)
-        for (var currentIndex = 1; currentIndex < arr.length; currentIndex++) {
-            if (arr[currentIndex] >= arr[lastSortedIndex]) {
-                lastSortedIndex = currentIndex;
-                sortOperations.push(new Operation(currentIndex, lastSortedIndex, currentIndex, false))
-            }
-            else {
-                var temp = currentIndex;
-                for (var prevIndex = lastSortedIndex; prevIndex >= 0; prevIndex--) {
-                    if (arr[temp] < arr[prevIndex]) {
-                        sortOperations.push(new Operation(temp, prevIndex, prevIndex, true))
-                        calc.swap(arr, temp--, prevIndex)
-                    }
-                }
-                lastSortedIndex = currentIndex;
-            }
-        }
-        sortOperations.startSortingAnimations(view);
+        ,
+        insertionSort: [
+
+        ],
+
     }
 
     this.bubbleSort = function (arr) {
         sortOperations.empty();
-        sortOperations.op = this.OperationType.bubbleSort;
+        sortOperations.PseudoCode = this.PseudoCode.bubbleSort;
         sortOperations.push(new Operation(-1, -1, null, false, 0))
         for (var i = 0; i < arr.length; i++) {
             for (var j = 0; j < arr.length - 1 - i; j++) {
@@ -81,45 +66,31 @@ var Sort = function (view, calc, sortOperations) {
 
 
     this.insertionSort = function (arr) {
-        this.isSorting = true;
-        var currentIndex = 1, lastSortedNum = arr[0], lastSortedIndex = 0, prevIndex = 0;
-        var innerLoop = false;
-
-        var that = this;
-        this.interval = setInterval((function () {
-            view.glow(currentIndex, view.focusedColor);
-            view.glow(prevIndex, view.sortedColor);
-            if (innerLoop && arr[currentIndex] < arr[prevIndex]) {
-                view.swap(currentIndex, prevIndex)
-                calc.swap(arr, currentIndex, prevIndex)
-                prevIndex--;
-                currentIndex--;
+        sortOperations.empty();
+        sortOperations.PseudoCode = ['']
+        var lastSortedIndex = 0;
+        $("#n0").addClass("sorted").css("backgroundColor", view.sortedColor)
+        for (var currentIndex = 1; currentIndex < arr.length; currentIndex++) {
+            if (arr[currentIndex] >= arr[lastSortedIndex]) {
+                lastSortedIndex = currentIndex;
+                sortOperations.push(new Operation(currentIndex, lastSortedIndex, currentIndex, false))
             }
-            else if (innerLoop && arr[currentIndex] >= arr[prevIndex] || prevIndex == -1) {
-                innerLoop = false;
-                view.glow(currentIndex, view.sortedColor);
-                currentIndex = lastSortedIndex + 1;
-                prevIndex = lastSortedIndex;
+            else {
+                var temp = currentIndex;
+                for (var prevIndex = lastSortedIndex; prevIndex >= 0; prevIndex--) {
+                    if (arr[temp] < arr[prevIndex]) {
+                        sortOperations.push(new Operation(temp, prevIndex, prevIndex, true))
+                        calc.swap(arr, temp--, prevIndex)
+                    }
+                }
+                lastSortedIndex = currentIndex;
             }
-            else if (!innerLoop && arr[currentIndex] < arr[lastSortedIndex]) {
-                innerLoop = true;
-                view.swap(currentIndex, prevIndex)
-                calc.swap(arr, currentIndex, prevIndex)
-                currentIndex--;
-                prevIndex--;
-            } else if (!innerLoop && arr[currentIndex] >= arr[lastSortedIndex]) {
-                lastSortedIndex = prevIndex = currentIndex;
-                currentIndex++;
-            }
-            if (currentIndex == arr.length) {
-
-                this.stopSorting(view.finishColor);
-            }
+        }
+        sortOperations.startSortingAnimations(view);
+    }
 
 
-        }).bind(that), 600);
 
-    };
     var merge = function (arr, l, m, r) {
         var n1 = m - l + 1;
         var n2 = r - m;
