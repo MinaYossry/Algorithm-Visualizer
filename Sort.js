@@ -52,6 +52,29 @@ var Sort = function (view, calc, sortOperations) {
         sortOperations.startSortingAnimations(view);
     }
 
+    this.selectionSort = function (arr) {
+        sortOperations.empty();
+        var i, j, minIndex;
+
+        // One by one move boundary of unsorted subarray
+        for (i = 0; i < arr.length; i++) {
+            // Find the minimum element in unsorted array
+            minIndex = i;
+            for (j = i + 1; j < arr.length; j++) {
+                var operationObj = new Operation(minIndex, j, null, false);
+                if (arr[j] < arr[minIndex])
+                    minIndex = j;
+                sortOperations.push(operationObj);
+            }
+            var operationObj = new Operation(minIndex, i, i, true);
+
+            // Swap the found minimum element with the first element
+            calc.swap(arr, minIndex, i);
+            sortOperations.push(operationObj);
+        }
+        sortOperations.startSortingAnimations(view);
+    }
+
     this.bubbleSort = function (arr) {
         this.isSorting = true;
         var i = 0, j = 0;
