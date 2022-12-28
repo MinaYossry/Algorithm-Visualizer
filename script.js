@@ -2,36 +2,28 @@ var view = new View();
 var calc = new Calcualtion();
 var sortOperations = new Operations();
 var sort = new Sort(view, calc, sortOperations);
+var selectedSort = $(".selected").attr("id");
 
 $(function () {
     $("#displayOver").click(function () {
         if ($("#displayOver").hasClass("on")) {
-            $(".over").animate({
-                right: "-450px"
-            }, 500, "linear");
-
-            $("#displayOver").removeClass("on")
+            view.closePseudoCode();
         } else {
-            $("#displayOver").addClass("on");
-            $(".over").animate({
-                right: "0px"
-            }, 500, "linear")
+            view.openPseudoCode();
         }
     })
+
     calc.generateRandomArr();
     view.generateDivs(calc.generatedArr, calc.maxValue);
+    view.generatePseudoCode(sort[selectedSort + 'OP'])
 
-    $("#random").click(function () {
-        sortOperations.stopSorting();
-        calc.generateRandomArr();
-        view.generateDivs(calc.generatedArr, calc.maxValue);
-        $("#error").css("display", "none");
-    });
+    $("#random").click(handleRandom);
 
     $("#startSort").click(function () {
         if (!sortOperations.isSorting) {
-            var selectedSort = $(".selected").attr("id");
+            selectedSort = $(".selected").attr("id");
             sort[selectedSort](calc.generatedArr);
+            view.openPseudoCode();
         }
     });
 
@@ -49,8 +41,11 @@ $(function () {
     });
 
     $("ul li").click(function (e) {
+        handleRandom();
         $(".selected").removeClass("selected")
         $(e.target).addClass("selected");
+        selectedSort = $(".selected").attr("id");
+        view.generatePseudoCode(sort[selectedSort + 'OP'])
     });
 
     $("#pause").click(sortOperations.pause.bind(sortOperations));
@@ -64,6 +59,13 @@ $(function () {
     $("#back").click(sortOperations.backward.bind(sortOperations, view));
 })
 
+
+function handleRandom() {
+    sortOperations.stopSorting();
+    calc.generateRandomArr();
+    view.generateDivs(calc.generatedArr, calc.maxValue);
+    $("#error").css("display", "none");
+}
 
 
 

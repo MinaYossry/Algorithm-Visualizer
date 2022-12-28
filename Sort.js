@@ -1,6 +1,7 @@
 var Sort = function (view, calc, sortOperations) {
     this.insertionSort2 = function (arr) {
         sortOperations.empty();
+        sortOperations.op = ['']
         var lastSortedIndex = 0;
         $("#n0").addClass("sorted").css("backgroundColor", view.sortedColor)
         for (var currentIndex = 1; currentIndex < arr.length; currentIndex++) {
@@ -21,21 +22,55 @@ var Sort = function (view, calc, sortOperations) {
         }
         sortOperations.startSortingAnimations(view);
     }
-
+    this.bubbleSort2OP = [
+        'do',
+        '   swapped = false<br>   for i = 1 to indexOfLastUnsortedElement-1',
+        '       if leftElement > rightElement',
+        '           swap(leftElement, rightElement)<br>           swapped = true; ++swapCounter',
+        'while swapped',
+    ]
     this.bubbleSort2 = function (arr) {
         sortOperations.empty();
+        sortOperations.op = this.bubbleSort2OP;
+        sortOperations.push(new Operation(-1, -1, null, false, 0))
         for (var i = 0; i < arr.length; i++) {
             for (var j = 0; j < arr.length - 1 - i; j++) {
-                var operationObj = new Operation(j, j + 1, null, false);
+                var operationObj = new Operation(j, j + 1, null, false, 2);
+
                 if (arr[j] > arr[j + 1]) {
                     calc.swap(arr, j, j + 1);
                     operationObj.swap = true;
+                    operationObj.op_id = 3;
                 }
                 if (j == arr.length - 2 - i) {
                     operationObj.lastSortedIndex = j + 1;
                 }
                 sortOperations.push(operationObj);
             }
+            sortOperations.push(new Operation(-1, -1, null, false, 4))
+        }
+        sortOperations.startSortingAnimations(view);
+    }
+
+    this.selectionSort = function (arr) {
+        sortOperations.empty();
+        var i, j, minIndex;
+
+        // One by one move boundary of unsorted subarray
+        for (i = 0; i < arr.length; i++) {
+            // Find the minimum element in unsorted array
+            minIndex = i;
+            for (j = i + 1; j < arr.length; j++) {
+                var operationObj = new Operation(minIndex, j, null, false);
+                if (arr[j] < arr[minIndex])
+                    minIndex = j;
+                sortOperations.push(operationObj);
+            }
+            var operationObj = new Operation(minIndex, i, i, true);
+
+            // Swap the found minimum element with the first element
+            calc.swap(arr, minIndex, i);
+            sortOperations.push(operationObj);
         }
         sortOperations.startSortingAnimations(view);
     }
