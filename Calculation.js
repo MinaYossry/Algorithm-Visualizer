@@ -75,20 +75,4 @@ function Calcualtion() {
             }
         }, 600);
     }
-
-    /*
-        var interval;
-        var opIndex = 0;
-        this.doOP = function (operationArr) {
-            interval = setInterval(function () {
-                console.log(operationArr[opIndex]);
-                swap(operationArr[opIndex][0], operationArr[opIndex][1])
-                opIndex++;
-                if (opIndex == operationArr.length)
-                    clearInterval(interval);
-            }, 600);
-        }
-        */
-
-
 } 

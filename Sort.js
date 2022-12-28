@@ -118,7 +118,6 @@ var Sort = function (view, calc, sortOperations) {
         this.interval = setInterval((function () {
             view.glow(currentIndex, view.focusedColor);
             view.glow(prevIndex, view.sortedColor);
-            console.log(currentIndex, prevIndex, lastSortedIndex);
             if (innerLoop && arr[currentIndex] < arr[prevIndex]) {
                 view.swap(currentIndex, prevIndex)
                 calc.swap(arr, currentIndex, prevIndex)

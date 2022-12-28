@@ -55,7 +55,6 @@ var Operations = function () {
             if (this.sortOperations[this.currentIndex].lastSortedIndex !== null) {
                 $("#n" + this.sortOperations[this.currentIndex].lastSortedIndex)
                     .removeClass("sorted");
-                console.log("Step Backward index =", this.sortOperations[this.currentIndex].lastSortedIndex);
             }
             view.glow(this.sortOperations[this.currentIndex].firstIndex, view.focusedColor)
             view.glow(this.sortOperations[this.currentIndex].secondIndex, view.focusedColor)
@@ -102,8 +101,6 @@ var Operations = function () {
         if (this.sortOperations[this.currentIndex].lastSortedIndex !== null) {
             $("#n" + this.sortOperations[this.currentIndex].lastSortedIndex)
                 .addClass("sorted");
-            console.log("Step Forward index =", this.sortOperations[this.currentIndex].lastSortedIndex);
-
         }
 
         this.currentIndex++;
