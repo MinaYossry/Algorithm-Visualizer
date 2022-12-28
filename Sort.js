@@ -1,4 +1,13 @@
 var Sort = function (view, calc, sortOperations) {
+    this.OperationType = {
+        bubbleSort: [
+            'do',
+            '   swapped = false<br>   for i = 1 to indexOfLastUnsortedElement-1',
+            '       if leftElement > rightElement',
+            '           swap(leftElement, rightElement)<br>           swapped = true; ++swapCounter',
+            'while swapped',
+        ]
+    }
     this.insertionSort2 = function (arr) {
         sortOperations.empty();
         sortOperations.op = ['']
@@ -22,16 +31,10 @@ var Sort = function (view, calc, sortOperations) {
         }
         sortOperations.startSortingAnimations(view);
     }
-    this.bubbleSort2OP = [
-        'do',
-        '   swapped = false<br>   for i = 1 to indexOfLastUnsortedElement-1',
-        '       if leftElement > rightElement',
-        '           swap(leftElement, rightElement)<br>           swapped = true; ++swapCounter',
-        'while swapped',
-    ]
-    this.bubbleSort2 = function (arr) {
+
+    this.bubbleSort = function (arr) {
         sortOperations.empty();
-        sortOperations.op = this.bubbleSort2OP;
+        sortOperations.op = this.OperationType.bubbleSort;
         sortOperations.push(new Operation(-1, -1, null, false, 0))
         for (var i = 0; i < arr.length; i++) {
             for (var j = 0; j < arr.length - 1 - i; j++) {
@@ -75,39 +78,7 @@ var Sort = function (view, calc, sortOperations) {
         sortOperations.startSortingAnimations(view);
     }
 
-    this.bubbleSort = function (arr) {
-        this.isSorting = true;
-        var i = 0, j = 0;
-        var sorted = true;
-        var that = this;
-        this.interval = setInterval((function () {
-            view.glow(j - 1, view.defaultColor);
-            view.glow(j, view.focusedColor);
-            view.glow(j + 1, view.focusedColor);
 
-            if (arr[j] > arr[j + 1]) {
-                view.swap(j, j + 1);
-                calc.swap(arr, j, j + 1);
-                sorted = false;
-            }
-            j++;
-            if (j == arr.length - i - 1) {
-                if (sorted) {
-                    this.stopSorting(view.finishColor);
-                }
-                else {
-                    view.glow(j, view.sortedColor)
-                    view.glow(j - 1, view.defaultColor)
-                    i++;
-                    j = 0;
-                    sorted = true;
-                    if (i == arr.length - 1) {
-                        this.stopSorting(view.finishColor);
-                    }
-                }
-            }
-        }).bind(that), 600);
-    };
 
     this.insertionSort = function (arr) {
         this.isSorting = true;
