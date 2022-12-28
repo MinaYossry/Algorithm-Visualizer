@@ -4,8 +4,9 @@ function View() {
     var ELEMENTWIDTH = 80;
 
     this.defaultColor = '#678983';
+    this.focusedColor1 = '#009900';
     this.focusedColor = '#0099cc';
-    this.sortedColor = 'rgb(200 94 21)';
+    this.sortedColor = '#c85e15';
     this.finishColor = "#181D31";
 
     this.finishAnimation = function () {
