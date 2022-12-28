@@ -4,13 +4,14 @@ var Operations = function () {
     this.isSorting = false;
     this.currentIndex = 0;
     this.moving = false;
-
+    this.op = []
     this.push = function (operation) {
         this.sortOperations.push(operation);
     };
 
     this.empty = function () {
         this.sortOperations = [];
+        this.op = [];
     }
 
     this.stopSorting = function () {
@@ -43,7 +44,8 @@ var Operations = function () {
     }
     this.stepBack = function (view) {
         if (this.currentIndex > 0) {
-
+            view.offCode();
+            view.onCode(this.sortOperations[this.currentIndex].op_id)
             view.glow(this.sortOperations[this.currentIndex].firstIndex, view.defaultColor)
             view.glow(this.sortOperations[this.currentIndex].secondIndex, view.defaultColor)
 
@@ -66,6 +68,8 @@ var Operations = function () {
                 view.glow(this.sortOperations[this.currentIndex].secondIndex, view.defaultColor)
                 $("#n" + this.sortOperations[this.currentIndex].lastSortedIndex)
                     .removeClass("sorted");
+                view.offCode();
+
             }
         }
     }
@@ -85,7 +89,8 @@ var Operations = function () {
             view.glow(this.sortOperations[this.currentIndex - 1].secondIndex, view.defaultColor);
             $(".sorted").css("backgroundColor", view.sortedColor);
         }
-
+        view.offCode();
+        view.onCode(this.sortOperations[this.currentIndex].op_id)
         view.glow(this.sortOperations[this.currentIndex].firstIndex, view.focusedColor);
         view.glow(this.sortOperations[this.currentIndex].secondIndex, view.focusedColor);
 
@@ -95,8 +100,8 @@ var Operations = function () {
         // if (this.sortOperations[this.currentIndex].lastSortedIndex !== this.sortOperations[this.currentIndex].firstIndex)
         if (this.sortOperations[this.currentIndex].lastSortedIndex !== null) {
             $("#n" + this.sortOperations[this.currentIndex].lastSortedIndex)
-            .addClass("sorted");
-            console.log("Step Forward index =",this.sortOperations[this.currentIndex].lastSortedIndex);
+                .addClass("sorted");
+            console.log("Step Forward index =", this.sortOperations[this.currentIndex].lastSortedIndex);
 
         }
 
@@ -116,9 +121,10 @@ var Operations = function () {
     }
 }
 
-var Operation = function (_firstIndex, _secondIndex, _lastSortedIndex, _swap) {
+var Operation = function (_firstIndex, _secondIndex, _lastSortedIndex, _swap, _op_id) {
     this.firstIndex = _firstIndex;
     this.secondIndex = _secondIndex;
     this.lastSortedIndex = _lastSortedIndex
     this.swap = _swap;
+    this.op_id = _op_id
 }

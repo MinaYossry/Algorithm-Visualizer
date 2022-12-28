@@ -2,12 +2,13 @@ var view = new View();
 var calc = new Calcualtion();
 var sortOperations = new Operations();
 var sort = new Sort(view, calc, sortOperations);
+var selectedSort = $(".selected").attr("id");
 
 $(function () {
     $("#displayOver").click(function () {
         if ($("#displayOver").hasClass("on")) {
             $(".over").animate({
-                right: "-450px"
+                right: "-400px"
             }, 500, "linear");
 
             $("#displayOver").removeClass("on")
@@ -20,7 +21,7 @@ $(function () {
     })
     calc.generateRandomArr();
     view.generateDivs(calc.generatedArr, calc.maxValue);
-
+    view.generatePseudoCode(sort[selectedSort + 'OP'])
     $("#random").click(function () {
         sortOperations.stopSorting();
         calc.generateRandomArr();
@@ -30,7 +31,7 @@ $(function () {
 
     $("#startSort").click(function () {
         if (!sortOperations.isSorting) {
-            var selectedSort = $(".selected").attr("id");
+            selectedSort = $(".selected").attr("id");
             sort[selectedSort](calc.generatedArr);
         }
     });
