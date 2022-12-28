@@ -20,29 +20,8 @@ var Operations = function () {
         view.finishAnimation();
     };
 
-    this.stepForward = function (view) {
-        if (this.currentIndex > 0) {
-            view.glow(this.sortOperations[this.currentIndex - 1].firstIndex, view.defaultColor);
-            view.glow(this.sortOperations[this.currentIndex - 1].secondIndex, view.defaultColor);
-            $(".sorted").css("backgroundColor", view.sortedColor);
-        }
-
-        view.glow(this.sortOperations[this.currentIndex].firstIndex, view.focusedColor);
-        view.glow(this.sortOperations[this.currentIndex].secondIndex, view.focusedColor);
-
-        if (this.sortOperations[this.currentIndex].swap)
-            view.swap(this.sortOperations[this.currentIndex].firstIndex, this.sortOperations[this.currentIndex].secondIndex);
-
-        if (this.sortOperations[this.currentIndex].lastSortedIndex)
-            $("#n" + this.sortOperations[this.currentIndex].lastSortedIndex).addClass("sorted");
 
 
-
-        this.currentIndex++;
-        if (this.currentIndex == this.sortOperations.length) {
-            this.stopSorting();
-        }
-    }
 
     this.startSortingAnimations = function (view) {
         this.moving = true;
@@ -62,19 +41,68 @@ var Operations = function () {
         clearInterval(this.interval);
         this.moving = false;
     }
+    this.stepBack = function (view) {
+        if (this.currentIndex > 0) {
 
+            view.glow(this.sortOperations[this.currentIndex].firstIndex, view.defaultColor)
+            view.glow(this.sortOperations[this.currentIndex].secondIndex, view.defaultColor)
+
+
+            this.currentIndex--;
+            if (this.sortOperations[this.currentIndex].lastSortedIndex !== null) {
+                $("#n" + this.sortOperations[this.currentIndex].lastSortedIndex)
+                    .removeClass("sorted");
+                console.log("Step Backward index =", this.sortOperations[this.currentIndex].lastSortedIndex);
+            }
+            view.glow(this.sortOperations[this.currentIndex].firstIndex, view.focusedColor)
+            view.glow(this.sortOperations[this.currentIndex].secondIndex, view.focusedColor)
+            if (this.sortOperations[this.currentIndex].swap) {
+                view.swap(this.sortOperations[this.currentIndex].firstIndex,
+                    this.sortOperations[this.currentIndex].secondIndex);
+            }
+
+            if (this.currentIndex == 0) {
+                view.glow(this.sortOperations[this.currentIndex].firstIndex, view.defaultColor)
+                view.glow(this.sortOperations[this.currentIndex].secondIndex, view.defaultColor)
+                $("#n" + this.sortOperations[this.currentIndex].lastSortedIndex)
+                    .removeClass("sorted");
+            }
+        }
+    }
     this.backward = function (view) {
-        if (!this.moving && this.currentIndex > 0) {
-            this.currentIndex--;
-            this.forward(view)
+        if (!this.moving) {
+            this.stepBack(view);
+            this.moving = true;
+            setTimeout(() => {
+                this.moving = false;
+            }, 600);
+        }
+    }
 
-            view.glow(this.sortOperations[this.currentIndex + 1].firstIndex, view.defaultColor);
-            view.glow(this.sortOperations[this.currentIndex + 1].secondIndex, view.defaultColor);
+    this.stepForward = function (view) {
+        if (this.currentIndex > 0) {
+            view.glow(this.sortOperations[this.currentIndex - 1].firstIndex, view.defaultColor);
+            view.glow(this.sortOperations[this.currentIndex - 1].secondIndex, view.defaultColor);
+            $(".sorted").css("backgroundColor", view.sortedColor);
+        }
 
-            this.currentIndex--;
-        } else if (!this.moving && this.currentIndex == 0) {
-            view.glow(this.sortOperations[this.currentIndex].firstIndex, view.defaultColor);
-            view.glow(this.sortOperations[this.currentIndex].secondIndex, view.defaultColor);
+        view.glow(this.sortOperations[this.currentIndex].firstIndex, view.focusedColor);
+        view.glow(this.sortOperations[this.currentIndex].secondIndex, view.focusedColor);
+
+        if (this.sortOperations[this.currentIndex].swap)
+            view.swap(this.sortOperations[this.currentIndex].firstIndex, this.sortOperations[this.currentIndex].secondIndex);
+
+        // if (this.sortOperations[this.currentIndex].lastSortedIndex !== this.sortOperations[this.currentIndex].firstIndex)
+        if (this.sortOperations[this.currentIndex].lastSortedIndex !== null) {
+            $("#n" + this.sortOperations[this.currentIndex].lastSortedIndex)
+            .addClass("sorted");
+            console.log("Step Forward index =",this.sortOperations[this.currentIndex].lastSortedIndex);
+
+        }
+
+        this.currentIndex++;
+        if (this.currentIndex == this.sortOperations.length) {
+            this.stopSorting();
         }
     }
     this.forward = function (view) {
