@@ -4,23 +4,38 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Algorithms Visualizer</title>
+    <link rel="icon" type="image/x-icon" href="icon.ico">
     <link href="styles.css" rel="stylesheet" />
     <script src="./Libraries/jqueryDevMin.js"></script>
     <script src="./Libraries/jquery-ui.min.js"></script>
   </head>
   <body>
+    <div class="over flex-container-row">
+      <div>
+        <i></i>
+        <i id="displayOver">open</i>
+      </div>
+      <div>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+      </div>
+    </div>
     <div class="container">
-      <div class="header flex-container-col">
+      <div class="header flex-container-row">
         <ul class="navbar">
-          <li id="bubbleSort" class="selected">Bubble Sort</li>
+          <li id="bubbleSort2" class="selected">Bubble Sort</li>
           <li id="selectionSort">Selection Sort</li>
-          <li id="insertionSort">Insertion Sort</li>
+          <li id="insertionSort2">Insertion Sort</li>
           <li id="mergeSort">Merge Sort</li>
         </ul>
       </div>
       <div class="body flex-container-col">
         <div id="graph" class="graph flex-container-row"></div>
+        
         <div class="user-controls flex-container-row">
           <button id="startSort">Sort</button>
           <button id="random">Random</button>
@@ -32,12 +47,18 @@
           <button id="enterNumbers">Create</button>
           <p id="error">Input must be between 5 and 15 numbers</p>
         </div>
-        </div>
       </div>
-      <div class="footer flex-container-col"></div>
+      <div class="footer flex-container-row">
+        <button id="pause">Pause</button>
+        <button id="start">Start</button>
+        <button id="back">Back</button>
+        <button id="next">Next</button>
+      </div>
+        </div>
     </div>
 
     <script src="Calculation.js"></script>
+    <script src="Operations.js"></script>
     <script src="View.js"></script>
     <script src="Sort.js"></script>
     <script src="script.js"></script>

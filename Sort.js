@@ -1,14 +1,44 @@
-var Sort = function (view, calc) {
-    this.isSorting = false;
-    this.interval = null;
+var Sort = function (view, calc, sortOperations) {
+    this.insertionSort2 = function (arr) {
+        sortOperations.empty();
+        var lastSortedIndex = 0;
+        $("#n0").addClass("sorted").css("backgroundColor", view.sortedColor)
+        for (var currentIndex = 1; currentIndex < arr.length; currentIndex++) {
+            if (arr[currentIndex] >= arr[lastSortedIndex]) {
+                lastSortedIndex = currentIndex;
+                sortOperations.push(new Operation(currentIndex, lastSortedIndex, currentIndex, false))
+            }
+            else {
+                var temp = currentIndex;
+                for (var prevIndex = lastSortedIndex; prevIndex >= 0; prevIndex--) {
+                    if (arr[temp] < arr[prevIndex]) {
+                        sortOperations.push(new Operation(temp, prevIndex, prevIndex, true))
+                        calc.swap(arr, temp--, prevIndex)
+                    }
+                }
+                lastSortedIndex = currentIndex;
+            }
+        }
+        sortOperations.startSortingAnimations(view);
+    }
 
-    this.stopSorting = function (finishColor) {
-        this.isSorting = false;
-        clearInterval(this.interval);
-        $("#graph div").animate({
-            'background-color': finishColor
-        }, 100);
-    };
+    this.bubbleSort2 = function (arr) {
+        sortOperations.empty();
+        for (var i = 0; i < arr.length; i++) {
+            for (var j = 0; j < arr.length - 1 - i; j++) {
+                var operationObj = new Operation(j, j + 1, null, false);
+                if (arr[j] > arr[j + 1]) {
+                    calc.swap(arr, j, j + 1);
+                    operationObj.swap = true;
+                }
+                if (j == arr.length - 2 - i) {
+                    operationObj.lastSortedIndex = j + 1;
+                }
+                sortOperations.push(operationObj);
+            }
+        }
+        sortOperations.startSortingAnimations(view);
+    }
 
     this.bubbleSort = function (arr) {
         this.isSorting = true;
