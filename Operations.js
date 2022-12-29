@@ -22,9 +22,6 @@ var Operations = function () {
         view.offCode();
     };
 
-
-
-
     this.startSortingAnimations = function (view) {
         this.moving = true;
         this.isSorting = true;
@@ -94,7 +91,7 @@ var Operations = function () {
                 view.glow(this.sortOperations[this.currentIndex - 1].secondIndex, view.defaultColor);
                 $(".sorted").css("backgroundColor", view.sortedColor);
             }
-      
+
             view.glow(this.sortOperations[this.currentIndex].firstIndex, view.focusedColor1);
             view.glow(this.sortOperations[this.currentIndex].secondIndex, view.focusedColor);
 
@@ -122,7 +119,126 @@ var Operations = function () {
             }, 600);
         }
     }
+
+    this.startMergeAnimation = function (view) {
+        var allDivs = $("#graph div");
+        var that = this;
+        var leftIndex = 0; var rightIndex = 0;
+        var newLeft = -400;
+        var newIndex = 0;
+
+        this.interval = setInterval((function () {
+            var leftArray = this.sortOperations[this.currentIndex].leftArray;
+            var rightArray = this.sortOperations[this.currentIndex].rightArray;
+
+            var leftDiv = allDivs.eq(leftArray[leftIndex]);
+            var rightDiv = allDivs.eq(rightArray[rightIndex]);
+
+            var startIndex = leftArray[0];
+            var endIndex = rightArray[rightArray.length - 1];
+
+            if (leftIndex < leftArray.length && rightIndex < rightArray.length) {
+                var leftNumber = parseInt(leftDiv.text());
+                var rightNumber = parseInt(rightDiv.text());
+
+                if (leftNumber <= rightNumber) {
+                    leftDiv.css("left", newLeft + 'px');
+                    newLeft += 80;
+                    $("#mergeGraph").append(leftDiv);
+                    leftIndex++;
+                } else {
+                    rightDiv.css("left", newLeft + 'px');
+                    newLeft += 80;
+                    $("#mergeGraph").append(rightDiv);
+                    rightIndex++;
+
+                }
+            }
+
+            else if (leftIndex == leftArray.length && rightIndex == rightArray.length) {
+                leftIndex = 0;
+                rightIndex = 0;
+                this.currentIndex++;
+
+                if (this.currentIndex == this.sortOperations.length) {
+                    this.stopSorting();
+                    $("#graph").append($("#mergeGraph div"));
+                }
+
+                else {
+
+                    var currentMerge = $("#mergeGraph div");
+                    var temp = startIndex;
+
+                    if (startIndex === 0)
+                        $("#graph").prepend($("#mergeGraph div"))
+                    else {
+                        $("#mergeGraph div").insertAfter($("#n" + (startIndex - 1)));
+                    }
+                    console.log(allDivs);
+                    for (var i = 0; i < $("#graph div").length; i++) {
+                        $("#graph div").eq(i).attr("id", "n" + i);
+                    }
+                    allDivs = $("#graph div");
+                    console.log(allDivs);
+
+
+                    var minIndex = this.sortOperations[this.currentIndex].leftArray[0];
+                    newLeft = parseInt($("#graph div").eq(minIndex).css("left"));
+                }
+            }
+
+
+            else if (leftIndex == leftArray.length) {
+                rightDiv.css("left", newLeft + 'px');
+                newLeft += 80;
+                $("#mergeGraph").append(rightDiv);
+                rightIndex++;
+            }
+
+            else if (rightIndex == rightArray.length) {
+                leftDiv.css("left", newLeft + 'px');
+                newLeft += 80;
+                $("#mergeGraph").append(leftDiv);
+                leftIndex++;
+            }
+
+
+
+
+        }).bind(that), 600);
+    }
 }
+
+/*
+0
+: 
+mergeOperation {leftArray: Array(1), rightArray: Array(1)}
+1
+: 
+mergeOperation {leftArray: Array(2), rightArray: Array(1)}
+2
+: 
+mergeOperation {leftArray: Array(1), rightArray: Array(1)}
+3
+: 
+mergeOperation {leftArray: Array(3), rightArray: Array(2)}
+4
+: 
+mergeOperation {leftArray: Array(1), rightArray: Array(1)}
+5
+: 
+mergeOperation {leftArray: Array(2), rightArray: Array(1)}
+6
+: 
+mergeOperation {leftArray: Array(1), rightArray: Array(1)}
+7
+: 
+mergeOperation {leftArray: Array(3), rightArray: Array(2)}
+8
+: 
+mergeOperation {leftArray: Array(5), rightArray: Array(5)}
+*/
 
 var Operation = function (_firstIndex, _secondIndex, _lastSortedIndex, _swap, _op_id) {
     this.firstIndex = _firstIndex;
@@ -130,4 +246,9 @@ var Operation = function (_firstIndex, _secondIndex, _lastSortedIndex, _swap, _o
     this.lastSortedIndex = _lastSortedIndex
     this.swap = _swap;
     this.op_id = _op_id
+}
+
+var mergeOperation = function (_leftArray, _rightArray) {
+    this.leftArray = _leftArray;
+    this.rightArray = _rightArray;
 }

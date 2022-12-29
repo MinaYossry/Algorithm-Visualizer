@@ -22,7 +22,10 @@ $(function () {
     $("#startSort").click(function () {
         if (!sortOperations.isSorting) {
             selectedSort = $(".selected").attr("id");
-            sort[selectedSort](calc.generatedArr);
+            sort[selectedSort](calc.generatedArr, 0, calc.generatedArr.length - 1);
+            if (selectedSort == "mergeSort") {
+                sortOperations.startMergeAnimation(view)
+            }
             view.openPseudoCode();
         }
     });
@@ -61,6 +64,7 @@ $(function () {
 
 
 function handleRandom() {
+    $("#graph").empty();
     sortOperations.stopSorting();
     calc.generateRandomArr();
     view.generateDivs(calc.generatedArr, calc.maxValue);
