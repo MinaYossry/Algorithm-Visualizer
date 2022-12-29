@@ -112,19 +112,29 @@ var Sort = function (view, calc, sortOperations) {
 
 
 
-    var merge = function (arr, l, m, r) {
+    var merge = function merge(arr, l, m, r) {
         var n1 = m - l + 1;
         var n2 = r - m;
+
         // Create temp arrays
         var L = new Array(n1);
+        var leftIndeces = new Array(n1);
         var R = new Array(n2);
+        var rightIndeces = new Array(n2);
+
 
         // Copy data to temp arrays L[] and R[]
-        for (var i = 0; i < n1; i++)
+        for (var i = 0; i < n1; i++) {
             L[i] = arr[l + i];
-        for (var j = 0; j < n2; j++)
+            leftIndeces[i] = l + i;
+        }
+        for (var j = 0; j < n2; j++) {
             R[j] = arr[m + 1 + j];
+            rightIndeces[j] = m + 1 + j;
 
+        }
+
+        var operationObj = new mergeOperation(leftIndeces, rightIndeces)
         // Merge the temp arrays back into arr[l..r]
 
         // Initial index of first subarray
@@ -135,17 +145,53 @@ var Sort = function (view, calc, sortOperations) {
 
         // Initial index of merged subarray
         var k = l;
-    }
-    this.mergeSort = function (arr, l, r) {
 
-        if (l >= r) {
-            return;//returns recursively
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) {
+                arr[k] = L[i];
+                i++;
+            }
+            else {
+                arr[k] = R[j];
+                j++;
+            }
+            k++;
         }
-        var m = l + parseInt((r - l) / 2);
-        mergeSort(arr, l, m);
-        mergeSort(arr, m + 1, r);
-        merge(arr, l, m, r);
-    };
+
+        // Copy the remaining elements of
+        // L[], if there are any
+        while (i < n1) {
+            arr[k] = L[i];
+            i++;
+            k++;
+        }
+
+        // Copy the remaining elements of
+        // R[], if there are any
+        while (j < n2) {
+            arr[k] = R[j];
+            j++;
+            k++;
+        }
+        sortOperations.push(operationObj);
+        console.log(sortOperations.sortOperations);
+    }
+
+    this.mergeSort = function mergeSort(arr, l, r) {
+        if (l < r) {
+
+            // Same as (l + r) / 2, but avoids overflow
+            // for large l and r
+            let m = l + Math.floor((r - l) / 2);
+
+            // Sort first and second halves
+            mergeSort(arr, l, m);
+            mergeSort(arr, m + 1, r);
+
+            merge(arr, l, m, r);
+
+        }
+    }
 
 
 }

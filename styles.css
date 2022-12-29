@@ -89,7 +89,7 @@
 .graph {
   flex: 75%;
   position: relative;
-  padding-bottom: 100px;
+  /*padding-bottom: 100px;*/
 }
 
 .graph div {
