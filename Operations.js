@@ -121,15 +121,21 @@ var Operations = function () {
     }
 
     this.startMergeAnimation = function (view) {
+        this.isSorting = true;
         var allDivs = $("#graph div");
         var that = this;
         var leftIndex = 0; var rightIndex = 0;
-        var newLeft = -400;
-        var newIndex = 0;
+        var newLeft = parseInt(allDivs.eq(0).css("left"));
 
         this.interval = setInterval((function () {
             var leftArray = this.sortOperations[this.currentIndex].leftArray;
             var rightArray = this.sortOperations[this.currentIndex].rightArray;
+
+            for (var i = 0; i < leftArray.length; i++)
+                allDivs.eq(leftArray[i]).css("backgroundColor", view.focusedColor)
+
+            for (var i = 0; i < rightArray.length; i++)
+                allDivs.eq(rightArray[i]).css("backgroundColor", view.focusedColor1)
 
             var leftDiv = allDivs.eq(leftArray[leftIndex]);
             var rightDiv = allDivs.eq(rightArray[rightIndex]);
@@ -147,7 +153,7 @@ var Operations = function () {
                     $("#mergeGraph").append(leftDiv);
                     leftIndex++;
                 } else {
-                    rightDiv.css("left", newLeft + 'px');
+                    rightDiv.animate({ "left": newLeft + 'px' }, 500, "linear");
                     newLeft += 80;
                     $("#mergeGraph").append(rightDiv);
                     rightIndex++;
@@ -161,19 +167,20 @@ var Operations = function () {
                 this.currentIndex++;
 
                 if (this.currentIndex == this.sortOperations.length) {
-                    this.stopSorting();
                     $("#graph").append($("#mergeGraph div"));
+                    this.stopSorting();
                 }
 
                 else {
 
                     var currentMerge = $("#mergeGraph div");
                     var temp = startIndex;
+                    $("#mergeGraph div").css("backgroundColor", view.sortedColor)
 
                     if (startIndex === 0)
-                        $("#graph").prepend($("#mergeGraph div"))
+                        $("#graph").prepend($("#mergeGraph div").hide().show("linear"))
                     else {
-                        $("#mergeGraph div").insertAfter($("#n" + (startIndex - 1)));
+                        $("#mergeGraph div").insertAfter($("#n" + (startIndex - 1))).hide().show("linear");
                     }
                     console.log(allDivs);
                     for (var i = 0; i < $("#graph div").length; i++) {
@@ -190,7 +197,7 @@ var Operations = function () {
 
 
             else if (leftIndex == leftArray.length) {
-                rightDiv.css("left", newLeft + 'px');
+                rightDiv.animate({ "left": newLeft + 'px' }, 500, "linear");
                 newLeft += 80;
                 $("#mergeGraph").append(rightDiv);
                 rightIndex++;
