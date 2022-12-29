@@ -15,7 +15,7 @@ $(function () {
 
     calc.generateRandomArr();
     view.generateDivs(calc.generatedArr, calc.maxValue);
-    view.generatePseudoCode(sort[selectedSort + 'OP'])
+    view.generatePseudoCode(sort.PseudoCode[selectedSort])
 
     $("#random").click(handleRandom);
 
@@ -45,7 +45,7 @@ $(function () {
         $(".selected").removeClass("selected")
         $(e.target).addClass("selected");
         selectedSort = $(".selected").attr("id");
-        view.generatePseudoCode(sort[selectedSort + 'OP'])
+        view.generatePseudoCode(sort.PseudoCode[selectedSort])
     });
 
     $("#pause").click(sortOperations.pause.bind(sortOperations));
