@@ -1,43 +1,71 @@
+var view = new View();
+var calc = new Calcualtion();
+var sortOperations = new Operations();
+var sort = new Sort(view, calc, sortOperations);
+var selectedSort = $(".selected").attr("id");
+
 $(function () {
-    var view = new View();
-    var calc = new Calcualtion();
-    var sort = new Sort(view, calc);
+    $("#displayOver").click(function () {
+        if ($("#displayOver").hasClass("on")) {
+            view.closePseudoCode();
+        } else {
+            view.openPseudoCode();
+        }
+    })
+
     calc.generateRandomArr();
     view.generateDivs(calc.generatedArr, calc.maxValue);
+    view.generatePseudoCode(sort.PseudoCode[selectedSort])
 
-    $("#random").click(function () {
-        sort.stopSorting();
-        calc.generateRandomArr();
-        view.generateDivs(calc.generatedArr, calc.maxValue);
-        $("#error").css("display", "none");
-    });
+    $("#random").click(handleRandom);
 
     $("#startSort").click(function () {
-        if (!sort.isSorting) {
-            var selectedSort = $(".selected").attr("id");
+        if (!sortOperations.isSorting) {
+            selectedSort = $(".selected").attr("id");
             sort[selectedSort](calc.generatedArr);
+            view.openPseudoCode();
         }
     });
 
     $("#enterNumbers").click(function () {
         var arr = $("#userNumbers").val().split(",");
         if (arr.length >= 5 && arr.length <= 15) {
-            sort.stopSorting();
+            sortOperations.stopSorting();
             calc.enterArray(arr);
             view.generateDivs(calc.generatedArr, calc.maxValue);
             $("#error").css("display", "none");
         }
         else {
-            $("#error").css("display", "inline-block");
+            $("#error").css("display", "block");
         }
     });
 
     $("ul li").click(function (e) {
+        handleRandom();
         $(".selected").removeClass("selected")
         $(e.target).addClass("selected");
+        selectedSort = $(".selected").attr("id");
+        view.generatePseudoCode(sort.PseudoCode[selectedSort])
     });
+
+    $("#pause").click(sortOperations.pause.bind(sortOperations));
+
+    $("#start").click(sortOperations.start.bind(sortOperations, view));
+
+    $("#pause").click(sortOperations.pause.bind(sortOperations));
+
+    $("#next").click(sortOperations.forward.bind(sortOperations, view));
+
+    $("#back").click(sortOperations.backward.bind(sortOperations, view));
 })
 
+
+function handleRandom() {
+    sortOperations.stopSorting();
+    calc.generateRandomArr();
+    view.generateDivs(calc.generatedArr, calc.maxValue);
+    $("#error").css("display", "none");
+}
 
 
 

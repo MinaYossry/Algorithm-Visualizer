@@ -1,45 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link href="styles.css" rel="stylesheet" />
-    <script src="./Libraries/jqueryDevMin.js"></script>
-    <script src="./Libraries/jquery-ui.min.js"></script>
-  </head>
-  <body>
-    <div class="container">
-      <div class="header flex-container-col">
-        <ul class="navbar">
-          <li id="bubbleSort" class="selected">Bubble Sort</li>
-          <li id="selectionSort">Selection Sort</li>
-          <li id="insertionSort">Insertion Sort</li>
-          <li id="mergeSort">Merge Sort</li>
-        </ul>
-      </div>
-      <div class="body flex-container-col">
-        <div id="graph" class="graph flex-container-row"></div>
-        <div class="user-controls flex-container-row">
-          <button id="startSort">Sort</button>
-          <button id="random">Random</button>
-          <input
-            type="text"
-            id="userNumbers"
-            placeholder="Enter comma seperated numbers"
-          />
-          <button id="enterNumbers">Create</button>
-          <p id="error">Input must be between 5 and 15 numbers</p>
-        </div>
-        </div>
-      </div>
-      <div class="footer flex-container-col"></div>
-    </div>
 
-    <script src="Calculation.js"></script>
-    <script src="View.js"></script>
-    <script src="Sort.js"></script>
-    <script src="script.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algorithms Visualizer</title>
+  <link rel="icon" type="image/x-icon" href="icon.ico">
+  <link href="styles.css" rel="stylesheet" />
+  <script src="./Libraries/jqueryDevMin.js"></script>
+  <script src="./Libraries/jquery-ui.min.js"></script>
+</head>
+
+<body>
+  <div id="displayOver" class="over flex-container-row">
+    <div>
+      <i></i>
+      <i>open</i>
+    </div>
+    <div id="code" style="text-align: left; border: #181D31 solid 1px;padding: 5px;">
+    </div>
+  </div>
+  <div class="over2">
+    <p style="color: #009900;"> Left <svg width="20" height="20">
+        <rect width="20" height="20" style="fill:#009900;stroke-width:3;stroke:rgb(0,0,0)" />
+      </svg></p>
+    <p style="color: #0099cc;">Right
+      <svg width="20" height="20">
+        <rect width="20" height="20" style="fill:#0099cc;stroke-width:3;stroke:rgb(0,0,0)" />
+      </svg>
+    </p>
+    <p style="color: #c85e15;">Sorted <svg width="20" height="20">
+        <rect width="20" height="20" style="fill:#c85e15;stroke-width:3;stroke:rgb(0,0,0)" />
+      </svg></p>
+    <p style="color: #181D31;">Done <svg width="20" height="20">
+        <rect width="20" height="20" style="fill:#181D31;stroke-width:3;stroke:rgb(0,0,0)" />
+      </svg></p>
+  </div>
+  <div class="container">
+    <div class="header flex-container-row">
+      <ul class="navbar">
+        <li id="bubbleSort" class="selected">Bubble Sort</li>
+        <li id="selectionSort">Selection Sort</li>
+        <li id="insertionSort">Insertion Sort</li>
+        <li id="mergeSort">Merge Sort</li>
+      </ul>
+    </div>
+    <div class="body flex-container-col">
+      <div id="graph" class="graph flex-container-row"></div>
+
+      <div class="user-controls flex-container-row">
+        <button id="startSort">Sort</button>
+        <button id="random">Random</button>
+        <input type="text" id="userNumbers" placeholder="Enter comma seperated numbers" />
+        <button id="enterNumbers">Create</button>
+        <p id="error">Input must be between 5 and 15 numbers</p>
+      </div>
+    </div>
+    <div class="footer flex-container-row">
+      <button id="pause">Pause</button>
+      <button id="start">Start</button>
+      <button id="back">Back</button>
+      <button id="next">Next</button>
+    </div>
+  </div>
+  </div>
+
+  <script src="Calculation.js"></script>
+  <script src="Operations.js"></script>
+  <script src="View.js"></script>
+  <script src="Sort.js"></script>
+  <script src="script.js"></script>
+</body>
+
 </html>
