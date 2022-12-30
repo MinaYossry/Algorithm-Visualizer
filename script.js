@@ -21,6 +21,7 @@ $(function () {
 
     $("#startSort").click(function () {
         if (!sortOperations.isSorting) {
+            console.log("clicked");
             selectedSort = $(".selected").attr("id");
             sort[selectedSort](calc.generatedArr, 0, calc.generatedArr.length - 1);
             if (selectedSort == "mergeSort") {
@@ -69,6 +70,7 @@ function handleRandom() {
     calc.generateRandomArr();
     view.generateDivs(calc.generatedArr, calc.maxValue);
     $("#error").css("display", "none");
+    $("#mergeGraph").empty();
 }
 
 
