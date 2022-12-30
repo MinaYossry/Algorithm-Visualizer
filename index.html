@@ -1,60 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link href="styles.css" rel="stylesheet" />
-    <script src="./Libraries/jqueryDevMin.js"></script>
-    <script src="./Libraries/jquery-ui.min.js"></script>
-  </head>
-  <body>
-    <div class="over flex-container-row">
-      <div>
-        <i></i>
-        <i id="displayOver">open</i>
-      </div>
-      <div>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algorithms Visualizer</title>
+  <link rel="icon" type="image/x-icon" href="icon.ico">
+  <link href="styles.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="./Libraries/jqueryDevMin.js"></script>
+  <script src="./Libraries/jquery-ui.min.js"></script>
+</head>
+
+<body>
+  <div id="code" class="over" style="text-align: left; border: #181D31 solid 1px;padding: 5px;">
+  </div>
+  <div class="over2">
+    <p style="color: #009900;"> Left <svg width="20" height="20">
+        <rect width="20" height="20" style="fill:#009900;stroke-width:3;stroke:rgb(0,0,0)" />
+      </svg></p>
+    <p style="color: #0099cc;">Right
+      <svg width="20" height="20">
+        <rect width="20" height="20" style="fill:#0099cc;stroke-width:3;stroke:rgb(0,0,0)" />
+      </svg>
+    </p>
+    <p style="color: #c85e15;">Sorted <svg width="20" height="20">
+        <rect width="20" height="20" style="fill:#c85e15;stroke-width:3;stroke:rgb(0,0,0)" />
+      </svg></p>
+    <p style="color: #181D31;">Done <svg width="20" height="20">
+        <rect width="20" height="20" style="fill:#181D31;stroke-width:3;stroke:rgb(0,0,0)" />
+      </svg></p>
+  </div>
+  <div class="container">
+    <div class="header flex-container-row">
+      <ul class="navbar">
+        <li id="bubbleSort" class="selected">Bubble Sort</li>
+        <li id="selectionSort">Selection Sort</li>
+        <li id="insertionSort">Insertion Sort</li>
+        <li id="mergeSort">Merge Sort</li>
+      </ul>
+    </div>
+    <div class="body flex-container-col">
+      <div id="graph" class="graph flex-container-row"></div>
+      <div id="mergeGraph" class="graph flex-container-row"></div>
+
+      <div class="user-controls flex-container-row">
+        <button id="startSort">Sort</button>
+        <button id="random">Random</button>
+        <input type="text" id="userNumbers" placeholder="Enter comma seperated numbers" />
+        <button id="enterNumbers">Create</button>
+        <p id="error">Input must be between 5 and 15 numbers</p>
       </div>
     </div>
-    <div class="container">
-      <div class="header flex-container-row">
-        <ul class="navbar">
-          <li id="bubbleSort2" class="selected">Bubble Sort</li>
-          <li id="selectionSort">Selection Sort</li>
-          <li id="insertionSort2">Insertion Sort</li>
-          <li id="mergeSort">Merge Sort</li>
-        </ul>
+    <div class="footer flex-container-row">
+      <div class="controls flex-container-row">
+        <i id="back" class='fa fa-fast-backward'></i>
+        <i id="pause" class="fa fa-pause"></i>
+        <i id="start" class='fa fa-play'></i>
+        <i id="next" class='fa fa-fast-forward' ></i>
+        <input type="range" min="50" max="150" value="100" class="slider" id="myRange">
       </div>
-      <div class="body flex-container-col">
-        <div id="graph" class="graph flex-container-row"></div>
-        
-        <div class="user-controls flex-container-row">
-          <button id="startSort">Sort</button>
-          <button id="random">Random</button>
-          <input
-            type="text"
-            id="userNumbers"
-            placeholder="Enter comma seperated numbers"
-          />
-          <button id="enterNumbers">Create</button>
-          <p id="error">Input must be between 5 and 15 numbers</p>
-        </div>
+      <div>
+        <i id="openCodeArrow" class="fa fa-arrow-up"></i>
       </div>
-      <div class="footer flex-container-row">
-        <button id="pause">Pause</button>
-        <button id="start">Start</button>
-        <button id="back">Back</button>
-        <button id="next">Next</button>
-      </div>
-        </div>
     </div>
+  </div>
+</div>
+
 
     <script src="Calculation.js"></script>
     <script src="Operations.js"></script>

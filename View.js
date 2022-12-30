@@ -13,7 +13,39 @@ function View() {
             'background-color': this.finishColor
         }, 100);
     }
+    this.generatePseudoCode = function (arr) {
+        $("#code").empty();
 
+        for (var i in arr) {
+            var sentence = arr[i];
+            $("#code").append('<pre>' + sentence + '</pre>')
+        }
+    }
+
+    this.onCode = function (id) {
+        $("#code").children().eq(id).css('background-color', 'red')
+    }
+    this.offCode = function () {
+        $("#code").children().css('background-color', 'rgb(18, 95, 95)')
+    }
+
+    this.closePseudoCode = function () {
+        $(".over").animate({
+            top: "100vh",
+        }, 500, "linear");
+
+        $("#openCodeArrow").removeClass("on")
+        $("#openCodeArrow").removeClass("fa-arrow-down").addClass("fa-arrow-up");
+    }
+
+    this.openPseudoCode = function () {
+        $("#openCodeArrow").addClass("on");
+        $(".over").animate({
+            top: "66.5vh",
+        }, 500, "linear");
+        $("#openCodeArrow").removeClass("fa-arrow-up").addClass("fa-arrow-down");
+
+    }
     this.generateDivs = function (arr, maxValue) {
         $("#graph").empty();
         var totalWidth = ELEMENTWIDTH * arr.length;

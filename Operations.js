@@ -18,6 +18,9 @@ var Operations = function () {
         this.isSorting = false;
         clearInterval(this.interval);
         view.finishAnimation();
+        view.offCode();
+        $(".footer").hide(500);
+        view.closePseudoCode();
     };
 
     this.stepForward = function (view) {
@@ -85,6 +88,116 @@ var Operations = function () {
                 this.moving = false;
             }, 600);
         }
+    }
+
+
+    var allDivs = $("#graph div");
+    var leftIndex = 0; var rightIndex = 0;
+    console.log(allDivs);
+    var newLeft = -400;
+    this.stepForwardMerge = function (view) {
+
+        view.offCode();
+        var leftArray = this.sortOperations[this.currentIndex].leftArray;
+        var rightArray = this.sortOperations[this.currentIndex].rightArray;
+
+        for (var i = 0; i < leftArray.length; i++)
+            allDivs.eq(leftArray[i]).css("backgroundColor", view.focusedColor)
+
+        for (var i = 0; i < rightArray.length; i++)
+            allDivs.eq(rightArray[i]).css("backgroundColor", view.focusedColor1)
+
+        var leftDiv = allDivs.eq(leftArray[leftIndex]);
+        var rightDiv = allDivs.eq(rightArray[rightIndex]);
+
+        var startIndex = leftArray[0];
+
+        if (leftIndex < leftArray.length && rightIndex < rightArray.length) {
+            var leftNumber = parseInt(leftDiv.text());
+            var rightNumber = parseInt(rightDiv.text());
+
+            if (leftNumber <= rightNumber) {
+                leftDiv.css("left", newLeft + 'px');
+                newLeft += 80;
+                $("#mergeGraph").append(leftDiv);
+                leftIndex++;
+                view.onCode(2);
+                view.onCode(3);
+                view.onCode(4);
+            } else {
+                rightDiv.animate({ "left": newLeft + 'px' }, 500, "linear");
+                newLeft += 80;
+                $("#mergeGraph").append(rightDiv);
+                rightIndex++;
+                view.onCode(2);
+                view.onCode(5);
+
+            }
+        }
+
+        else if (leftIndex == leftArray.length && rightIndex == rightArray.length) {
+            leftIndex = 0;
+            rightIndex = 0;
+            this.currentIndex++;
+            view.onCode(6);
+
+            if (this.currentIndex == this.sortOperations.length) {
+                $("#graph").append($("#mergeGraph div"));
+                this.stopSorting();
+            }
+
+            else {
+                $("#mergeGraph div").css("backgroundColor", view.sortedColor)
+
+                if (startIndex === 0)
+                    $("#graph").prepend($("#mergeGraph div").hide().show("linear"))
+                else {
+                    $("#mergeGraph div").insertAfter($("#n" + (startIndex - 1))).hide().show("linear");
+                }
+                for (var i = 0; i < $("#graph div").length; i++) {
+                    $("#graph div").eq(i).attr("id", "n" + i);
+                }
+                allDivs = $("#graph div");
+
+
+                var minIndex = this.sortOperations[this.currentIndex].leftArray[0];
+                newLeft = parseInt($("#graph div").eq(minIndex).css("left"));
+            }
+        }
+
+
+        else if (leftIndex == leftArray.length) {
+            rightDiv.animate({ "left": newLeft + 'px' }, 500, "linear");;
+            newLeft += 80;
+            $("#mergeGraph").append(rightDiv);
+            rightIndex++;
+            view.onCode(2);
+            view.onCode(3);
+            view.onCode(4);
+        }
+
+        else if (rightIndex == rightArray.length) {
+            leftDiv.css("left", newLeft + 'px');
+            newLeft += 80;
+            $("#mergeGraph").append(leftDiv);
+            leftIndex++;
+            view.onCode(2);
+            view.onCode(5);
+        }
+    }
+
+    this.startMergeAnimation = function (view) {
+        this.isSorting = true;
+        var that = this;
+        allDivs = $("#graph div");
+        leftIndex = 0; rightIndex = 0;
+        newLeft = -400;
+        view.onCode(1);
+
+
+        this.interval = setInterval((function () {
+            this.stepForwardMerge(view);
+        }).bind(that), 600);
     }
 }
 

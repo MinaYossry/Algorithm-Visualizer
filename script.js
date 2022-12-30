@@ -4,13 +4,9 @@ var sortOperations = new Operations();
 var sort = new Sort(view, calc, sortOperations);
 
 $(function () {
-    $("#displayOver").click(function () {
-        if ($("#displayOver").hasClass("on")) {
-            $(".over").animate({
-                right: "-450px"
-            }, 500, "linear");
-
-            $("#displayOver").removeClass("on")
+    $("#openCodeArrow").click(function () {
+        if ($("#openCodeArrow").hasClass("on")) {
+            view.closePseudoCode();
         } else {
             $("#displayOver").addClass("on");
             $(".over").animate({
@@ -20,6 +16,7 @@ $(function () {
     })
     calc.generateRandomArr();
     view.generateDivs(calc.generatedArr, calc.maxValue);
+    view.generatePseudoCode(sort.PseudoCode[selectedSort])
 
     $("#random").click(function () {
         sortOperations.stopSorting();
@@ -30,8 +27,14 @@ $(function () {
 
     $("#startSort").click(function () {
         if (!sortOperations.isSorting) {
-            var selectedSort = $(".selected").attr("id");
-            sort[selectedSort](calc.generatedArr);
+            sortOperations.sortOperations = [];
+            console.log("clicked");
+            selectedSort = $(".selected").attr("id");
+            sort[selectedSort](calc.generatedArr, 0, calc.generatedArr.length - 1);
+            if (selectedSort == "mergeSort") {
+                sortOperations.startMergeAnimation(view)
+            }
+            view.openPseudoCode();
         }
     });
 
@@ -53,9 +56,17 @@ $(function () {
         $(e.target).addClass("selected");
     });
 
-    $("#pause").click(sortOperations.pause.bind(sortOperations));
+    $("#pause").click(function () {
+        sortOperations.pause();
+        $("#pause").hide(0);
+        $("#start").show(0);
+    });
 
-    $("#start").click(sortOperations.start.bind(sortOperations, view));
+    $("#start").click(function () {
+        sortOperations.start(view);
+        $("#pause").show(0);
+        $("#start").hide(0);
+    }).hide(0);
 
     $("#pause").click(sortOperations.pause.bind(sortOperations));
 

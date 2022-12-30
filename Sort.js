@@ -40,59 +40,22 @@ var Sort = function (view, calc, sortOperations) {
         sortOperations.startSortingAnimations(view);
     }
 
-    this.selectionSort = function(arr){
+    this.selectionSort = function (arr) {
         sortOperations.empty();
-	    var i, j, minIndex;
+        sortOperations.PseudoCode = this.PseudoCode.selectionSort;
+        var i, j, minIndex;
 
-	    // One by one move boundary of unsorted subarray
-	    for (i = 0; i < arr.length; i++){
+        // One by one move boundary of unsorted subarray
+        for (i = 0; i < arr.length; i++) {
+            sortOperations.push(new Operation(-1, -1, null, false, 0))
+
             // Find the minimum element in unsorted array
-		    minIndex = i;
-		    for (j = i + 1; j < arr.length; j++){
-            var operationObj = new Operation(minIndex, j, null, false);
-		        if (arr[j] < arr[minIndex])
+            minIndex = i;
+            for (j = i + 1; j < arr.length; j++) {
+                var operationObj = new Operation(minIndex, j, null, false, 1);
+                if (arr[j] < arr[minIndex]) {
+                    operationObj.op_id = 2;
                     minIndex = j;
-                sortOperations.push(operationObj);
-            }
-                var operationObj = new Operation(minIndex, i, i, true);
-
-		       // Swap the found minimum element with the first element
-		        calc.swap(arr,minIndex, i);
-                sortOperations.push(operationObj);
-	        }
-            sortOperations.startSortingAnimations(view);
-    }
-    
-
-    this.bubbleSort = function (arr) {
-        this.isSorting = true;
-        var i = 0, j = 0;
-        var sorted = true;
-        var that = this;
-        this.interval = setInterval((function () {
-            view.glow(j - 1, view.defaultColor);
-            view.glow(j, view.focusedColor);
-            view.glow(j + 1, view.focusedColor);
-
-            if (arr[j] > arr[j + 1]) {
-                view.swap(j, j + 1);
-                calc.swap(arr, j, j + 1);
-                sorted = false;
-            }
-            j++;
-            if (j == arr.length - i - 1) {
-                if (sorted) {
-                    this.stopSorting(view.finishColor);
-                }
-                else {
-                    view.glow(j, view.sortedColor)
-                    view.glow(j - 1, view.defaultColor)
-                    i++;
-                    j = 0;
-                    sorted = true;
-                    if (i == arr.length - 1) {
-                        this.stopSorting(view.finishColor);
-                    }
                 }
             }
         }).bind(that), 600);
