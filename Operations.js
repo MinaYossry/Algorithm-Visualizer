@@ -20,6 +20,8 @@ var Operations = function () {
         clearInterval(this.interval);
         view.finishAnimation();
         view.offCode();
+        $(".footer").hide(500);
+        view.closePseudoCode();
     };
 
     this.startSortingAnimations = function (view) {
@@ -131,7 +133,6 @@ var Operations = function () {
 
     var allDivs = $("#graph div");
     var leftIndex = 0; var rightIndex = 0;
-    console.log(allDivs);
     var newLeft = -400;
     this.stepForwardMerge = function (view) {
 
