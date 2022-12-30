@@ -21,14 +21,16 @@
 
 .over {
   position: fixed;
+  margin-top: 155px;
   width: 500px;
   right: -400px;
   top: 50vh;
-  background-color: rgb(18, 95, 95);
+  background-color: #678983;
   color: white;
   font-weight: bolder;
   text-align: right;
   align-items: center;
+
 }
 
 .over2 {
@@ -121,7 +123,7 @@
 
 .footer {
   height: 10vh;
-  background-color: #000000;
+  background-color: #181d31;
   justify-content: center;
   align-items: center;
 }
@@ -156,4 +158,7 @@ button {
   max-height: fit-content;
   font-size: small;
   margin-left: 10px;
+}
+i{
+  cursor: pointer;
 }
