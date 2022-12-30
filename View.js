@@ -4,8 +4,9 @@ function View() {
     var ELEMENTWIDTH = 80;
 
     this.defaultColor = '#678983';
+    this.focusedColor1 = '#009900';
     this.focusedColor = '#0099cc';
-    this.sortedColor = 'rgb(200 94 21)';
+    this.sortedColor = '#c85e15';
     this.finishColor = "#181D31";
 
     this.finishAnimation = function () {
@@ -13,7 +14,39 @@ function View() {
             'background-color': this.finishColor
         }, 100);
     }
+    this.generatePseudoCode = function (arr) {
+        $("#code").empty();
 
+        for (var i in arr) {
+            var sentence = arr[i];
+            $("#code").append('<pre>' + sentence + '</pre>')
+        }
+    }
+
+    this.onCode = function (id) {
+        $("#code").children().eq(id).css('background-color', 'red')
+    }
+    this.offCode = function () {
+        $("#code").children().css('background-color', 'rgb(18, 95, 95)')
+    }
+
+    this.closePseudoCode = function () {
+        $(".over").animate({
+            heigth:'0px'
+        }, 500, "linear");
+
+        $("#displayOver").removeClass("on")
+    }
+
+    this.openPseudoCode = function () {
+        $("#displayOver").addClass("on");
+        $(".over").animate({
+            height:'400px',
+            right:'-100px',
+            top:'200px'
+        }, 500, "linear");
+    
+    }
     this.generateDivs = function (arr, maxValue) {
         $("#graph").empty();
         var totalWidth = ELEMENTWIDTH * arr.length;

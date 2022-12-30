@@ -1,157 +1,161 @@
 var Sort = function (view, calc, sortOperations) {
-    this.insertionSort2 = function (arr) {
-        sortOperations.empty();
-        var lastSortedIndex = 0;
-        $("#n0").addClass("sorted").css("backgroundColor", view.sortedColor)
-        for (var currentIndex = 1; currentIndex < arr.length; currentIndex++) {
-            if (arr[currentIndex] >= arr[lastSortedIndex]) {
-                lastSortedIndex = currentIndex;
-                sortOperations.push(new Operation(currentIndex, lastSortedIndex, currentIndex, false))
-            }
-            else {
-                var temp = currentIndex;
-                for (var prevIndex = lastSortedIndex; prevIndex >= 0; prevIndex--) {
-                    if (arr[temp] < arr[prevIndex]) {
-                        sortOperations.push(new Operation(temp, prevIndex, prevIndex, true))
-                        calc.swap(arr, temp--, prevIndex)
-                    }
-                }
-                lastSortedIndex = currentIndex;
-            }
-        }
-        sortOperations.startSortingAnimations(view);
+    this.PseudoCode = {
+        bubbleSort: [
+            '<br>do',
+            '   swapped = false',
+            '   for i = 1 to indexOfLastUnsortedElement-1',
+            '       if leftElement > rightElement',
+            '           swap(leftElement, rightElement)<br>           swapped = true; ++swapCounter',
+            'while swapped<br><br>',
+        ],
+        selectionSort: [
+            '<br>repeat(numOfElements - 1) times<br>   set the first unsorted element as the minimum<br>   for each of the unsorted elements',
+            '       if element < currentMinimum',
+            '           set element as new minimum',
+            '   swap minimum with first unsorted position<br><br>',
+        ]
+        ,
+        insertionSort: [
+            'mark first element as sorted',
+
+            'for each unsorted element X<br>    "extract" the element X',
+
+            '   for j = lastSortedIndex down to 0',
+
+            '       if current element j > X<br>       move sorted element to the right by 1',
+
+            '   break loop and insert X here',
+        ],
+
+        mergeSort: [
+            'split each element into partitions of size 1',
+            'recursively merge adjacent partitions',
+            '  for i = leftPartIdx to rightPartIdx',
+            '    if leftPartHeadValue <= rightPartHeadValue',
+            '      copy leftPartHeadValue',
+            '    else: copy rightPartHeadValue; Increase InvIdx',
+            'copy elements back to original array'
+        ]
+
     }
 
-    this.bubbleSort2 = function (arr) {
+    this.bubbleSort = function (arr) {
         sortOperations.empty();
-        for (var i = 0; i < arr.length; i++) {
+        sortOperations.PseudoCode = this.PseudoCode.bubbleSort;
+        sortOperations.push(new Operation(-1, -1, null, false, 0))
+        var swap = true;
+        for (var i = 0; i < arr.length && swap; i++) {
+            swap = false;
+            sortOperations.push(new Operation(-1, -1, null, false, 1))
             for (var j = 0; j < arr.length - 1 - i; j++) {
-                var operationObj = new Operation(j, j + 1, null, false);
+                var operationObj = new Operation(j, j + 1, null, false, 3);
+
                 if (arr[j] > arr[j + 1]) {
                     calc.swap(arr, j, j + 1);
                     operationObj.swap = true;
+                    operationObj.op_id = 4;
+                    swap = true;
                 }
                 if (j == arr.length - 2 - i) {
                     operationObj.lastSortedIndex = j + 1;
                 }
                 sortOperations.push(operationObj);
             }
+
+            if (swap)
+                sortOperations.push(new Operation(-1, -1, null, false, 5))
         }
         sortOperations.startSortingAnimations(view);
     }
 
-    this.selectionSort = function(arr){
+    this.selectionSort = function (arr) {
         sortOperations.empty();
-	    var i, j, minIndex;
+        sortOperations.PseudoCode = this.PseudoCode.selectionSort;
+        var i, j, minIndex;
 
-	    // One by one move boundary of unsorted subarray
-	    for (i = 0; i < arr.length; i++){
+        // One by one move boundary of unsorted subarray
+        for (i = 0; i < arr.length; i++) {
+            sortOperations.push(new Operation(-1, -1, null, false, 0))
+
             // Find the minimum element in unsorted array
-		    minIndex = i;
-		    for (j = i + 1; j < arr.length; j++){
-            var operationObj = new Operation(minIndex, j, null, false);
-		        if (arr[j] < arr[minIndex])
+            minIndex = i;
+            for (j = i + 1; j < arr.length; j++) {
+                var operationObj = new Operation(minIndex, j, null, false, 1);
+                if (arr[j] < arr[minIndex]) {
+                    operationObj.op_id = 2;
                     minIndex = j;
+                }
                 sortOperations.push(operationObj);
-            }
-                var operationObj = new Operation(minIndex, i, i, true);
 
-		       // Swap the found minimum element with the first element
-		        calc.swap(arr,minIndex, i);
-                sortOperations.push(operationObj);
-	        }
-            sortOperations.startSortingAnimations(view);
+            }
+
+            // Swap the found minimum element with the first element
+            calc.swap(arr, minIndex, i);
+            sortOperations.push(new Operation(minIndex, i, i, true, 3));
+        }
+        sortOperations.startSortingAnimations(view);
     }
-    
 
-    this.bubbleSort = function (arr) {
-        this.isSorting = true;
-        var i = 0, j = 0;
-        var sorted = true;
-        var that = this;
-        this.interval = setInterval((function () {
-            view.glow(j - 1, view.defaultColor);
-            view.glow(j, view.focusedColor);
-            view.glow(j + 1, view.focusedColor);
 
-            if (arr[j] > arr[j + 1]) {
-                view.swap(j, j + 1);
-                calc.swap(arr, j, j + 1);
-                sorted = false;
-            }
-            j++;
-            if (j == arr.length - i - 1) {
-                if (sorted) {
-                    this.stopSorting(view.finishColor);
-                }
-                else {
-                    view.glow(j, view.sortedColor)
-                    view.glow(j - 1, view.defaultColor)
-                    i++;
-                    j = 0;
-                    sorted = true;
-                    if (i == arr.length - 1) {
-                        this.stopSorting(view.finishColor);
-                    }
-                }
-            }
-        }).bind(that), 600);
-    };
 
     this.insertionSort = function (arr) {
-        this.isSorting = true;
-        var currentIndex = 1, lastSortedNum = arr[0], lastSortedIndex = 0, prevIndex = 0;
-        var innerLoop = false;
+        sortOperations.empty();
+        sortOperations.PseudoCode = this.PseudoCode.insertionSort;
+        var lastSortedIndex = 0;
+        $("#n0").addClass("sorted").css("backgroundColor", view.sortedColor)
+        sortOperations.push(new Operation(-1, -1, null, false, 0))
+        sortOperations.push(new Operation(-1, -1, null, false, 1))
 
-        var that = this;
-        this.interval = setInterval((function () {
-            view.glow(currentIndex, view.focusedColor);
-            view.glow(prevIndex, view.sortedColor);
-            console.log(currentIndex, prevIndex, lastSortedIndex);
-            if (innerLoop && arr[currentIndex] < arr[prevIndex]) {
-                view.swap(currentIndex, prevIndex)
-                calc.swap(arr, currentIndex, prevIndex)
-                prevIndex--;
-                currentIndex--;
+        for (var currentIndex = 1; currentIndex < arr.length; currentIndex++) {
+            sortOperations.push(new Operation(-1, -1, null, false, 2))
+            if (arr[currentIndex] >= arr[lastSortedIndex]) {
+                lastSortedIndex = currentIndex;
+                sortOperations.push(new Operation(currentIndex, lastSortedIndex, currentIndex, false, 4))
             }
-            else if (innerLoop && arr[currentIndex] >= arr[prevIndex] || prevIndex == -1) {
-                innerLoop = false;
-                view.glow(currentIndex, view.sortedColor);
-                currentIndex = lastSortedIndex + 1;
-                prevIndex = lastSortedIndex;
+            else {
+                var temp = currentIndex;
+                var rightPosition = false;
+                for (var prevIndex = lastSortedIndex; prevIndex >= 0 && !rightPosition; prevIndex--) {
+                    sortOperations.push(new Operation(temp, prevIndex, prevIndex, false, 2))
+                    if (arr[temp] < arr[prevIndex]) {
+                        sortOperations.push(new Operation(temp, prevIndex, prevIndex, true, 3))
+                        calc.swap(arr, temp--, prevIndex)
+                    } else {
+                        sortOperations.push(new Operation(temp, prevIndex, prevIndex, false, 4))
+                        rightPosition = true;
+                    }
+                }
+                lastSortedIndex = currentIndex;
             }
-            else if (!innerLoop && arr[currentIndex] < arr[lastSortedIndex]) {
-                innerLoop = true;
-                view.swap(currentIndex, prevIndex)
-                calc.swap(arr, currentIndex, prevIndex)
-                currentIndex--;
-                prevIndex--;
-            } else if (!innerLoop && arr[currentIndex] >= arr[lastSortedIndex]) {
-                lastSortedIndex = prevIndex = currentIndex;
-                currentIndex++;
-            }
-            if (currentIndex == arr.length) {
-
-                this.stopSorting(view.finishColor);
-            }
+        }
+        sortOperations.startSortingAnimations(view);
+    }
 
 
-        }).bind(that), 600);
 
-    };
-    var merge = function (arr, l, m, r) {
-        var n1 = m - l + 1;
-        var n2 = r - m;
+    var merge = function (arr, leftIndex, midIndex, rightIndex) {
+        var leftArrLength = midIndex - leftIndex + 1;
+        var rightArrLength = rightIndex - midIndex;
+
         // Create temp arrays
-        var L = new Array(n1);
-        var R = new Array(n2);
+        var L = new Array(leftArrLength);
+        var leftIndeces = new Array(leftArrLength);
+        var R = new Array(rightArrLength);
+        var rightIndeces = new Array(rightArrLength);
+
 
         // Copy data to temp arrays L[] and R[]
-        for (var i = 0; i < n1; i++)
-            L[i] = arr[l + i];
-        for (var j = 0; j < n2; j++)
-            R[j] = arr[m + 1 + j];
+        for (var i = 0; i < leftArrLength; i++) {
+            L[i] = arr[leftIndex + i];
+            leftIndeces[i] = leftIndex + i;
+        }
+        for (var j = 0; j < rightArrLength; j++) {
+            R[j] = arr[midIndex + 1 + j];
+            rightIndeces[j] = midIndex + 1 + j;
 
+        }
+
+        var operationObj = new mergeOperation(leftIndeces, rightIndeces)
         // Merge the temp arrays back into arr[l..r]
 
         // Initial index of first subarray
@@ -161,91 +165,54 @@ var Sort = function (view, calc, sortOperations) {
         var j = 0;
 
         // Initial index of merged subarray
-        var k = l;
-    }
-    this.mergeSort = function (arr, l, r) {
+        var k = leftIndex;
 
-        if (l >= r) {
-            return;//returns recursively
+        while (i < leftArrLength && j < rightArrLength) {
+            if (L[i] <= R[j]) {
+                arr[k] = L[i];
+                i++;
+            }
+            else {
+                arr[k] = R[j];
+                j++;
+            }
+            k++;
         }
-        var m = l + parseInt((r - l) / 2);
-        mergeSort(arr, l, m);
-        mergeSort(arr, m + 1, r);
-        merge(arr, l, m, r);
-    };
 
-
-}
-
-// JavaScript program for Merge Sort
-
-// Merges two subarrays of arr[].
-// First subarray is arr[l..m]
-// Second subarray is arr[m+1..r]
-function merge(arr, l, m, r) {
-    var n1 = m - l + 1;
-    var n2 = r - m;
-
-    // Create temp arrays
-    var L = new Array(n1);
-    var R = new Array(n2);
-
-    // Copy data to temp arrays L[] and R[]
-    for (var i = 0; i < n1; i++)
-        L[i] = arr[l + i];
-    for (var j = 0; j < n2; j++)
-        R[j] = arr[m + 1 + j];
-
-    // Merge the temp arrays back into arr[l..r]
-
-    // Initial index of first subarray
-    var i = 0;
-
-    // Initial index of second subarray
-    var j = 0;
-
-    // Initial index of merged subarray
-    var k = l;
-
-    while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
+        // Copy the remaining elements of
+        // L[], if there are any
+        while (i < leftArrLength) {
             arr[k] = L[i];
             i++;
+            k++;
         }
-        else {
+
+        // Copy the remaining elements of
+        // R[], if there are any
+        while (j < rightArrLength) {
             arr[k] = R[j];
             j++;
+            k++;
         }
-        k++;
+        sortOperations.push(operationObj);
     }
 
-    // Copy the remaining elements of
-    // L[], if there are any
-    while (i < n1) {
-        arr[k] = L[i];
-        i++;
-        k++;
+    this.mergeSort = function (arr, left, right) {
+        sortOperations.PseudoCode = this.PseudoCode.mergeSort;
+        if (left < right) {
+
+            // Same as (l + r) / 2, but avoids overflow
+            // for large l and r
+            let mid = left + Math.floor((right - left) / 2);
+
+            // Sort first and second halves
+            this.mergeSort(arr, left, mid);
+            this.mergeSort(arr, mid + 1, right);
+
+            merge(arr, left, mid, right);
+
+        }
     }
 
-    // Copy the remaining elements of
-    // R[], if there are any
-    while (j < n2) {
-        arr[k] = R[j];
-        j++;
-        k++;
-    }
+
 }
-
-// l is for left index and r is
-// right index of the sub-array
-// of arr to be sorted */
-function mergeSort(arr, l, r) {
-    if (l >= r) {
-        return;//returns recursively
-    }
-    var m = l + parseInt((r - l) / 2);
-    mergeSort(arr, l, m);
-    mergeSort(arr, m + 1, r);
-    merge(arr, l, m, r);
-}
-
