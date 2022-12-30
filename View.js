@@ -32,7 +32,7 @@ function View() {
 
     this.closePseudoCode = function () {
         $(".over").animate({
-            right: "-400px"
+            heigth:'0px'
         }, 500, "linear");
 
         $("#displayOver").removeClass("on")
@@ -41,8 +41,11 @@ function View() {
     this.openPseudoCode = function () {
         $("#displayOver").addClass("on");
         $(".over").animate({
-            right: "0px"
-        }, 500, "linear")
+            height:'400px',
+            right:'-100px',
+            top:'200px'
+        }, 500, "linear");
+    
     }
     this.generateDivs = function (arr, maxValue) {
         $("#graph").empty();
