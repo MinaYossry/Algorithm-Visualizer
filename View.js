@@ -32,20 +32,20 @@ function View() {
 
     this.closePseudoCode = function () {
         $(".over").animate({
-            heigth:'0px'
+            top: "100vh",
         }, 500, "linear");
 
-        $("#displayOver").removeClass("on")
+        $("#openCodeArrow").removeClass("on")
+        $("#openCodeArrow").removeClass("fa-arrow-down").addClass("fa-arrow-up");
     }
 
     this.openPseudoCode = function () {
-        $("#displayOver").addClass("on");
+        $("#openCodeArrow").addClass("on");
         $(".over").animate({
-            height:'400px',
-            right:'-100px',
-            top:'200px'
+            top: "66.5vh",
         }, 500, "linear");
-    
+        $("#openCodeArrow").removeClass("fa-arrow-up").addClass("fa-arrow-down");
+
     }
     this.generateDivs = function (arr, maxValue) {
         $("#graph").empty();

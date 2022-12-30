@@ -21,10 +21,10 @@
 
 .over {
   position: fixed;
-  margin-top: 155px;
-  width: 500px;
-  right: -400px;
-  top: 50vh;
+  width: 320px;
+  height: 200px;
+  right: 0px;
+  top: 100vh;
   background-color: #678983;
   color: white;
   font-weight: bolder;
@@ -32,15 +32,27 @@
   align-items: center;
 }
 
+.over pre {
+  padding-bottom: 10px;
+  font-size: small;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
 .over2 {
   position: fixed;
   padding: 20px;
   top: 30vh;
   text-align: right;
-  background-color: white;
+  background-color: #cdc2ae;
   color: #000;
   font-weight: bolder;
   align-items: center;
+}
+
+.over2 rect {
+  width: 20;
+  height: 20;
 }
 
 .container {
@@ -84,7 +96,7 @@
 }
 
 .body {
-  height: 80vh;
+  height: 85vh;
 }
 
 .graph {
@@ -121,7 +133,7 @@
 }
 
 .footer {
-  height: 10vh;
+  height: 5vh;
   background-color: #181d31;
   justify-content: center;
   align-items: center;
@@ -161,4 +173,10 @@ button {
 i {
   padding-right: 15px;
   cursor: pointer;
+}
+
+#openCodeArrow {
+  position: absolute;
+  right: 50px;
+  bottom: 10px;
 }

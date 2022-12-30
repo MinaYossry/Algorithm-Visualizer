@@ -14,12 +14,7 @@
 </head>
 
 <body>
-  <div id="displayOver" class="over flex-container-row">
-    <div>
-      <i>open</i>
-    </div>
-    <div id="code" style="text-align: left; border: #181D31 solid 1px;padding: 5px;">
-    </div>
+  <div id="code" class="over" style="text-align: left; border: #181D31 solid 1px;padding: 5px;">
   </div>
   <div class="over2">
     <p style="color: #009900;"> Left <svg width="20" height="20">
@@ -59,14 +54,20 @@
       </div>
     </div>
     <div class="footer flex-container-row">
-      <i id="back" class='fa fa-fast-backward'></i>
-      <i id="pause" class="fa fa-pause"></i>
-      <i id="start" class='fa fa-play'></i>
-      <i id="next" class='fa fa-fast-forward' ></i>
-      <input type="range" min="50" max="150" value="100" class="slider" id="myRange">
+      <div class="controls flex-container-row">
+        <i id="back" class='fa fa-fast-backward'></i>
+        <i id="pause" class="fa fa-pause"></i>
+        <i id="start" class='fa fa-play'></i>
+        <i id="next" class='fa fa-fast-forward' ></i>
+        <input type="range" min="50" max="150" value="100" class="slider" id="myRange">
+      </div>
+      <div>
+        <i id="openCodeArrow" class="fa fa-arrow-up"></i>
+      </div>
     </div>
   </div>
-  </div>
+</div>
+
 
   <script src="Calculation.js"></script>
   <script src="Operations.js"></script>

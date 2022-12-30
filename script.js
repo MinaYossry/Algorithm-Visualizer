@@ -5,8 +5,8 @@ var sort = new Sort(view, calc, sortOperations);
 var selectedSort = $(".selected").attr("id");
 
 $(function () {
-    $("#displayOver").click(function () {
-        if ($("#displayOver").hasClass("on")) {
+    $("#openCodeArrow").click(function () {
+        if ($("#openCodeArrow").hasClass("on")) {
             view.closePseudoCode();
         } else {
             view.openPseudoCode();
@@ -17,12 +17,14 @@ $(function () {
     view.generateDivs(calc.generatedArr, calc.maxValue);
     view.generatePseudoCode(sort.PseudoCode[selectedSort])
 
+    $(".footer").hide(0);
+
     $("#random").click(handleRandom);
 
     $("#startSort").click(function () {
         if (!sortOperations.isSorting) {
+            $(".footer").show(0);
             sortOperations.sortOperations = [];
-            console.log("clicked");
             selectedSort = $(".selected").attr("id");
             sort[selectedSort](calc.generatedArr, 0, calc.generatedArr.length - 1);
             if (selectedSort == "mergeSort") {
@@ -53,9 +55,17 @@ $(function () {
         view.generatePseudoCode(sort.PseudoCode[selectedSort])
     });
 
-    $("#pause").click(sortOperations.pause.bind(sortOperations));
+    $("#pause").click(function () {
+        sortOperations.pause();
+        $("#pause").hide(0);
+        $("#start").show(0);
+    });
 
-    $("#start").click(sortOperations.start.bind(sortOperations, view));
+    $("#start").click(function () {
+        sortOperations.start(view);
+        $("#pause").show(0);
+        $("#start").hide(0);
+    }).hide(0);
 
     $("#pause").click(sortOperations.pause.bind(sortOperations));
 

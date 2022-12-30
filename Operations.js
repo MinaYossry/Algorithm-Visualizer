@@ -131,7 +131,6 @@ var Operations = function () {
 
     var allDivs = $("#graph div");
     var leftIndex = 0; var rightIndex = 0;
-    console.log(allDivs);
     var newLeft = -400;
     this.stepForwardMerge = function (view) {
 
