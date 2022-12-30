@@ -1,6 +1,5 @@
 function View() {
     this.speed = parseFloat($("#myRange").val()) / 100;
-
     var swapping = false;
     var FIXED = "n";
     var ELEMENTWIDTH = 80;
