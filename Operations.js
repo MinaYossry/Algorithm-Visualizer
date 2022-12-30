@@ -20,6 +20,8 @@ var Operations = function () {
         clearInterval(this.interval);
         view.finishAnimation();
         view.offCode();
+        $(".footer").hide(500);
+        view.closePseudoCode();
     };
 
     this.startSortingAnimations = function (view) {
