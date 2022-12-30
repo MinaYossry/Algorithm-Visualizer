@@ -5,6 +5,17 @@ var sort = new Sort(view, calc, sortOperations);
 var selectedSort = $(".selected").attr("id");
 
 $(function () {
+
+    $("#myRange").change(function (e) {
+        sortOperations.speed = view.speed = parseFloat($("#myRange").val()) / 100;
+        if (sortOperations.isSorting) {
+            clearInterval(sortOperations.interval)
+            sortOperations.startSortingAnimations(view);
+        }
+
+    }
+    )
+
     $("#openCodeArrow").click(function () {
         if ($("#openCodeArrow").hasClass("on")) {
             view.closePseudoCode();

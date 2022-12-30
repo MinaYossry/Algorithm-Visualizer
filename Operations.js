@@ -1,10 +1,14 @@
 var Operations = function () {
+    this.speed = parseFloat($("#myRange").val()) / 100;
     this.sortOperations = [];
     this.interval = null;
     this.isSorting = false;
     this.currentIndex = 0;
     this.moving = false;
     this.PseudoCode = [];
+
+
+
     this.push = function (operation) {
         this.sortOperations.push(operation);
     };
@@ -126,7 +130,7 @@ var Operations = function () {
             this.moving = true;
             setTimeout(() => {
                 this.moving = false;
-            }, 600);
+            }, 600 * this.speed);
         }
     }
 

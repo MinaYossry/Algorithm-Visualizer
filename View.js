@@ -1,4 +1,6 @@
 function View() {
+    this.speed = parseFloat($("#myRange").val()) / 100;
+
     var swapping = false;
     var FIXED = "n";
     var ELEMENTWIDTH = 80;
@@ -33,7 +35,7 @@ function View() {
     this.closePseudoCode = function () {
         $(".over").animate({
             top: "100vh",
-        }, 500, "linear");
+        }, 500 * this.speed, "linear");
 
         $("#openCodeArrow").removeClass("on")
         $("#openCodeArrow").removeClass("fa-arrow-down").addClass("fa-arrow-up");
@@ -43,7 +45,7 @@ function View() {
         $("#openCodeArrow").addClass("on");
         $(".over").animate({
             top: "66.5vh",
-        }, 500, "linear");
+        }, 500 * this.speed, "linear");
         $("#openCodeArrow").removeClass("fa-arrow-up").addClass("fa-arrow-down");
 
     }
@@ -92,10 +94,10 @@ function View() {
             // swap left position of both elements
             elem1.animate({
                 left: `${pos2}px`
-            }, 500, "easeOutQuart");
+            }, 500 * this.speed, "easeOutQuart");
             elem2.animate({
                 left: `${[pos1]}px`
-            }, 500, "easeOutQuart", function () {
+            }, 500 * this.speed, "easeOutQuart", function () {
                 swapping = false;
             });
         }
