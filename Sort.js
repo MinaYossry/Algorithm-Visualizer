@@ -2,7 +2,8 @@ var Sort = function (view, calc, sortOperations) {
     this.PseudoCode = {
         bubbleSort: [
             '<br>do',
-            '   swapped = false<br>   for i = 1 to indexOfLastUnsortedElement-1',
+            '   swapped = false',
+            '   for i = 1 to indexOfLastUnsortedElement-1',
             '       if leftElement > rightElement',
             '           swap(leftElement, rightElement)<br>           swapped = true; ++swapCounter',
             'while swapped<br><br>',
@@ -26,33 +27,50 @@ var Sort = function (view, calc, sortOperations) {
             '   break loop and insert X here',
         ],
 
+        mergeSort: [
+            'split each element into partitions of size 1',
+            'recursively merge adjacent partitions',
+            '  for i = leftPartIdx to rightPartIdx',
+            '    if leftPartHeadValue <= rightPartHeadValue',
+            '      copy leftPartHeadValue',
+            '    else: copy rightPartHeadValue; Increase InvIdx',
+            'copy elements back to original array'
+        ]
+
     }
 
     this.bubbleSort = function (arr) {
         sortOperations.empty();
         sortOperations.PseudoCode = this.PseudoCode.bubbleSort;
         sortOperations.push(new Operation(-1, -1, null, false, 0))
-        for (var i = 0; i < arr.length; i++) {
+        var swap = true;
+        for (var i = 0; i < arr.length && swap; i++) {
+            swap = false;
+            sortOperations.push(new Operation(-1, -1, null, false, 1))
             for (var j = 0; j < arr.length - 1 - i; j++) {
-                var operationObj = new Operation(j, j + 1, null, false, 2);
+                var operationObj = new Operation(j, j + 1, null, false, 3);
 
                 if (arr[j] > arr[j + 1]) {
                     calc.swap(arr, j, j + 1);
                     operationObj.swap = true;
-                    operationObj.op_id = 3;
+                    operationObj.op_id = 4;
+                    swap = true;
                 }
                 if (j == arr.length - 2 - i) {
                     operationObj.lastSortedIndex = j + 1;
                 }
                 sortOperations.push(operationObj);
             }
-            sortOperations.push(new Operation(-1, -1, null, false, 4))
+
+            if (swap)
+                sortOperations.push(new Operation(-1, -1, null, false, 5))
         }
         sortOperations.startSortingAnimations(view);
     }
 
     this.selectionSort = function (arr) {
         sortOperations.empty();
+        sortOperations.PseudoCode = this.PseudoCode.selectionSort;
         var i, j, minIndex;
 
         // One by one move boundary of unsorted subarray
@@ -64,19 +82,16 @@ var Sort = function (view, calc, sortOperations) {
             for (j = i + 1; j < arr.length; j++) {
                 var operationObj = new Operation(minIndex, j, null, false, 1);
                 if (arr[j] < arr[minIndex]) {
-                    sortOperations.push(operationObj);
-                    sortOperations.push(new Operation(-1, -1, null, false, 2))
+                    operationObj.op_id = 2;
                     minIndex = j;
-                    continue;
                 }
                 sortOperations.push(operationObj);
 
             }
-            var operationObj = new Operation(minIndex, i, i, true, 3);
 
             // Swap the found minimum element with the first element
             calc.swap(arr, minIndex, i);
-            sortOperations.push(operationObj);
+            sortOperations.push(new Operation(minIndex, i, i, true, 3));
         }
         sortOperations.startSortingAnimations(view);
     }
@@ -85,23 +100,29 @@ var Sort = function (view, calc, sortOperations) {
 
     this.insertionSort = function (arr) {
         sortOperations.empty();
-        sortOperations.PseudoCode = ['']
+        sortOperations.PseudoCode = this.PseudoCode.insertionSort;
         var lastSortedIndex = 0;
         $("#n0").addClass("sorted").css("backgroundColor", view.sortedColor)
         sortOperations.push(new Operation(-1, -1, null, false, 0))
+        sortOperations.push(new Operation(-1, -1, null, false, 1))
 
         for (var currentIndex = 1; currentIndex < arr.length; currentIndex++) {
             sortOperations.push(new Operation(-1, -1, null, false, 2))
             if (arr[currentIndex] >= arr[lastSortedIndex]) {
                 lastSortedIndex = currentIndex;
-                sortOperations.push(new Operation(currentIndex, lastSortedIndex, currentIndex, false))
+                sortOperations.push(new Operation(currentIndex, lastSortedIndex, currentIndex, false, 4))
             }
             else {
                 var temp = currentIndex;
-                for (var prevIndex = lastSortedIndex; prevIndex >= 0; prevIndex--) {
+                var rightPosition = false;
+                for (var prevIndex = lastSortedIndex; prevIndex >= 0 && !rightPosition; prevIndex--) {
+                    sortOperations.push(new Operation(temp, prevIndex, prevIndex, false, 2))
                     if (arr[temp] < arr[prevIndex]) {
-                        sortOperations.push(new Operation(temp, prevIndex, prevIndex, true))
+                        sortOperations.push(new Operation(temp, prevIndex, prevIndex, true, 3))
                         calc.swap(arr, temp--, prevIndex)
+                    } else {
+                        sortOperations.push(new Operation(temp, prevIndex, prevIndex, false, 4))
+                        rightPosition = true;
                     }
                 }
                 lastSortedIndex = currentIndex;
@@ -112,25 +133,25 @@ var Sort = function (view, calc, sortOperations) {
 
 
 
-    var merge = function merge(arr, l, m, r) {
-        var n1 = m - l + 1;
-        var n2 = r - m;
+    var merge = function (arr, leftIndex, midIndex, rightIndex) {
+        var leftArrLength = midIndex - leftIndex + 1;
+        var rightArrLength = rightIndex - midIndex;
 
         // Create temp arrays
-        var L = new Array(n1);
-        var leftIndeces = new Array(n1);
-        var R = new Array(n2);
-        var rightIndeces = new Array(n2);
+        var L = new Array(leftArrLength);
+        var leftIndeces = new Array(leftArrLength);
+        var R = new Array(rightArrLength);
+        var rightIndeces = new Array(rightArrLength);
 
 
         // Copy data to temp arrays L[] and R[]
-        for (var i = 0; i < n1; i++) {
-            L[i] = arr[l + i];
-            leftIndeces[i] = l + i;
+        for (var i = 0; i < leftArrLength; i++) {
+            L[i] = arr[leftIndex + i];
+            leftIndeces[i] = leftIndex + i;
         }
-        for (var j = 0; j < n2; j++) {
-            R[j] = arr[m + 1 + j];
-            rightIndeces[j] = m + 1 + j;
+        for (var j = 0; j < rightArrLength; j++) {
+            R[j] = arr[midIndex + 1 + j];
+            rightIndeces[j] = midIndex + 1 + j;
 
         }
 
@@ -144,9 +165,9 @@ var Sort = function (view, calc, sortOperations) {
         var j = 0;
 
         // Initial index of merged subarray
-        var k = l;
+        var k = leftIndex;
 
-        while (i < n1 && j < n2) {
+        while (i < leftArrLength && j < rightArrLength) {
             if (L[i] <= R[j]) {
                 arr[k] = L[i];
                 i++;
@@ -160,7 +181,7 @@ var Sort = function (view, calc, sortOperations) {
 
         // Copy the remaining elements of
         // L[], if there are any
-        while (i < n1) {
+        while (i < leftArrLength) {
             arr[k] = L[i];
             i++;
             k++;
@@ -168,103 +189,30 @@ var Sort = function (view, calc, sortOperations) {
 
         // Copy the remaining elements of
         // R[], if there are any
-        while (j < n2) {
+        while (j < rightArrLength) {
             arr[k] = R[j];
             j++;
             k++;
         }
         sortOperations.push(operationObj);
-        console.log(sortOperations.sortOperations);
     }
 
-    this.mergeSort = function mergeSort(arr, l, r) {
-        if (l < r) {
+    this.mergeSort = function (arr, left, right) {
+        sortOperations.PseudoCode = this.PseudoCode.mergeSort;
+        if (left < right) {
 
             // Same as (l + r) / 2, but avoids overflow
             // for large l and r
-            let m = l + Math.floor((r - l) / 2);
+            let mid = left + Math.floor((right - left) / 2);
 
             // Sort first and second halves
-            mergeSort(arr, l, m);
-            mergeSort(arr, m + 1, r);
+            this.mergeSort(arr, left, mid);
+            this.mergeSort(arr, mid + 1, right);
 
-            merge(arr, l, m, r);
+            merge(arr, left, mid, right);
 
         }
     }
 
 
 }
-
-// JavaScript program for Merge Sort
-
-// Merges two subarrays of arr[].
-// First subarray is arr[l..m]
-// Second subarray is arr[m+1..r]
-function merge(arr, l, m, r) {
-    var n1 = m - l + 1;
-    var n2 = r - m;
-
-    // Create temp arrays
-    var L = new Array(n1);
-    var R = new Array(n2);
-
-    // Copy data to temp arrays L[] and R[]
-    for (var i = 0; i < n1; i++)
-        L[i] = arr[l + i];
-    for (var j = 0; j < n2; j++)
-        R[j] = arr[m + 1 + j];
-
-    // Merge the temp arrays back into arr[l..r]
-
-    // Initial index of first subarray
-    var i = 0;
-
-    // Initial index of second subarray
-    var j = 0;
-
-    // Initial index of merged subarray
-    var k = l;
-
-    while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
-            arr[k] = L[i];
-            i++;
-        }
-        else {
-            arr[k] = R[j];
-            j++;
-        }
-        k++;
-    }
-
-    // Copy the remaining elements of
-    // L[], if there are any
-    while (i < n1) {
-        arr[k] = L[i];
-        i++;
-        k++;
-    }
-
-    // Copy the remaining elements of
-    // R[], if there are any
-    while (j < n2) {
-        arr[k] = R[j];
-        j++;
-        k++;
-    }
-}
-
-// l is for left index and r is
-// right index of the sub-array
-// of arr to be sorted */
-function mergeSort(arr, l, r) {
-    if (l >= r) {
-        return;//returns recursively
-    }
-    var m = l + parseInt((r - l) / 2);
-    mergeSort(arr, l, m);
-    mergeSort(arr, m + 1, r);
-    merge(arr, l, m, r);
-}
-
