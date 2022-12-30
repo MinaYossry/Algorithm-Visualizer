@@ -4,6 +4,7 @@ var sortOperations = new Operations();
 var sort = new Sort(view, calc, sortOperations);
 var selectedSort = $(".selected").attr("id");
 
+
 $(function () {
 
     $("#myRange").change(function (e) {
