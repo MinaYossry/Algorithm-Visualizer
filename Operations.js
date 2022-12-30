@@ -163,7 +163,7 @@ var Operations = function () {
                 view.onCode(3);
                 view.onCode(4);
             } else {
-                rightDiv.css("left", newLeft + 'px');;
+                rightDiv.animate({ "left": newLeft + 'px' }, 500, "linear");
                 newLeft += 80;
                 $("#mergeGraph").append(rightDiv);
                 rightIndex++;
@@ -205,7 +205,7 @@ var Operations = function () {
 
 
         else if (leftIndex == leftArray.length) {
-            rightDiv.css("left", newLeft + 'px');
+            rightDiv.animate({ "left": newLeft + 'px' }, 500, "linear");;
             newLeft += 80;
             $("#mergeGraph").append(rightDiv);
             rightIndex++;
