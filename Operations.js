@@ -134,6 +134,8 @@ var Operations = function () {
     console.log(allDivs);
     var newLeft = -400;
     this.stepForwardMerge = function (view) {
+
+        view.offCode();
         var leftArray = this.sortOperations[this.currentIndex].leftArray;
         var rightArray = this.sortOperations[this.currentIndex].rightArray;
 
@@ -157,11 +159,16 @@ var Operations = function () {
                 newLeft += 80;
                 $("#mergeGraph").append(leftDiv);
                 leftIndex++;
+                view.onCode(2);
+                view.onCode(3);
+                view.onCode(4);
             } else {
                 rightDiv.css("left", newLeft + 'px');;
                 newLeft += 80;
                 $("#mergeGraph").append(rightDiv);
                 rightIndex++;
+                view.onCode(2);
+                view.onCode(5);
 
             }
         }
@@ -170,6 +177,7 @@ var Operations = function () {
             leftIndex = 0;
             rightIndex = 0;
             this.currentIndex++;
+            view.onCode(6);
 
             if (this.currentIndex == this.sortOperations.length) {
                 $("#graph").append($("#mergeGraph div"));
@@ -201,6 +209,9 @@ var Operations = function () {
             newLeft += 80;
             $("#mergeGraph").append(rightDiv);
             rightIndex++;
+            view.onCode(2);
+            view.onCode(3);
+            view.onCode(4);
         }
 
         else if (rightIndex == rightArray.length) {
@@ -208,6 +219,8 @@ var Operations = function () {
             newLeft += 80;
             $("#mergeGraph").append(leftDiv);
             leftIndex++;
+            view.onCode(2);
+            view.onCode(5);
         }
     }
 
@@ -216,6 +229,7 @@ var Operations = function () {
         var that = this;
         allDivs = $("#graph div");
         leftIndex = 0; rightIndex = 0;
+        view.onCode(1);
 
 
         this.interval = setInterval((function () {

@@ -27,6 +27,16 @@ var Sort = function (view, calc, sortOperations) {
             '   break loop and insert X here',
         ],
 
+        mergeSort: [
+            'split each element into partitions of size 1',
+            'recursively merge adjacent partitions',
+            '  for i = leftPartIdx to rightPartIdx',
+            '    if leftPartHeadValue <= rightPartHeadValue',
+            '      copy leftPartHeadValue',
+            '    else: copy rightPartHeadValue; Increase InvIdx',
+            'copy elements back to original array'
+        ]
+
     }
 
     this.bubbleSort = function (arr) {
@@ -123,7 +133,7 @@ var Sort = function (view, calc, sortOperations) {
 
 
 
-    var merge = function merge(arr, leftIndex, midIndex, rightIndex) {
+    var merge = function (arr, leftIndex, midIndex, rightIndex) {
         var leftArrLength = midIndex - leftIndex + 1;
         var rightArrLength = rightIndex - midIndex;
 
@@ -187,7 +197,8 @@ var Sort = function (view, calc, sortOperations) {
         sortOperations.push(operationObj);
     }
 
-    this.mergeSort = function mergeSort(arr, left, right) {
+    this.mergeSort = function (arr, left, right) {
+        sortOperations.PseudoCode = this.PseudoCode.mergeSort;
         if (left < right) {
 
             // Same as (l + r) / 2, but avoids overflow
@@ -195,8 +206,8 @@ var Sort = function (view, calc, sortOperations) {
             let mid = left + Math.floor((right - left) / 2);
 
             // Sort first and second halves
-            mergeSort(arr, left, mid);
-            mergeSort(arr, mid + 1, right);
+            this.mergeSort(arr, left, mid);
+            this.mergeSort(arr, mid + 1, right);
 
             merge(arr, left, mid, right);
 
