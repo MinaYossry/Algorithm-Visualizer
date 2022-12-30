@@ -21,6 +21,7 @@ $(function () {
 
     $("#startSort").click(function () {
         if (!sortOperations.isSorting) {
+            sortOperations.sortOperations = [];
             console.log("clicked");
             selectedSort = $(".selected").attr("id");
             sort[selectedSort](calc.generatedArr, 0, calc.generatedArr.length - 1);
@@ -66,6 +67,7 @@ $(function () {
 
 function handleRandom() {
     $("#graph").empty();
+    sortOperations.sortOperations = [];
     sortOperations.stopSorting();
     calc.generateRandomArr();
     view.generateDivs(calc.generatedArr, calc.maxValue);

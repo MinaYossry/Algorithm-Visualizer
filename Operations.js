@@ -229,6 +229,7 @@ var Operations = function () {
         var that = this;
         allDivs = $("#graph div");
         leftIndex = 0; rightIndex = 0;
+        newLeft = -400;
         view.onCode(1);
 
 
