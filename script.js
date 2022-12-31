@@ -154,8 +154,11 @@ function handleRandom() {
 function startSorting() {
     if (selectedSort == "mergeSort")
         sortOperations.startMergeAnimation(view)
-    else
-        sortOperations.startSortingAnimations(view);
+    else {
+        sortOperations.interval = setInterval((function () {
+            this.stepForwardMerge();
+        }).bind(that), (view.initialSpeed * sortOperations.delta) + 100);
+    }
 }
 
 

@@ -219,6 +219,7 @@ var Operations = function (view) {
     var allDivs = $("#graph div");
     var leftIndex = 0; var rightIndex = 0;
     var newLeft = parseInt($("#graph div").eq(0).css("left"));
+    var startIndex = 0;
     this.stepForwardMerge = function () {
 
         view.offCode();
@@ -235,7 +236,7 @@ var Operations = function (view) {
         var leftDiv = allDivs.eq(leftArray[leftIndex]);
         var rightDiv = allDivs.eq(rightArray[rightIndex]);
 
-        var startIndex = leftArray[0];
+        startIndex = leftArray[0];
 
         if (leftIndex < leftArray.length && rightIndex < rightArray.length) {
             var leftNumber = parseInt(leftDiv.text());
@@ -243,7 +244,7 @@ var Operations = function (view) {
 
             if (leftNumber <= rightNumber) {
                 leftDiv.css("left", newLeft + 'px');
-                newLeft += 80;
+                newLeft += view.elementWidth;
                 $("#mergeGraph").append(leftDiv);
                 leftIndex++;
                 view.onCode(2);
@@ -251,7 +252,7 @@ var Operations = function (view) {
                 view.onCode(4);
             } else {
                 rightDiv.animate({ "left": newLeft + 'px' }, 500, "linear");
-                newLeft += 80;
+                newLeft += view.elementWidth;
                 $("#mergeGraph").append(rightDiv);
                 rightIndex++;
                 view.onCode(2);
@@ -294,7 +295,7 @@ var Operations = function (view) {
 
         else if (leftIndex == leftArray.length) {
             rightDiv.animate({ "left": newLeft + 'px' }, 500, "linear");;
-            newLeft += 80;
+            newLeft += view.elementWidth;
             $("#mergeGraph").append(rightDiv);
             rightIndex++;
             view.onCode(2);
@@ -304,7 +305,7 @@ var Operations = function (view) {
 
         else if (rightIndex == rightArray.length) {
             leftDiv.css("left", newLeft + 'px');
-            newLeft += 80;
+            newLeft += view.elementWidth;
             $("#mergeGraph").append(leftDiv);
             leftIndex++;
             view.onCode(2);
@@ -316,10 +317,8 @@ var Operations = function (view) {
         this.isSorting = true;
         var that = this;
         allDivs = $("#graph div");
-        leftIndex = 0; rightIndex = 0;
-        newLeft = -400;
+        newLeft = parseInt($("#graph div").eq(startIndex).css("left"));
         view.onCode(1);
-
 
         this.interval = setInterval((function () {
             this.stepForwardMerge();
