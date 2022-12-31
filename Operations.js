@@ -87,9 +87,9 @@ var Operations = function (view) {
      * used in stepBack and stepForward
      * @param {*} operationObj 
      */
-    var glowFocusedColors = function (operationObj) {
-        view.glow(operationObj.firstIndex, view.focusedColor1)
-        view.glow(operationObj.secondIndex, view.focusedColor)
+    var glowfocusedRightColors = function (operationObj) {
+        view.glow(operationObj.firstIndex, view.focusedLeftColor)
+        view.glow(operationObj.secondIndex, view.focusedRightColor)
     }
 
     /**
@@ -118,7 +118,7 @@ var Operations = function (view) {
             }
 
             // highlight the current two numbers in focuesColor 
-            glowFocusedColors(currentOperation);
+            glowfocusedRightColors(currentOperation);
 
             // reverse the swap of the current numberts
             if (currentOperation.swap) {
@@ -166,7 +166,7 @@ var Operations = function (view) {
                 $(".sorted").css("backgroundColor", view.sortedColor);
             }
 
-            glowFocusedColors(currentOperation);
+            glowfocusedRightColors(currentOperation);
 
             if (currentOperation.swap)
                 view.swap(currentOperation.firstIndex, currentOperation.secondIndex);
@@ -208,11 +208,11 @@ var Operations = function (view) {
         var rightArray = this.sortOperations[this.operationCurrentIndex].rightArray;
         // loop over the left array indexes and color them
         for (var i = 0; i < leftArray.length; i++)
-            allDivs.eq(leftArray[i]).css("backgroundColor", view.focusedColor)
+            allDivs.eq(leftArray[i]).css("backgroundColor", view.focusedRightColor)
 
         // loop over the right array indexes and color them
         for (var i = 0; i < rightArray.length; i++)
-            allDivs.eq(rightArray[i]).css("backgroundColor", view.focusedColor1)
+            allDivs.eq(rightArray[i]).css("backgroundColor", view.focusedLeftColor)
 
         var leftDiv = allDivs.eq(leftArray[leftIndex]);
         var rightDiv = allDivs.eq(rightArray[rightIndex]);

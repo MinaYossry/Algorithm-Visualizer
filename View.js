@@ -8,20 +8,18 @@ function View() {
 
     this.defaultColor = '#678983';
 
-    //focusedLeftColor
-    this.focusedColor1 = '#009900';
-    //focusedRigthColor
-    this.focusedColor = '#0099cc';
+    this.focusedLeftColor = '#009900';
+    this.focusedRightColor = '#0099cc';
     this.sortedColor = '#c85e15';
-    //finishedColor
-    this.finishColor = "#181D31";
+
+    this.finishedColor = "#181D31";
     /**
      * animationFiished =>name
      * it gives the divs the finishedColor after animation
      */
     this.finishAnimation = function () {
         $("#graph div").animate({
-            'background-color': this.finishColor
+            'background-color': this.finishedColor
         }, 100 * this.delta);
     }
 
