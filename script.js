@@ -8,9 +8,12 @@ var selectedSort = $(".selected").attr("id");
 $(function () {
 
     $("#myRange").change(function (e) {
-        sortOperations.delta = view.delta    = parseFloat($("#myRange").val()) / 100;
+        sortOperations.delta = view.delta = parseFloat($("#myRange").val()) / 100;
         if (sortOperations.isSorting) {
-            clearInterval(sortOperations.interval)
+            clearInterval(sortOperations.interval);
+            if (selectedSort == "mergeSort") 
+                sortOperations.startMergeAnimation(view)
+            else
             sortOperations.startSortingAnimations(view);
         }
 
@@ -48,7 +51,11 @@ $(function () {
 
     $("#enterNumbers").click(function () {
         var arr = $("#userNumbers").val().split(",");
-        if (arr.length >= 5 && arr.length <= 15) {
+        var validNums = true;
+        for (const i in arr)
+            if (isNaN(arr[i]))
+                validNums = false
+        if (arr.length >= 5 && arr.length <= 15 && validNums) {
             sortOperations.stopSorting();
             calc.enterArray(arr);
             view.generateDivs(calc.generatedArr, calc.maxValue);

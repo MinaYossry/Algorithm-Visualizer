@@ -162,6 +162,7 @@ button {
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
   display: none;
+  margin-bottom: 15px;
 }
 
 .footer button {

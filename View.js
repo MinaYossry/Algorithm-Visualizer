@@ -14,7 +14,6 @@ function View() {
 
     this.finishedColor = "#181D31";
     /**
-     * animationFiished =>name
      * it gives the divs the finishedColor after animation
      */
     this.finishAnimation = function () {
@@ -46,7 +45,7 @@ function View() {
     }
 
 
-    // Prop for open the PsdeudoCode div
+    // Prop for open the PseudoCode div
     this.openPseudoCode = function () {
         $("#openCodeArrow").addClass("on");
         $(".over").animate({
@@ -57,7 +56,7 @@ function View() {
     }
 
 
-    //Prop for close the PsdeudoCode div
+    //Prop for close the PseudoCode div
     this.closePseudoCode = function () {
         $(".over").animate({
             top: "100vh",
