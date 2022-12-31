@@ -10,7 +10,10 @@ $(function () {
     $("#myRange").change(function (e) {
         sortOperations.delta = view.delta = parseFloat($("#myRange").val()) / 100;
         if (sortOperations.isSorting) {
-            clearInterval(sortOperations.interval)
+            clearInterval(sortOperations.interval);
+            if (selectedSort == "mergeSort") 
+                sortOperations.startMergeAnimation(view)
+            else
             sortOperations.startSortingAnimations(view);
         }
 

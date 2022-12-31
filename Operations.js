@@ -87,7 +87,7 @@ var Operations = function (view) {
      * used in stepBack and stepForward
      * @param {*} operationObj 
      */
-    var glowfocusedRightColors = function (operationObj) {
+    var glowFocusedColors = function (operationObj) {
         view.glow(operationObj.firstIndex, view.focusedLeftColor)
         view.glow(operationObj.secondIndex, view.focusedRightColor)
     }
@@ -118,7 +118,7 @@ var Operations = function (view) {
             }
 
             // highlight the current two numbers in focuesColor 
-            glowfocusedRightColors(currentOperation);
+            glowFocusedColors(currentOperation);
 
             // reverse the swap of the current numberts
             if (currentOperation.swap) {
