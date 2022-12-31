@@ -390,7 +390,7 @@ var Operations = function (view) {
         var that = this;
         allDivs = $("#graph div");
         newLeft = parseInt($("#graph div").eq(startIndex).css("left"));
-        this.saveBackOperations = [[$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]];
+        this.saveBackOperations.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]);
         view.onCode(1);
 
         this.interval = setInterval((function () {
