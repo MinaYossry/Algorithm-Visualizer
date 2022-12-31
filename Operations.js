@@ -21,6 +21,7 @@ var Operations = function (view) {
      * Func to empty sortOperations array
      */
     this.empty = function () {
+        this.mergeOP = [];
         this.sortOperations = [];
         this.operationCurrentIndex = 0;
     }
