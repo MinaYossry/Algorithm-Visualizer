@@ -38,7 +38,7 @@ function View() {
 
     // Prop gives color for the reading line in PseudoCode
     this.onCode = function (id) {
-        $("#code").children().eq(id).css('background-color', 'red')
+        $("#code").children().eq(id).css('background-color', '#0099cc')
     }
     this.offCode = function () {
         $("#code").children().css('background-color', 'rgb(18, 95, 95)')
