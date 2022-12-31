@@ -59,7 +59,8 @@ $(function () {
             // call sort function based on the selected sort in nav bar
             sort[selectedSort](calc.generatedArr, 0, calc.generatedArr.length - 1);
             if (selectedSort == "mergeSort") {
-                sortOperations.startMergeAnimation(view)
+                sortOperations.resetMergeVariables();
+                sortOperations.startMergeAnimation()
             }
             // open PseudoCode window
             view.openPseudoCode();

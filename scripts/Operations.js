@@ -381,6 +381,20 @@ var Operations = function (view) {
         }
     }
 
+    this.resetMergeVariables = function () {
+        allDivs = $("#graph div");
+        // leftIndex and right Index for the left and right sub-array of each merge
+        leftIndex = 0; rightIndex = 0;
+
+        // the starting position(left) to be put in order in #mergeGraph
+        newLeft = parseInt($("#graph div").eq(0).css("left"));
+
+        // to hold the position of each sub array
+        startIndex = 0;
+
+        this.saveBackOperations = [];
+    }
+
     /**
      * 
      */
