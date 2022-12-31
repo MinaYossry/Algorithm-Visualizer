@@ -51,6 +51,8 @@ $(function () {
     $("#startSort").click(function () {
         if (!sortOperations.isSorting) {
             // Display controls
+            $("#pause").show(0);
+            $("#start").hide(0);
             $(".footer").show(0);
             // clear any previous sorting operations
             sortOperations.empty();
@@ -107,6 +109,7 @@ $(function () {
         $(e.target).addClass("selected");
         selectedSort = $(".selected").attr("id");
         view.generatePseudoCode(sort.PseudoCode[selectedSort])
+
     });
 
     /**
