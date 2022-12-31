@@ -41,7 +41,7 @@ function View() {
         $("#code").children().eq(id).css('background-color', '#0099cc')
     }
     this.offCode = function () {
-        $("#code").children().css('background-color', 'rgb(18, 95, 95)')
+        $("#code").children().css('background-color', '#678983')
     }
 
 
