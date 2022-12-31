@@ -73,8 +73,15 @@
 
 .header {
   height: 10vh;
-  background-color: #181d31;
+  background-color: #70737f;
   text-align: center;
+}
+
+.header img {
+  position: absolute;
+  left: 100px;
+  top: 2px;
+  width: 50px;
 }
 
 .header .navbar {
@@ -134,7 +141,7 @@
 
 .footer {
   height: 5vh;
-  background-color: #181d31;
+  background-color: #70737f;
   justify-content: center;
   align-items: center;
 }
