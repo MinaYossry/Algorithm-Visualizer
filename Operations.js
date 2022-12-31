@@ -36,6 +36,7 @@ var Operations = function (view) {
         view.offCode();
         $(".footer").hide(500);
         view.closePseudoCode();
+        $("#disk_c").val(0);
     };
 
     /**
