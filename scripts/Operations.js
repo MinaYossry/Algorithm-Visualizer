@@ -385,12 +385,12 @@ var Operations = function (view) {
      * 
      */
     this.startMergeAnimation = function () {
-        this.saveBackOperations = [[$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]];
         $("#disk_c").attr("max", this.sortOperations.length);
         this.isSorting = true;
         var that = this;
         allDivs = $("#graph div");
         newLeft = parseInt($("#graph div").eq(startIndex).css("left"));
+        this.saveBackOperations = [[$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]];
         view.onCode(1);
 
         this.interval = setInterval((function () {
