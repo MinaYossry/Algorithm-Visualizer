@@ -21,6 +21,7 @@ var Operations = function (view) {
      */
     this.empty = function () {
         this.sortOperations = [];
+        this.operationCurrentIndex = 0;
     }
 
     /**
@@ -147,7 +148,7 @@ var Operations = function (view) {
                 this.moving = false;
             }, 600);
         }
-    }
+    }.bind(this)
 
     /**
      * Func to take a step forward while paused
@@ -208,7 +209,7 @@ var Operations = function (view) {
                 this.moving = false;
             }, (view.initialSpeed * this.delta) + 100);
         }
-    }
+    }.bind(this)
 
     /**
      * The following code is for the merge sort
