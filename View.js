@@ -161,4 +161,39 @@ function View() {
             });
         }
     }
+
+    /**
+     * The following code is for merge sort only
+     */
+
+    /**
+     * Function used to insert left div into merge graph
+     * @param {*} leftDiv 
+     * @param {*} newLeft 
+     * @returns newleft position for the next div
+     */
+    this.leftToMergeGraph = function (leftDiv, newLeft) {
+        leftDiv.css("left", newLeft + 'px');
+        newLeft += view.elementWidth;
+        $("#mergeGraph").append(leftDiv);
+        view.onCode(2);
+        view.onCode(3);
+        view.onCode(4);
+        return newLeft
+    }
+
+    /**
+     * Function used to insert right div into merge graph with animations
+     * @param {*} rightDiv 
+     * @param {*} newLeft 
+     * @returns newLeft position for the next div
+     */
+    this.rightToMergeGraph = function (rightDiv, newLeft) {
+        rightDiv.animate({ "left": newLeft + 'px' }, view.initialSpeed * view.delta, "linear");
+        newLeft += view.elementWidth;
+        $("#mergeGraph").append(rightDiv);
+        view.onCode(2);
+        view.onCode(5);
+        return newLeft
+    }
 }
