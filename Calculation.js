@@ -1,6 +1,6 @@
 //Function Object Holding All The Calculations in the Project
 
-function Calcualtion() {
+function Calculation() {
     this.generatedArr = [];
     this.maxValue;
     

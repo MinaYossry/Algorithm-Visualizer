@@ -1,21 +1,32 @@
+//Func Obj holding all the views of the animation
 function View() {
-    this.delta =  parseFloat($("#myRange").val()) / 100;
+    this.delta = parseFloat($("#myRange").val()) / 100;
     this.initialSpeed = 500;
     var swapping = false;
-    var FIXED = "n";
-    var ELEMENTWIDTH = 80;
+    var fixedCharacter = "n";
+    var elementWidth = 80;
 
     this.defaultColor = '#678983';
-    this.focusedColor1 = '#009900';
-    this.focusedColor = '#0099cc';
-    this.sortedColor = '#c85e15';
-    this.finishColor = "#181D31";
 
+    this.focusedLeftColor = '#009900';
+    this.focusedRightColor = '#0099cc';
+    this.sortedColor = '#c85e15';
+
+    this.finishedColor = "#181D31";
+    /**
+     * animationFiished =>name
+     * it gives the divs the finishedColor after animation
+     */
     this.finishAnimation = function () {
         $("#graph div").animate({
-            'background-color': this.finishColor
-        }, 100 *this.delta);
+            'background-color': this.finishedColor
+        }, 100 * this.delta);
     }
+
+    /**
+     * 
+     * Prop generatePseudoCode for each sort type
+     */
     this.generatePseudoCode = function (arr) {
         $("#code").empty();
 
@@ -25,6 +36,8 @@ function View() {
         }
     }
 
+
+    // Prop gives color for the reading line in PseudoCode
     this.onCode = function (id) {
         $("#code").children().eq(id).css('background-color', 'red')
     }
@@ -32,6 +45,19 @@ function View() {
         $("#code").children().css('background-color', 'rgb(18, 95, 95)')
     }
 
+
+    // Prop for open the PsdeudoCode div
+    this.openPseudoCode = function () {
+        $("#openCodeArrow").addClass("on");
+        $(".over").animate({
+            top: "66.5vh",
+        }, 500 * this.speed, "linear");
+        $("#openCodeArrow").removeClass("fa-arrow-up").addClass("fa-arrow-down");
+
+    }
+
+
+    //Prop for close the PsdeudoCode div
     this.closePseudoCode = function () {
         $(".over").animate({
             top: "100vh",
@@ -49,47 +75,64 @@ function View() {
         $("#openCodeArrow").removeClass("fa-arrow-up").addClass("fa-arrow-down");
 
     }
+    /**
+     * Prop for generateAllDivs
+     * totalWidth variable for all generatedDivs
+     * leftPos variable for the leftPos of the first div in the graph
+     */
     this.generateDivs = function (arr, maxValue) {
         $("#graph").empty();
-        var totalWidth = ELEMENTWIDTH * arr.length;
+        var totalWidth = elementWidth * arr.length;
         var leftPos = Math.trunc(totalWidth / -2);
         for (var i = 0; i < arr.length; i++) {
             $("#graph").append(generateDiv(i, arr[i], leftPos, maxValue));
-            leftPos += ELEMENTWIDTH;
+            leftPos += elementWidth;
         }
     }
+    /**
+     *Prop for generate one div each time it'll be called
+     *it takes 3 param
+     *it giv each div the id by (fixedCharacter + index)params
+     *append the text on div by (number)pararm
+     */
 
     var generateDiv = function (index, number, position, maxValue) {
         return $("<div>")
-            .attr("id", FIXED + index).text(number)
+            .attr("id", fixedCharacter + index).text(number)
             .css({
                 left: position + "px",
                 height: calcHeight(number, maxValue)
             });
     }
 
+    // Prop to Calculate for each div according it's value=numebr
     var calcHeight = function (number, maxValue) {
         var minHeight = 50;
         var maxHeight = 150;
         return (((number / maxValue) * maxHeight) + minHeight) + "px";
     }
 
+
+
+    // Prop to glow  each div according it's satate
     this.glow = function (index, color) {
-        $("#" + FIXED + index).css({ 'background-color': color });
+        $("#" + fixedCharacter + index).css({ 'background-color': color });
     }
 
+
+    //Prop to swap two divs by animation
     this.swap = function (index1, index2) {
         // Get A strings of id of both elements
-        var elem1 = $("#" + FIXED + index1);
-        var elem2 = $("#" + FIXED + index2);
+        var elem1 = $("#" + fixedCharacter + index1);
+        var elem2 = $("#" + fixedCharacter + index2);
         if (!swapping) {
             swapping = true;
 
             var pos1 = parseInt(elem1.css("left"));
             var pos2 = parseInt(elem2.css("left"));
 
-            elem1.attr("id", FIXED + index2)
-            elem2.attr("id", FIXED + index1)
+            elem1.attr("id", fixedCharacter + index2)
+            elem2.attr("id", fixedCharacter + index1)
 
             // swap left position of both elements
             elem1.animate({
