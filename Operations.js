@@ -1,6 +1,6 @@
 var Operations = function (view) {
     this.delta = parseFloat($("#myRange").val()) / 100;
-    
+
     this.sortOperations = [];
     this.interval = null;
     this.isSorting = false;
@@ -47,7 +47,7 @@ var Operations = function (view) {
         var that = this;
         this.interval = setInterval((function () {
             this.stepForward();
-        }).bind(that), (view.initialSpeed *this.delta)+100);
+        }).bind(that), (view.initialSpeed * this.delta) + 100);
 
     }
 
@@ -210,10 +210,14 @@ var Operations = function (view) {
         }
     }
 
+    /**
+     * The following code is for the merge sort
+     */
+
 
     var allDivs = $("#graph div");
     var leftIndex = 0; var rightIndex = 0;
-    var newLeft = -400;
+    var newLeft = parseInt($("#graph div").eq(0).css("left"));
     this.stepForwardMerge = function () {
 
         view.offCode();
