@@ -202,9 +202,17 @@ var Sort = function (view, calc, sortOperations) {
         // start animation after the sort is done
         sortOperations.startSortingAnimations(view);
     }
-
-
-
+    /**
+     * Private method to merge left and right halves
+     * used by mergeSort
+     * 
+     * each operation object consists of leftArray, rightArray
+     * which hold the indeces of the current sub-arries
+     * @param {*} arr 
+     * @param {*} leftIndex 
+     * @param {*} midIndex 
+     * @param {*} rightIndex 
+     */
     var merge = function (arr, leftIndex, midIndex, rightIndex) {
         var leftArrLength = midIndex - leftIndex + 1;
         var rightArrLength = rightIndex - midIndex;
@@ -272,7 +280,6 @@ var Sort = function (view, calc, sortOperations) {
     this.mergeSort = function (arr, left, right) {
         sortOperations.PseudoCode = this.PseudoCode.mergeSort;
         if (left < right) {
-
             // Same as (l + r) / 2, but avoids overflow
             // for large l and r
             let mid = left + Math.floor((right - left) / 2);
@@ -281,8 +288,8 @@ var Sort = function (view, calc, sortOperations) {
             this.mergeSort(arr, left, mid);
             this.mergeSort(arr, mid + 1, right);
 
+            // merge left and right halves
             merge(arr, left, mid, right);
-
         }
     }
 
