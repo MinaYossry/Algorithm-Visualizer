@@ -7,6 +7,7 @@ var Operations = function (view) {
     this.operationCurrentIndex = 0;
     this.isMoving = false;
     this.PseudoCode = [];
+    
 
     /**
      * Func takes operation object and push it sortOperations array
@@ -112,6 +113,7 @@ var Operations = function (view) {
 
             // Get the previous operations
             currentOperation = this.sortOperations[--this.operationCurrentIndex];
+            $("#disk_c").val(this.operationCurrentIndex/10);
 
             // if the current number is sorted, make it unsorted to remove the "sortedColor" and reset to corrent color
             if (currentOperation.lastSortedIndex !== null) {
@@ -185,6 +187,8 @@ var Operations = function (view) {
 
             // advance the index to the next operations
             currentOperation = this.sortOperations[++this.operationCurrentIndex];
+            $("#disk_c").val(this.operationCurrentIndex/10);
+
 
             // at the end of operations
             if (this.operationCurrentIndex == this.sortOperations.length) {
