@@ -165,14 +165,9 @@ button {
   margin-bottom: 15px;
 }
 
-.footer button {
-  max-width: fit-content;
-  max-height: fit-content;
-  font-size: small;
-  margin-left: 10px;
-}
 i {
   padding-right: 15px;
+  padding-left: 15px;
   cursor: pointer;
 }
 
@@ -180,4 +175,8 @@ i {
   position: absolute;
   right: 50px;
   bottom: 10px;
+}
+#disk_c {
+  width: 400px;
+  height: 20px;
 }

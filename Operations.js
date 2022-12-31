@@ -1,12 +1,13 @@
 var Operations = function (view) {
     this.delta = parseFloat($("#myRange").val()) / 100;
-    
+
     this.sortOperations = [];
     this.interval = null;
     this.isSorting = false;
     this.operationCurrentIndex = 0;
     this.isMoving = false;
     this.PseudoCode = [];
+
 
     /**
      * Func takes operation object and push it sortOperations array
@@ -21,6 +22,7 @@ var Operations = function (view) {
      */
     this.empty = function () {
         this.sortOperations = [];
+        this.operationCurrentIndex = 0;
     }
 
     /**
@@ -34,6 +36,7 @@ var Operations = function (view) {
         view.offCode();
         $(".footer").hide(500);
         view.closePseudoCode();
+        $("#disk_c").val(0);
     };
 
     /**
@@ -41,13 +44,14 @@ var Operations = function (view) {
      * it will make one step at every interval
      */
     this.startSortingAnimations = function () {
+        $("#disk_c").attr("max", this.sortOperations.length);
         this.moving = true;
         this.isSorting = true;
         // used to bind the callback function of the interval to the current operations object instead of Window object
         var that = this;
         this.interval = setInterval((function () {
             this.stepForward();
-        }).bind(that), (view.initialSpeed *this.delta)+100);
+        }).bind(that), (view.initialSpeed * this.delta) + 100);
 
     }
 
@@ -111,6 +115,7 @@ var Operations = function (view) {
 
             // Get the previous operations
             currentOperation = this.sortOperations[--this.operationCurrentIndex];
+            $("#disk_c").val(this.operationCurrentIndex);
 
             // if the current number is sorted, make it unsorted to remove the "sortedColor" and reset to corrent color
             if (currentOperation.lastSortedIndex !== null) {
@@ -147,7 +152,7 @@ var Operations = function (view) {
                 this.moving = false;
             }, 600);
         }
-    }
+    }.bind(this)
 
     /**
      * Func to take a step forward while paused
@@ -184,6 +189,8 @@ var Operations = function (view) {
 
             // advance the index to the next operations
             currentOperation = this.sortOperations[++this.operationCurrentIndex];
+            $("#disk_c").val(this.operationCurrentIndex);
+
 
             // at the end of operations
             if (this.operationCurrentIndex == this.sortOperations.length) {
@@ -208,12 +215,17 @@ var Operations = function (view) {
                 this.moving = false;
             }, (view.initialSpeed * this.delta) + 100);
         }
-    }
+    }.bind(this)
+
+    /**
+     * The following code is for the merge sort
+     */
 
 
     var allDivs = $("#graph div");
     var leftIndex = 0; var rightIndex = 0;
-    var newLeft = -400;
+    var newLeft = parseInt($("#graph div").eq(0).css("left"));
+    var startIndex = 0;
     this.stepForwardMerge = function () {
 
         view.offCode();
@@ -230,7 +242,7 @@ var Operations = function (view) {
         var leftDiv = allDivs.eq(leftArray[leftIndex]);
         var rightDiv = allDivs.eq(rightArray[rightIndex]);
 
-        var startIndex = leftArray[0];
+        startIndex = leftArray[0];
 
         if (leftIndex < leftArray.length && rightIndex < rightArray.length) {
             var leftNumber = parseInt(leftDiv.text());
@@ -238,15 +250,15 @@ var Operations = function (view) {
 
             if (leftNumber <= rightNumber) {
                 leftDiv.css("left", newLeft + 'px');
-                newLeft += 80;
+                newLeft += view.elementWidth;
                 $("#mergeGraph").append(leftDiv);
                 leftIndex++;
                 view.onCode(2);
                 view.onCode(3);
                 view.onCode(4);
             } else {
-                rightDiv.animate({ "left": newLeft + 'px' }, 500, "linear");
-                newLeft += 80;
+                rightDiv.animate({ "left": newLeft + 'px' }, view.initialSpeed * this.delta, "linear");
+                newLeft += view.elementWidth;
                 $("#mergeGraph").append(rightDiv);
                 rightIndex++;
                 view.onCode(2);
@@ -259,6 +271,7 @@ var Operations = function (view) {
             leftIndex = 0;
             rightIndex = 0;
             this.operationCurrentIndex++;
+            $("#disk_c").val(this.operationCurrentIndex);
             view.onCode(6);
 
             if (this.operationCurrentIndex == this.sortOperations.length) {
@@ -270,9 +283,9 @@ var Operations = function (view) {
                 $("#mergeGraph div").css("backgroundColor", view.sortedColor)
 
                 if (startIndex === 0)
-                    $("#graph").prepend($("#mergeGraph div").hide().show("linear"))
+                    $("#graph").prepend($("#mergeGraph div").hide(0).show(view.initialSpeed * this.delta, "linear"))
                 else {
-                    $("#mergeGraph div").insertAfter($("#n" + (startIndex - 1))).hide().show("linear");
+                    $("#mergeGraph div").insertAfter($("#n" + (startIndex - 1))).hide(0).show(view.initialSpeed * this.delta, "linear");
                 }
                 // put the correct ids
                 for (var i = 0; i < $("#graph div").length; i++) {
@@ -288,8 +301,8 @@ var Operations = function (view) {
 
 
         else if (leftIndex == leftArray.length) {
-            rightDiv.animate({ "left": newLeft + 'px' }, 500, "linear");;
-            newLeft += 80;
+            rightDiv.animate({ "left": newLeft + 'px' }, view.initialSpeed * this.delta, "linear");;
+            newLeft += view.elementWidth;
             $("#mergeGraph").append(rightDiv);
             rightIndex++;
             view.onCode(2);
@@ -299,7 +312,7 @@ var Operations = function (view) {
 
         else if (rightIndex == rightArray.length) {
             leftDiv.css("left", newLeft + 'px');
-            newLeft += 80;
+            newLeft += view.elementWidth;
             $("#mergeGraph").append(leftDiv);
             leftIndex++;
             view.onCode(2);
@@ -308,13 +321,12 @@ var Operations = function (view) {
     }
 
     this.startMergeAnimation = function () {
+        $("#disk_c").attr("max", this.sortOperations.length);
         this.isSorting = true;
         var that = this;
         allDivs = $("#graph div");
-        leftIndex = 0; rightIndex = 0;
-        newLeft = -400;
+        newLeft = parseInt($("#graph div").eq(startIndex).css("left"));
         view.onCode(1);
-
 
         this.interval = setInterval((function () {
             this.stepForwardMerge();
