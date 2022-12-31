@@ -26,7 +26,7 @@ var Operations = function (view) {
      * Func used to terminate sorting or when the sorting ends
      */
     this.stopSorting = function () {
-        this.currentIndex = 0;
+        this.operationCurrentIndex = 0;
         this.isSorting = false;
         clearInterval(this.interval);
         view.finishAnimation();
@@ -155,32 +155,45 @@ var Operations = function (view) {
      * 
      */
     this.stepForward = function () {
+        // Save the current operation
         var currentOperation = this.sortOperations[this.operationCurrentIndex];
         view.offCode();
         view.onCode(currentOperation.op_id)
         if (this.operationCurrentIndex >= 0) {
+            // Reset the previous operations to default colors
+            // and highlight the sorted divs with correct colors
             if (this.operationCurrentIndex > 0) {
                 var previosOperation = this.sortOperations[this.operationCurrentIndex - 1];
                 glowDefaultColors(previosOperation)
                 $(".sorted").css("backgroundColor", view.sortedColor);
             }
 
+            // Highlight the current colors with focuesd colors
             glowFocusedColors(currentOperation);
 
+            // swap the numbers of firstIndex > secondsIndex
             if (currentOperation.swap)
                 view.swap(currentOperation.firstIndex, currentOperation.secondIndex);
 
+            // mark the sorted divs as sorted to highlight with sortedColors
             if (currentOperation.lastSortedIndex !== null) {
                 $("#n" + currentOperation.lastSortedIndex).addClass("sorted");
             }
 
+            // advance the index to the next operations
             currentOperation = this.sortOperations[++this.operationCurrentIndex];
+
+            // at the end of operations
             if (this.operationCurrentIndex == this.sortOperations.length) {
                 this.stopSorting();
             }
         }
     }
 
+    /**
+     * Func used in forward button to take a step forward in the sorting animation
+     * "this.moving" is flag used to prevent the user from double clicking on the forward button while an animation is happening
+     */
     this.forward = function () {
         if (!this.moving) {
             if ($(".selected").attr("id") == "mergeSort")
@@ -188,6 +201,7 @@ var Operations = function (view) {
             else
                 this.stepForward();
             this.moving = true;
+            // reset the flag after animation ends
             setTimeout(() => {
                 this.moving = false;
             }, 600 * this.speed);
