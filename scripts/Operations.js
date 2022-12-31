@@ -367,6 +367,7 @@ var Operations = function (view) {
             var currentOperation = this.saveBackOperations[this.saveBackOperations.length - 1];
             $("#graph").empty();
             $("#graph").append(currentOperation[0].children())
+            allDivs = $("#graph div")
             $("#mergeGraph").empty();
             $("#mergeGraph").append(currentOperation[1].children())
             this.operationCurrentIndex = currentOperation[2];
