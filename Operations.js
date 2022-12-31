@@ -21,7 +21,7 @@ var Operations = function (view) {
      * Func to empty sortOperations array
      */
     this.empty = function () {
-        this.mergeOP = [];
+        this.saveBackOperations = [];
         this.sortOperations = [];
         this.operationCurrentIndex = 0;
     }
@@ -30,6 +30,8 @@ var Operations = function (view) {
      * Func used to terminate sorting or when the sorting ends
      */
     this.stopSorting = function () {
+        this.saveBackOperations = [];
+        this.sortOperations = [];
         this.operationCurrentIndex = 0;
         this.isSorting = false;
         clearInterval(this.interval);
@@ -236,7 +238,7 @@ var Operations = function (view) {
     // to hold the position of each sub array
     var startIndex = 0;
 
-    this.mergeOP = [[$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]];
+    this.saveBackOperations = [];
     /**
      * used to step forward in animation
      * compares the numbers in divs and order them in mergeGraph
@@ -277,14 +279,14 @@ var Operations = function (view) {
             // leftNumber is in right position relative to right number
             // insert it into merge graph
             if (leftNumber <= rightNumber) {
-                this.mergeOP.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft, "2"]);
+                this.saveBackOperations.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]);
                 newLeft = view.leftToMergeGraph(leftDiv, newLeft);
 
                 leftIndex++;
             }
             // insert rightNumber left to leftNumber
             else {
-                this.mergeOP.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft, "4"]);
+                this.saveBackOperations.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]);
                 newLeft = view.rightToMergeGraph(rightDiv, newLeft);
 
                 rightIndex++;
@@ -305,9 +307,9 @@ var Operations = function (view) {
             // this means all operations have finished and tha graph is sorted
             if (this.operationCurrentIndex == this.sortOperations.length) {
                 // move from bottom to top
-                this.mergeOP.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft, "6"]);
+                this.saveBackOperations.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]);
                 $("#graph").append($("#mergeGraph div"));
-                this.mergeOP.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft, "7"]);
+                this.saveBackOperations.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]);
                 // terminate
                 this.stopSorting();
             }
@@ -315,7 +317,7 @@ var Operations = function (view) {
             else {
                 // change sorted part in correct color
                 $("#mergeGraph div").css("backgroundColor", view.sortedColor)
-                this.mergeOP.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft, "8"]);
+                this.saveBackOperations.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]);
                 // Insert the sorted part(#mergeGraph) into the right position it #graph
                 if (startIndex === 0)
                     // put it at the begining
@@ -340,7 +342,7 @@ var Operations = function (view) {
 
         // If the left array in empty put the rest of the right array in merge graph
         else if (leftIndex == leftArray.length) {
-            this.mergeOP.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft, "10"]);
+            this.saveBackOperations.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]);
             newLeft = view.rightToMergeGraph(rightDiv, newLeft);
 
             rightIndex++;
@@ -348,27 +350,33 @@ var Operations = function (view) {
 
         // If the right array in empty put the rest of the left array in merge graph
         else if (rightIndex == rightArray.length) {
-            this.mergeOP.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft, "12"]); newLeft = view.leftToMergeGraph(leftDiv, newLeft);
+            this.saveBackOperations.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]);
+            newLeft = view.leftToMergeGraph(leftDiv, newLeft);
 
             leftIndex++;
         }
     }
 
 
+    /**
+     * get the last operation setting from saveBackOperations array
+     * then pop the last operation
+     */
     this.stepBackMerge = function () {
-        if (this.mergeOP.length > 0) {
-            var currentOperation = this.mergeOP[this.mergeOP.length - 1];
+        if (this.saveBackOperations.length > 0) {
+            var currentOperation = this.saveBackOperations[this.saveBackOperations.length - 1];
             $("#graph").empty();
             $("#graph").append(currentOperation[0].children())
             $("#mergeGraph").empty();
             $("#mergeGraph").append(currentOperation[1].children())
             this.operationCurrentIndex = currentOperation[2];
+            $("#disk_c").val(this.operationCurrentIndex);
             leftIndex = currentOperation[3];
             rightIndex = currentOperation[4];
             startIndex = currentOperation[5];
             newLeft = currentOperation[6]
-            this.mergeOP.pop();
-            console.log(this.mergeOP[this.mergeOP.length - 1]);
+            this.saveBackOperations.pop();
+            console.log(this.saveBackOperations[this.saveBackOperations.length - 1]);
         }
     }
 
@@ -376,7 +384,7 @@ var Operations = function (view) {
      * 
      */
     this.startMergeAnimation = function () {
-        this.mergeOP = [[$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft, "1"]];
+        this.saveBackOperations = [[$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]];
         $("#disk_c").attr("max", this.sortOperations.length);
         this.isSorting = true;
         var that = this;
