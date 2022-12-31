@@ -1,13 +1,13 @@
 //Func Obj holding all the views of the animation
 function View() {
-    this.delta =  parseFloat($("#myRange").val()) / 100;
+    this.delta = parseFloat($("#myRange").val()) / 100;
     this.initialSpeed = 500;
     var swapping = false;
     var fixedCharacter = "n";
     var elementWidth = 80;
 
     this.defaultColor = '#678983';
-    
+
     //focusedLeftColor
     this.focusedColor1 = '#009900';
     //focusedRigthColor
@@ -22,13 +22,13 @@ function View() {
     this.finishAnimation = function () {
         $("#graph div").animate({
             'background-color': this.finishColor
-        }, 100 *this.delta);
+        }, 100 * this.delta);
     }
 
-/**
- * 
- * Prop generatePseudoCode for each sort type
- */
+    /**
+     * 
+     * Prop generatePseudoCode for each sort type
+     */
     this.generatePseudoCode = function (arr) {
         $("#code").empty();
 
@@ -76,6 +76,7 @@ function View() {
         }, this.initialSpeed * this.delta, "linear");
         $("#openCodeArrow").removeClass("fa-arrow-up").addClass("fa-arrow-down");
 
+    }
     /**
      * Prop for generateAllDivs
      * totalWidth variable for all generatedDivs
@@ -90,7 +91,6 @@ function View() {
             leftPos += elementWidth;
         }
     }
-
     /**
      *Prop for generate one div each time it'll be called
      *it takes 3 param
