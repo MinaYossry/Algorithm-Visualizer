@@ -1,5 +1,6 @@
 var Operations = function (view) {
-    this.speed = parseFloat($("#myRange").val()) / 100;
+    this.delta = parseFloat($("#myRange").val()) / 100;
+    
     this.sortOperations = [];
     this.interval = null;
     this.isSorting = false;
@@ -46,7 +47,7 @@ var Operations = function (view) {
         var that = this;
         this.interval = setInterval((function () {
             this.stepForward();
-        }).bind(that), 600);
+        }).bind(that), (view.initialSpeed *this.delta)+100);
 
     }
 
@@ -204,7 +205,7 @@ var Operations = function (view) {
             // reset the flag after animation ends
             setTimeout(() => {
                 this.moving = false;
-            }, 600 * this.speed);
+            }, (view.initialSpeed * this.delta) + 100);
         }
     }
 
@@ -217,10 +218,11 @@ var Operations = function (view) {
         view.offCode();
         var leftArray = this.sortOperations[this.operationCurrentIndex].leftArray;
         var rightArray = this.sortOperations[this.operationCurrentIndex].rightArray;
-
+        // loop over the left array indexes and color them
         for (var i = 0; i < leftArray.length; i++)
             allDivs.eq(leftArray[i]).css("backgroundColor", view.focusedColor)
 
+        // loop over the right array indexes and color them
         for (var i = 0; i < rightArray.length; i++)
             allDivs.eq(rightArray[i]).css("backgroundColor", view.focusedColor1)
 
@@ -271,6 +273,7 @@ var Operations = function (view) {
                 else {
                     $("#mergeGraph div").insertAfter($("#n" + (startIndex - 1))).hide().show("linear");
                 }
+                // put the correct ids
                 for (var i = 0; i < $("#graph div").length; i++) {
                     $("#graph div").eq(i).attr("id", "n" + i);
                 }
@@ -314,7 +317,7 @@ var Operations = function (view) {
 
         this.interval = setInterval((function () {
             this.stepForwardMerge();
-        }).bind(that), 600);
+        }).bind(that), (view.initialSpeed * this.delta) + 100);
     }
 }
 
