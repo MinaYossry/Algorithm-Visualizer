@@ -218,108 +218,130 @@ var Operations = function (view) {
     }.bind(this)
 
     /**
-     * The following code is for the merge sort
-     */
-
-
+    * The following code is for the merge sort
+    */
+    // all number generated in the graph
     var allDivs = $("#graph div");
-    var leftIndex = 0; var rightIndex = 0;
-    var newLeft = parseInt($("#graph div").eq(0).css("left"));
-    var startIndex = 0;
-    this.stepForwardMerge = function () {
 
+    // leftIndex and right Index for the left and right sub-array of each merge
+    var leftIndex = 0; var rightIndex = 0;
+
+    // the starting position(left) to be put in order in #mergeGraph
+    var newLeft = parseInt($("#graph div").eq(0).css("left"));
+
+    // to hold the position of each sub array
+    var startIndex = 0;
+
+    /**
+     * used to step forward in animation
+     * compares the numbers in divs and order them in mergeGraph
+     * then insert them back in correct order in original #graph
+     * each full operation consist of left and right sub arraies to be merged in order
+     * the function enter the next operation when both left and right sub-arries is empty 
+     */
+    this.stepForwardMerge = function () {
+        var currentOperation = this.sortOperations[this.operationCurrentIndex];
+        // turn off pseudo code
         view.offCode();
-        var leftArray = this.sortOperations[this.operationCurrentIndex].leftArray;
-        var rightArray = this.sortOperations[this.operationCurrentIndex].rightArray;
+
+        // sub-arries of each operation
+        var leftArray = currentOperation.leftArray;
+        var rightArray = currentOperation.rightArray;
+
         // loop over the left array indexes and color them
         for (var i = 0; i < leftArray.length; i++)
-            allDivs.eq(leftArray[i]).css("backgroundColor", view.focusedRightColor)
+            view.glow(leftArray[i], view.focusedLeftColor);
 
         // loop over the right array indexes and color them
         for (var i = 0; i < rightArray.length; i++)
-            allDivs.eq(rightArray[i]).css("backgroundColor", view.focusedLeftColor)
+            view.glow(rightArray[i], view.focusedRightColor);
 
+        // the divs that will be compared based on the merge operation
         var leftDiv = allDivs.eq(leftArray[leftIndex]);
         var rightDiv = allDivs.eq(rightArray[rightIndex]);
 
+        // the position that they will be inserted into
         startIndex = leftArray[0];
 
+        // If there are number in both left and right arries
         if (leftIndex < leftArray.length && rightIndex < rightArray.length) {
+            // The number in each div
             var leftNumber = parseInt(leftDiv.text());
             var rightNumber = parseInt(rightDiv.text());
 
+            // leftNumber is in right position relative to right number
+            // insert it into merge graph
             if (leftNumber <= rightNumber) {
-                leftDiv.css("left", newLeft + 'px');
-                newLeft += view.elementWidth;
-                $("#mergeGraph").append(leftDiv);
+                newLeft = view.leftToMergeGraph(leftDiv, newLeft);
                 leftIndex++;
-                view.onCode(2);
-                view.onCode(3);
-                view.onCode(4);
-            } else {
-                rightDiv.animate({ "left": newLeft + 'px' }, view.initialSpeed * this.delta, "linear");
-                newLeft += view.elementWidth;
-                $("#mergeGraph").append(rightDiv);
+            }
+            // insert rightNumber left to leftNumber
+            else {
+                newLeft = view.rightToMergeGraph(rightDiv, newLeft);
                 rightIndex++;
-                view.onCode(2);
-                view.onCode(5);
-
             }
         }
-
+        // If left and right arries are empty
+        // it means the current operation has ended, advance to next operations
         else if (leftIndex == leftArray.length && rightIndex == rightArray.length) {
+            // reset indeces
             leftIndex = 0;
             rightIndex = 0;
-            this.operationCurrentIndex++;
+
+            // advance to next operations
+            currentOperation = this.sortOperations[++this.operationCurrentIndex];
             $("#disk_c").val(this.operationCurrentIndex);
             view.onCode(6);
 
+            // this means all operations have finished and tha graph is sorted
             if (this.operationCurrentIndex == this.sortOperations.length) {
+                // move from bottom to top
                 $("#graph").append($("#mergeGraph div"));
+                // terminate
                 this.stopSorting();
             }
 
             else {
+                // change sorted part in correct color
                 $("#mergeGraph div").css("backgroundColor", view.sortedColor)
 
+                // Insert the sorted part(#mergeGraph) into the right position it #graph
                 if (startIndex === 0)
+                    // put it at the begining
                     $("#graph").prepend($("#mergeGraph div").hide(0).show(view.initialSpeed * this.delta, "linear"))
                 else {
+                    // put it after another div
                     $("#mergeGraph div").insertAfter($("#n" + (startIndex - 1))).hide(0).show(view.initialSpeed * this.delta, "linear");
                 }
                 // put the correct ids
                 for (var i = 0; i < $("#graph div").length; i++) {
                     $("#graph div").eq(i).attr("id", "n" + i);
                 }
+                // update allDivs to the new graph
                 allDivs = $("#graph div");
 
-
-                var minIndex = this.sortOperations[this.operationCurrentIndex].leftArray[0];
+                // get the new left position of the new operation
+                var minIndex = currentOperation.leftArray[0];
                 newLeft = parseInt($("#graph div").eq(minIndex).css("left"));
             }
         }
 
-
+        // If the left array in empty put the rest of the right array in merge graph
         else if (leftIndex == leftArray.length) {
-            rightDiv.animate({ "left": newLeft + 'px' }, view.initialSpeed * this.delta, "linear");;
-            newLeft += view.elementWidth;
-            $("#mergeGraph").append(rightDiv);
+            newLeft = view.rightToMergeGraph(rightDiv, newLeft);
             rightIndex++;
-            view.onCode(2);
-            view.onCode(3);
-            view.onCode(4);
         }
 
+        // If the right array in empty put the rest of the left array in merge graph
         else if (rightIndex == rightArray.length) {
-            leftDiv.css("left", newLeft + 'px');
-            newLeft += view.elementWidth;
-            $("#mergeGraph").append(leftDiv);
+            newLeft = view.leftToMergeGraph(leftDiv, newLeft);
             leftIndex++;
-            view.onCode(2);
-            view.onCode(5);
         }
     }
 
+    /**
+     * 
+     */
     this.startMergeAnimation = function () {
         $("#disk_c").attr("max", this.sortOperations.length);
         this.isSorting = true;
