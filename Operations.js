@@ -257,7 +257,7 @@ var Operations = function (view) {
                 view.onCode(3);
                 view.onCode(4);
             } else {
-                rightDiv.animate({ "left": newLeft + 'px' }, 500, "linear");
+                rightDiv.animate({ "left": newLeft + 'px' }, view.initialSpeed * this.delta, "linear");
                 newLeft += view.elementWidth;
                 $("#mergeGraph").append(rightDiv);
                 rightIndex++;
@@ -283,9 +283,9 @@ var Operations = function (view) {
                 $("#mergeGraph div").css("backgroundColor", view.sortedColor)
 
                 if (startIndex === 0)
-                    $("#graph").prepend($("#mergeGraph div").hide().show("linear"))
+                    $("#graph").prepend($("#mergeGraph div").hide(0).show(view.initialSpeed * this.delta, "linear"))
                 else {
-                    $("#mergeGraph div").insertAfter($("#n" + (startIndex - 1))).hide().show("linear");
+                    $("#mergeGraph div").insertAfter($("#n" + (startIndex - 1))).hide(0).show(view.initialSpeed * this.delta, "linear");
                 }
                 // put the correct ids
                 for (var i = 0; i < $("#graph div").length; i++) {
@@ -301,7 +301,7 @@ var Operations = function (view) {
 
 
         else if (leftIndex == leftArray.length) {
-            rightDiv.animate({ "left": newLeft + 'px' }, 500, "linear");;
+            rightDiv.animate({ "left": newLeft + 'px' }, view.initialSpeed * this.delta, "linear");;
             newLeft += view.elementWidth;
             $("#mergeGraph").append(rightDiv);
             rightIndex++;
