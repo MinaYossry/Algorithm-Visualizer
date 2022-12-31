@@ -1,14 +1,14 @@
 //Function Object Holding All The Calculations in the Project
-
 function Calculation() {
+    // to store the generated numbers and the max value
     this.generatedArr = [];
     this.maxValue;
-    
-    //Array to save the operations to control the animation
-    //and the next & back Buttons
-    this.operations = [];
 
-    //Func to get the max value of the generated array 
+    /**
+     * scan the array for max value
+     * its used to determine the height of the divs
+     * @returns max value in array
+     */
     this.GetArrMax = function () {
         var max = this.generatedArr[0];
         for (var i in this.generatedArr) {
@@ -18,11 +18,18 @@ function Calculation() {
         return max;
     }
 
-    //Func to generate random array every time the user click Random Button & Any sort type in nav bar
+    /**
+     * Generate array of random numbers
+     * used on load of the page or pressing random
+     * @param {*} min 
+     * @param {*} max 
+     * @param {*} elementsCount 
+     * @returns array of generated numbers
+     */
     this.generateRandomArr = function (min = 1, max = 50, elementsCount = 10) {
         this.generatedArr = [];
         for (var i = 0; i < elementsCount; i++) {
-            
+
             //Random numbers that will be generated in the array usig => Math.random() func
             var randomNumber = Math.floor(Math.random() * (max - min)) + min;
             this.generatedArr.push(randomNumber);
@@ -31,10 +38,14 @@ function Calculation() {
         return this.generatedArr;
     }
 
-    //Func for the input that takes array from the user
+    /**
+     * take array from the user and Parse it into INT
+     * then get and max value of the array
+     * @param {*} arr 
+     * @returns the new array
+     */
     this.enterArray = function (arr) {
         for (var i in arr) {
-            
             //Parseing the string numbers the user entered
             arr[i] = parseInt(arr[i])
         }
@@ -43,11 +54,15 @@ function Calculation() {
         return this.generatedArr;
     }
 
-    // Swap Func for all Sort Types
-    this.swap = function (arr, index1, index2) {
-        var temp = arr[index1];
-        arr[index1] = arr[index2];
-        arr[index2] = temp;
+    /**
+     * swap two numbers in generated array by index
+     * @param {*} index1 
+     * @param {*} index2 
+     */
+    this.swap = function (index1, index2) {
+        var temp = this.generatedArr[index1];
+        this.generatedArr[index1] = this.generatedArr[index2];
+        this.generatedArr[index2] = temp;
     }
 
 } 

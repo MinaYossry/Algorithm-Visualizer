@@ -51,7 +51,7 @@ var Sort = function (view, calc, sortOperations) {
                 var operationObj = new Operation(j, j + 1, null, false, 3);
 
                 if (arr[j] > arr[j + 1]) {
-                    calc.swap(arr, j, j + 1);
+                    calc.swap(j, j + 1);
                     operationObj.swap = true;
                     operationObj.op_id = 4;
                     swap = true;
@@ -90,7 +90,7 @@ var Sort = function (view, calc, sortOperations) {
             }
 
             // Swap the found minimum element with the first element
-            calc.swap(arr, minIndex, i);
+            calc.swap(minIndex, i);
             sortOperations.push(new Operation(minIndex, i, i, true, 3));
         }
         sortOperations.startSortingAnimations(view);
@@ -119,7 +119,7 @@ var Sort = function (view, calc, sortOperations) {
                     sortOperations.push(new Operation(temp, prevIndex, prevIndex, false, 2))
                     if (arr[temp] < arr[prevIndex]) {
                         sortOperations.push(new Operation(temp, prevIndex, prevIndex, true, 3))
-                        calc.swap(arr, temp--, prevIndex)
+                        calc.swap(temp--, prevIndex)
                     } else {
                         sortOperations.push(new Operation(temp, prevIndex, prevIndex, false, 4))
                         rightPosition = true;
