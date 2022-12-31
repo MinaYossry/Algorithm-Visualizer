@@ -39,48 +39,91 @@ var Sort = function (view, calc, sortOperations) {
 
     }
 
+    /**
+     * BubbleSort algorithm used to sort the generated array
+     * it save every operation is sortOperations array to animate it later
+     * Operation Object Parameters (firstIndex, SecondIndex, sortedIndex, swap, pseudoCode step)
+     * @param {*} arr 
+     */
     this.bubbleSort = function (arr) {
+        // clear any previous sorting operations
         sortOperations.empty();
         sortOperations.PseudoCode = this.PseudoCode.bubbleSort;
+
+        // to highlight first line of pseudo code at the beginning
         sortOperations.push(new Operation(-1, -1, null, false, 0))
+
+        // flag to check if the array is already sorted - set to true to enter the loop for the first time
         var swap = true;
         for (var i = 0; i < arr.length && swap; i++) {
             swap = false;
+            // to highlight the second line of pseudo code
             sortOperations.push(new Operation(-1, -1, null, false, 1))
             for (var j = 0; j < arr.length - 1 - i; j++) {
+                // create operation object with the current indeces under consideration
+                // begin with swap = false
                 var operationObj = new Operation(j, j + 1, null, false, 3);
 
+                // right number is bigger that left number
+                // must be swapped
                 if (arr[j] > arr[j + 1]) {
+                    // swap in generated array
                     calc.swap(j, j + 1);
+                    // set operation object flag to true
                     operationObj.swap = true;
                     operationObj.op_id = 4;
+                    // still not sorted
                     swap = true;
                 }
-                if (j == arr.length - 2 - i) {
+
+                // if true it means it's the last step in the inner loop
+                // so the last number must be and biggest number and sorted
+                if (j + 1 == arr.length - 1 - i) {
                     operationObj.lastSortedIndex = j + 1;
                 }
+
+                // insert operation
                 sortOperations.push(operationObj);
             }
 
+            // to hightlight the last line in pseudo code
             if (swap)
                 sortOperations.push(new Operation(-1, -1, null, false, 5))
         }
+
+        // start animation after the sort is done
         sortOperations.startSortingAnimations(view);
     }
 
+    /**
+     * SelectionSort algorithm used to sort the generated array
+     * it save every operation is sortOperations array to animate it later
+     * at every operation it compares the current minimum number with the current number
+     * Operation Object Parameters (firstIndex, SecondIndex, sortedIndex, swap, pseudoCode step)
+     * @param {*} arr 
+     */
     this.selectionSort = function (arr) {
+        // clear any previous sorting operations
         sortOperations.empty();
         sortOperations.PseudoCode = this.PseudoCode.selectionSort;
-        var i, j, minIndex;
+
+        // to save the index in minimum number
+        var minIndex;
 
         // One by one move boundary of unsorted subarray
-        for (i = 0; i < arr.length; i++) {
+        for (var i = 0; i < arr.length; i++) {
+            // to highlight the first line in pseudo code
             sortOperations.push(new Operation(-1, -1, null, false, 0))
 
             // Find the minimum element in unsorted array
             minIndex = i;
-            for (j = i + 1; j < arr.length; j++) {
+            for (var j = i + 1; j < arr.length; j++) {
+                // create operation object with the current indeces under consideration
+                // all operations swaps are false
+                // it only get the index of the minimum number
                 var operationObj = new Operation(minIndex, j, null, false, 1);
+
+                // set the new index with minimum
                 if (arr[j] < arr[minIndex]) {
                     operationObj.op_id = 2;
                     minIndex = j;
@@ -89,45 +132,74 @@ var Sort = function (view, calc, sortOperations) {
 
             }
 
-            // Swap the found minimum element with the first element
+            // Swap the found minimum element with the first unsorted element
             calc.swap(minIndex, i);
             sortOperations.push(new Operation(minIndex, i, i, true, 3));
         }
+
+        // start animation after the sort is done
         sortOperations.startSortingAnimations(view);
     }
 
-
-
+    /**
+     * InsertionSort algorithm used to sort the generated array
+     * it save every operation is sortOperations array to animate it later
+     * at every operation it compares the current number with the last sorted number
+     * if the current number is less than the last sorted number
+     * loop through the sorted array to find the right position
+     * Operation Object Parameters (firstIndex, SecondIndex, sortedIndex, swap, pseudoCode step)
+     * @param {*} arr 
+     */
     this.insertionSort = function (arr) {
+        // clear any previous sorting operations
         sortOperations.empty();
         sortOperations.PseudoCode = this.PseudoCode.insertionSort;
+
+        // consider the first element in the array is sorted
         var lastSortedIndex = 0;
         $("#n0").addClass("sorted").css("backgroundColor", view.sortedColor)
+
+        // to highlight the first two lines in pseudo code
         sortOperations.push(new Operation(-1, -1, null, false, 0))
         sortOperations.push(new Operation(-1, -1, null, false, 1))
 
         for (var currentIndex = 1; currentIndex < arr.length; currentIndex++) {
+            // highlight the third line in pseudo code
             sortOperations.push(new Operation(-1, -1, null, false, 2))
+
+            // if the current element is bigger than the last sorted number
+            // it means it's sorted
+            // set the last sorted index with the current index
             if (arr[currentIndex] >= arr[lastSortedIndex]) {
                 lastSortedIndex = currentIndex;
+                // swap flag = false, there is no swapping
                 sortOperations.push(new Operation(currentIndex, lastSortedIndex, currentIndex, false, 4))
             }
+            // the current number in smaller than the last sorted number
+            // loop through the sorted array to find the correct position
+            // save every operation while doing so
+            // terminate when it reach the right position
             else {
                 var temp = currentIndex;
                 var rightPosition = false;
                 for (var prevIndex = lastSortedIndex; prevIndex >= 0 && !rightPosition; prevIndex--) {
                     sortOperations.push(new Operation(temp, prevIndex, prevIndex, false, 2))
+                    // swap
                     if (arr[temp] < arr[prevIndex]) {
                         sortOperations.push(new Operation(temp, prevIndex, prevIndex, true, 3))
                         calc.swap(temp--, prevIndex)
-                    } else {
+                    }
+                    // terminate the loop
+                    else {
                         sortOperations.push(new Operation(temp, prevIndex, prevIndex, false, 4))
                         rightPosition = true;
                     }
                 }
+                // set the new last sorted index with the current index
                 lastSortedIndex = currentIndex;
             }
         }
+        // start animation after the sort is done
         sortOperations.startSortingAnimations(view);
     }
 
