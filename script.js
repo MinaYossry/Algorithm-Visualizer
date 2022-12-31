@@ -8,7 +8,7 @@ var selectedSort = $(".selected").attr("id");
 $(function () {
 
     $("#myRange").change(function (e) {
-        sortOperations.speed = view.speed = parseFloat($("#myRange").val()) / 100;
+        sortOperations.delta = view.delta    = parseFloat($("#myRange").val()) / 100;
         if (sortOperations.isSorting) {
             clearInterval(sortOperations.interval)
             sortOperations.startSortingAnimations(view);
