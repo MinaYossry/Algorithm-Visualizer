@@ -3,7 +3,7 @@ var calc = new Calculation();
 var sortOperations = new Operations(view);
 var sort = new Sort(view, calc, sortOperations);
 var selectedSort = $(".selected").attr("id");
-
+var isPaused = false;
 
 $(function () {
     /**
@@ -24,10 +24,11 @@ $(function () {
       */
     $("#myRange").change(function () {
         sortOperations.delta = view.delta = parseFloat($("#myRange").val()) / 100;
-        if (sortOperations.isSorting) {
-            clearInterval(sortOperations.interval);
-            startSorting();
-        }
+        if (!isPaused)
+            if (sortOperations.isSorting) {
+                clearInterval(sortOperations.interval);
+                startSorting();
+            }
     })
 
     /**
@@ -112,6 +113,7 @@ $(function () {
      * pause button to stop sorting
      */
     $("#pause").click(function () {
+        isPaused = true;
         sortOperations.pause();
         // to switch between pause/play
         $("#pause").hide(0);
@@ -122,15 +124,22 @@ $(function () {
      * play button to continue sorting
      */
     $("#start").click(function () {
+        isPaused = false;
         sortOperations.start();
         // to switch between pause/play
         $("#pause").show(0);
         $("#start").hide(0);
     }).hide(0); // hide play button on load
 
-    $("#next").click(sortOperations.forward);
+    $("#next").click(function () {
+        if (isPaused)
+            sortOperations.forward();
+    });
 
-    $("#back").click(sortOperations.backward);
+    $("#back").click(function () {
+        if (isPaused)
+            sortOperations.backward();
+    });
 })
 
 /** 
