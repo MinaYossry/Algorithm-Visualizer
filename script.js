@@ -1,6 +1,6 @@
 var view = new View();
 var calc = new Calcualtion();
-var sortOperations = new Operations();
+var sortOperations = new Operations(view);
 var sort = new Sort(view, calc, sortOperations);
 var selectedSort = $(".selected").attr("id");
 

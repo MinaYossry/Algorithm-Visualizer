@@ -1,23 +1,30 @@
-var Operations = function () {
+var Operations = function (view) {
     this.speed = parseFloat($("#myRange").val()) / 100;
     this.sortOperations = [];
     this.interval = null;
     this.isSorting = false;
-    this.currentIndex = 0;
-    this.moving = false;
+    this.operationCurrentIndex = 0;
+    this.isMoving = false;
     this.PseudoCode = [];
 
-
-
-    this.push = function (operation) {
-        this.sortOperations.push(operation);
+    /**
+     * Func takes operation object and push it sortOperations array
+     * @param operationObj 
+     */
+    this.push = function (operationObj) {
+        this.sortOperations.push(operationObj);
     };
 
+    /**
+     * Func to empty sortOperations array
+     */
     this.empty = function () {
         this.sortOperations = [];
-        this.op = [];
     }
 
+    /**
+     * Func used to terminate sorting or when the sorting ends
+     */
     this.stopSorting = function () {
         this.currentIndex = 0;
         this.isSorting = false;
@@ -28,105 +35,158 @@ var Operations = function () {
         view.closePseudoCode();
     };
 
-    this.startSortingAnimations = function (view) {
+    /**
+     * Func used for starting 'Bubble', 'Selection', 'Insertion' sort
+     * it will make one step at every interval
+     */
+    this.startSortingAnimations = function () {
         this.moving = true;
         this.isSorting = true;
+        // used to bind the callback function of the interval to the current operations object instead of Window object
         var that = this;
         this.interval = setInterval((function () {
-            this.stepForward(view);
+            this.stepForward();
         }).bind(that), 600);
 
     }
 
-    this.start = function (view) {
-        if (!this.moving) {
+    /**
+     * 
+     * Func for the start button to resume sorting animation
+     */
+    this.start = function () {
+        if (!this.isMoving) {
             if ($(".selected").attr("id") == "mergeSort")
-                this.startMergeAnimation(view);
+                this.startMergeAnimation();
             else
-                this.startSortingAnimations(view);
+                this.startSortingAnimations();
         }
     }
+
+    /**
+     * Func for the pause button to stop animation
+     */
     this.pause = function () {
         clearInterval(this.interval);
         this.moving = false;
     }
-    this.stepBack = function (view) {
-        if (this.currentIndex > 0) {
+
+    /**
+     * private Func to reset operationsObj to default colors
+     * used in stepBack and stepForward
+     * @param {*} operationObj 
+     */
+    var glowDefaultColors = function (operationObj) {
+        view.glow(operationObj.firstIndex, view.defaultColor)
+        view.glow(operationObj.secondIndex, view.defaultColor)
+    }
+
+    /**
+     * private Func to highlight the current operation with correct colors
+     * used in stepBack and stepForward
+     * @param {*} operationObj 
+     */
+    var glowFocusedColors = function (operationObj) {
+        view.glow(operationObj.firstIndex, view.focusedColor1)
+        view.glow(operationObj.secondIndex, view.focusedColor)
+    }
+
+    /**
+     * Func to take a step back while paused
+     * it will reverse the current operation
+     * decrement the operationCurrentIndex by 1
+     * and reset the colors to nomral
+     */
+    this.stepBack = function () {
+        if (this.operationCurrentIndex > 0) {
+            var currentOperation = this.sortOperations[this.operationCurrentIndex];
+
+            // turn off pseudo code
             view.offCode();
-            view.onCode(this.sortOperations[this.currentIndex].op_id)
-            view.glow(this.sortOperations[this.currentIndex].firstIndex, view.defaultColor)
-            view.glow(this.sortOperations[this.currentIndex].secondIndex, view.defaultColor)
+            // turn on current step in pseudo code
+            view.onCode(currentOperation.op_id)
+            // reset the current operation to default colors
+            glowDefaultColors(currentOperation);
 
+            // Get the previous operations
+            currentOperation = this.sortOperations[--this.operationCurrentIndex];
 
-            this.currentIndex--;
-            if (this.sortOperations[this.currentIndex].lastSortedIndex !== null) {
-                $("#n" + this.sortOperations[this.currentIndex].lastSortedIndex)
-                    .removeClass("sorted");
-            }
-            view.glow(this.sortOperations[this.currentIndex].firstIndex, view.focusedColor1)
-            view.glow(this.sortOperations[this.currentIndex].secondIndex, view.focusedColor)
-            if (this.sortOperations[this.currentIndex].swap) {
-                view.swap(this.sortOperations[this.currentIndex].firstIndex,
-                    this.sortOperations[this.currentIndex].secondIndex);
+            // if the current number is sorted, make it unsorted to remove the "sortedColor" and reset to corrent color
+            if (currentOperation.lastSortedIndex !== null) {
+                $("#n" + currentOperation.lastSortedIndex).removeClass("sorted");
             }
 
-            if (this.currentIndex == 0) {
-                view.glow(this.sortOperations[this.currentIndex].firstIndex, view.defaultColor)
-                view.glow(this.sortOperations[this.currentIndex].secondIndex, view.defaultColor)
-                $("#n" + this.sortOperations[this.currentIndex].lastSortedIndex)
-                    .removeClass("sorted");
+            // highlight the current two numbers in focuesColor 
+            glowFocusedColors(currentOperation);
+
+            // reverse the swap of the current numberts
+            if (currentOperation.swap) {
+                view.swap(currentOperation.firstIndex, currentOperation.secondIndex);
+            }
+
+            // if it's the first operation turn off pseudo code and remove class sorted
+            if (this.operationCurrentIndex == 0) {
+                glowDefaultColors(currentOperation);
+                $("#n" + currentOperation.lastSortedIndex).removeClass("sorted");
                 view.offCode();
-
             }
         }
     }
-    this.backward = function (view) {
+
+    /**
+     * Func used in backward button to take a step back in the sorting animation
+     * "this.moving" is flag used to prevent the user from double clicking on the back button while an animation is happening
+     */
+    this.backward = function () {
         if (!this.moving) {
-            this.stepBack(view);
+            this.stepBack();
             this.moving = true;
+            // reset the flag after animation ends
             setTimeout(() => {
                 this.moving = false;
             }, 600);
         }
     }
 
-    this.stepForward = function (view) {
+    /**
+     * Func to take a step forward while paused
+     * it will advance the current operation
+     * increment the operationCurrentIndex by 1
+     * 
+     */
+    this.stepForward = function () {
+        var currentOperation = this.sortOperations[this.operationCurrentIndex];
         view.offCode();
-        view.onCode(this.sortOperations[this.currentIndex].op_id)
-        if (this.currentIndex >= 0) {
-
-
-            if (this.currentIndex > 0) {
-                view.glow(this.sortOperations[this.currentIndex - 1].firstIndex, view.defaultColor);
-                view.glow(this.sortOperations[this.currentIndex - 1].secondIndex, view.defaultColor);
+        view.onCode(currentOperation.op_id)
+        if (this.operationCurrentIndex >= 0) {
+            if (this.operationCurrentIndex > 0) {
+                var previosOperation = this.sortOperations[this.operationCurrentIndex - 1];
+                glowDefaultColors(previosOperation)
                 $(".sorted").css("backgroundColor", view.sortedColor);
             }
 
-            view.glow(this.sortOperations[this.currentIndex].firstIndex, view.focusedColor1);
-            view.glow(this.sortOperations[this.currentIndex].secondIndex, view.focusedColor);
+            glowFocusedColors(currentOperation);
 
-            if (this.sortOperations[this.currentIndex].swap)
-                view.swap(this.sortOperations[this.currentIndex].firstIndex, this.sortOperations[this.currentIndex].secondIndex);
+            if (currentOperation.swap)
+                view.swap(currentOperation.firstIndex, currentOperation.secondIndex);
 
-            // if (this.sortOperations[this.currentIndex].lastSortedIndex !== this.sortOperations[this.currentIndex].firstIndex)
-            if (this.sortOperations[this.currentIndex].lastSortedIndex !== null) {
-                $("#n" + this.sortOperations[this.currentIndex].lastSortedIndex)
-                    .addClass("sorted");
+            if (currentOperation.lastSortedIndex !== null) {
+                $("#n" + currentOperation.lastSortedIndex).addClass("sorted");
             }
 
-            this.currentIndex++;
-            if (this.currentIndex == this.sortOperations.length) {
+            currentOperation = this.sortOperations[++this.operationCurrentIndex];
+            if (this.operationCurrentIndex == this.sortOperations.length) {
                 this.stopSorting();
             }
         }
     }
 
-    this.forward = function (view) {
+    this.forward = function () {
         if (!this.moving) {
             if ($(".selected").attr("id") == "mergeSort")
-                this.stepForwardMerge(view);
+                this.stepForwardMerge();
             else
-                this.stepForward(view);
+                this.stepForward();
             this.moving = true;
             setTimeout(() => {
                 this.moving = false;
@@ -138,11 +198,11 @@ var Operations = function () {
     var allDivs = $("#graph div");
     var leftIndex = 0; var rightIndex = 0;
     var newLeft = -400;
-    this.stepForwardMerge = function (view) {
+    this.stepForwardMerge = function () {
 
         view.offCode();
-        var leftArray = this.sortOperations[this.currentIndex].leftArray;
-        var rightArray = this.sortOperations[this.currentIndex].rightArray;
+        var leftArray = this.sortOperations[this.operationCurrentIndex].leftArray;
+        var rightArray = this.sortOperations[this.operationCurrentIndex].rightArray;
 
         for (var i = 0; i < leftArray.length; i++)
             allDivs.eq(leftArray[i]).css("backgroundColor", view.focusedColor)
@@ -181,10 +241,10 @@ var Operations = function () {
         else if (leftIndex == leftArray.length && rightIndex == rightArray.length) {
             leftIndex = 0;
             rightIndex = 0;
-            this.currentIndex++;
+            this.operationCurrentIndex++;
             view.onCode(6);
 
-            if (this.currentIndex == this.sortOperations.length) {
+            if (this.operationCurrentIndex == this.sortOperations.length) {
                 $("#graph").append($("#mergeGraph div"));
                 this.stopSorting();
             }
@@ -203,7 +263,7 @@ var Operations = function () {
                 allDivs = $("#graph div");
 
 
-                var minIndex = this.sortOperations[this.currentIndex].leftArray[0];
+                var minIndex = this.sortOperations[this.operationCurrentIndex].leftArray[0];
                 newLeft = parseInt($("#graph div").eq(minIndex).css("left"));
             }
         }
@@ -229,7 +289,7 @@ var Operations = function () {
         }
     }
 
-    this.startMergeAnimation = function (view) {
+    this.startMergeAnimation = function () {
         this.isSorting = true;
         var that = this;
         allDivs = $("#graph div");
@@ -239,7 +299,7 @@ var Operations = function () {
 
 
         this.interval = setInterval((function () {
-            this.stepForwardMerge(view);
+            this.stepForwardMerge();
         }).bind(that), 600);
     }
 }
