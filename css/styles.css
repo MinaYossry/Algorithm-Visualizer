@@ -20,11 +20,11 @@
 }
 
 .over {
-  position: fixed;
+  position: absolute;
   width: 320px;
   height: 200px;
   right: 0px;
-  top: 100vh;
+  bottom: 0px;
   background-color: #678983;
   color: white;
   font-weight: bolder;
@@ -103,6 +103,7 @@
 }
 
 .body {
+  position: relative;
   height: 85vh;
 }
 

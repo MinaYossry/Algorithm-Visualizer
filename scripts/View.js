@@ -64,9 +64,7 @@ function View() {
      * inoked by clicking #openCodeArrow
      */
     this.openPseudoCode = function () {
-        $(".over").animate({
-            top: "66.5vh",
-        }, this.initialSpeed * this.delta, "linear");
+        $(".over").show(this.initialSpeed * this.delta, "linear");
 
         $("#openCodeArrow").addClass("on");
         // turn the arrow
@@ -80,9 +78,7 @@ function View() {
      * inoked by clicking #openCodeArrow
      */
     this.closePseudoCode = function () {
-        $(".over").animate({
-            top: "100vh",
-        }, this.initialSpeed * this.delta, "linear");
+        $(".over").hide(this.initialSpeed * this.delta, "linear");
 
         $("#openCodeArrow").removeClass("on")
         // turn the arrow

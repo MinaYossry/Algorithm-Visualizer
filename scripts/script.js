@@ -16,6 +16,7 @@ $(function () {
     view.generateDivs(calc.generatedArr, calc.maxValue);
     view.generatePseudoCode(sort.PseudoCode[selectedSort])
     $(".footer").hide(0);
+    $("#code").hide(0);
 
     /**
       * update the speed in sorting animation
