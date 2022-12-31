@@ -50,7 +50,7 @@ function View() {
         $("#openCodeArrow").addClass("on");
         $(".over").animate({
             top: "66.5vh",
-        }, 500 * this.speed, "linear");
+        }, this.initialSpeed * this.delta, "linear");
         $("#openCodeArrow").removeClass("fa-arrow-up").addClass("fa-arrow-down");
 
     }
