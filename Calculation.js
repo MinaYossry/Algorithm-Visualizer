@@ -1,8 +1,14 @@
+//Function Object Holding All The Calculations in the Project
+
 function Calcualtion() {
     this.generatedArr = [];
     this.maxValue;
+    
+    //Array to save the operations to control the animation
+    //and the next & back Buttons
     this.operations = [];
 
+    //Func to get the max value of the generated array 
     this.GetArrMax = function () {
         var max = this.generatedArr[0];
         for (var i in this.generatedArr) {
@@ -12,9 +18,12 @@ function Calcualtion() {
         return max;
     }
 
+    //Func to generate random array every time the user click Random Button & Any sort type in nav bar
     this.generateRandomArr = function (min = 1, max = 50, elementsCount = 10) {
         this.generatedArr = [];
         for (var i = 0; i < elementsCount; i++) {
+            
+            //Random numbers that will be generated in the array usig => Math.random() func
             var randomNumber = Math.floor(Math.random() * (max - min)) + min;
             this.generatedArr.push(randomNumber);
         }
@@ -22,8 +31,11 @@ function Calcualtion() {
         return this.generatedArr;
     }
 
+    //Func for the input that takes array from the user
     this.enterArray = function (arr) {
         for (var i in arr) {
+            
+            //Parseing the string numbers the user entered
             arr[i] = parseInt(arr[i])
         }
         this.generatedArr = arr;
@@ -31,48 +43,11 @@ function Calcualtion() {
         return this.generatedArr;
     }
 
+    // Swap Func for all Sort Types
     this.swap = function (arr, index1, index2) {
         var temp = arr[index1];
         arr[index1] = arr[index2];
         arr[index2] = temp;
     }
 
-    this.sortype = function (viewObj) {
-        let i = 0, j = 0;
-        let sorted = true;
-        interval = setInterval(function () {
-            viewObj.glow(j, '#678983');
-            viewObj.glow(j - 1, '#678983');
-            viewObj.glow(j, 'red');
-            viewObj.glow(j + 1, 'red');
-
-            if (arr[j] > this.generatedArr[j + 1]) {
-                viewObj.swap(j, j + 1);
-                calc.swap(this.generatedArr, j, j + 1);
-                sorted = false;
-            }
-            j++;
-            if (j == this.generatedArr.length - i - 1) {
-                if (sorted) {
-                    clearInterval(interval);
-                    $("#graph div").animate({
-                        'background-color': "#181D31"
-                    }, 100);
-                }
-                else {
-                    viewObj.glow(j, 'rgb(200 94 21)')
-                    viewObj.glow(j - 1, '#678983')
-                    i++;
-                    j = 0;
-                    sorted = true;
-                    if (i == this.generatedArr.length - 1) {
-                        clearInterval(interval);
-                        $("#graph div").animate({
-                            'background-color': "#181D31"
-                        }, 100);
-                    }
-                }
-            }
-        }, 600);
-    }
 } 
