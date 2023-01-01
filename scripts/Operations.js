@@ -65,7 +65,7 @@ var Operations = function (view) {
     this.start = function () {
         if (!this.isMoving) {
             if ($(".selected").attr("id") == "mergeSort")
-                this.startMergeAnimation();
+                this.startMergeInterval();
             else
                 this.startSortingAnimations();
         }
@@ -401,12 +401,16 @@ var Operations = function (view) {
     this.startMergeAnimation = function () {
         $("#disk_c").attr("max", this.sortOperations.length);
         this.isSorting = true;
-        var that = this;
         allDivs = $("#graph div");
-        newLeft = parseInt($("#graph div").eq(startIndex).css("left"));
+        //  newLeft = parseInt($("#graph div").eq(startIndex).css("left"));
         this.saveBackOperations.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]);
         view.onCode(1);
 
+        this.startMergeInterval();
+    }
+
+    this.startMergeInterval = function () {
+        var that = this;
         this.interval = setInterval((function () {
             this.stepForwardMerge();
         }).bind(that), (view.initialSpeed * this.delta) + 100);
