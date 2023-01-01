@@ -48,7 +48,7 @@ var Operations = function (view) {
      */
     this.startSortingAnimations = function () {
         $("#disk_c").attr("max", this.sortOperations.length);
-        this.moving = true;
+        this.isMoving = true;
         this.isSorting = true;
         // used to bind the callback function of the interval to the current operations object instead of Window object
         var that = this;
@@ -64,8 +64,18 @@ var Operations = function (view) {
      */
     this.start = function () {
         if (!this.isMoving) {
-            if ($(".selected").attr("id") == "mergeSort")
-                this.startMergeInterval();
+            if ($(".selected").attr("id") == "mergeSort") {
+                var temp = setInterval(() => {
+                    if ($("#mergeGraph div").length === 0) {
+                        clearInterval(temp)
+                        console.log("clear interval", this.isMoving);
+                        this.startMergeInterval();
+                    } else {
+                        console.log("start forward", this.isMoving);
+                        this.forward();
+                    }
+                }, (view.initialSpeed * this.delta) + 100);
+            }
             else
                 this.startSortingAnimations();
         }
@@ -75,8 +85,10 @@ var Operations = function (view) {
      * Func for the pause button to stop animation
      */
     this.pause = function () {
-        clearInterval(this.interval);
-        this.moving = false;
+        if (this.isMoving) {
+            clearInterval(this.interval);
+            this.isMoving = false;
+        }
     }
 
     /**
@@ -147,15 +159,15 @@ var Operations = function (view) {
      * "this.moving" is flag used to prevent the user from double clicking on the back button while an animation is happening
      */
     this.backward = function () {
-        if (!this.moving) {
+        if (!this.isMoving) {
             if ($(".selected").attr("id") == "mergeSort")
                 this.stepBackMerge();
             else
                 this.stepBack();
-            this.moving = true;
+            this.isMoving = true;
             // reset the flag after animation ends
             setTimeout(() => {
-                this.moving = false;
+                this.isMoving = false;
             }, 600);
         }
     }.bind(this)
@@ -210,16 +222,17 @@ var Operations = function (view) {
      * "this.moving" is flag used to prevent the user from double clicking on the forward button while an animation is happening
      */
     this.forward = function () {
-        if (!this.moving) {
+        if (!this.isMoving) {
             if ($(".selected").attr("id") == "mergeSort")
                 this.stepForwardMerge();
             else
                 this.stepForward();
-            this.moving = true;
+            this.isMoving = true;
             // reset the flag after animation ends
             setTimeout(() => {
-                this.moving = false;
-            }, (view.initialSpeed * this.delta) + 100);
+                console.log("stop moving", this.isMoving);
+                this.isMoving = false;
+            }, (view.initialSpeed * this.delta) - 100);
         }
     }.bind(this)
 
@@ -307,9 +320,13 @@ var Operations = function (view) {
             // this means all operations have finished and tha graph is sorted
             if (this.operationCurrentIndex == this.sortOperations.length) {
                 // move from bottom to top
-                this.saveBackOperations.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]);
+                this.saveBackOperations.push(
+                    [$("#graph").clone(), $("#mergeGraph").clone(),
+                    this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]
+                );
                 $("#graph").append($("#mergeGraph div"));
-                this.saveBackOperations.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]);
+                this.saveBackOperations.push([$("#graph").clone(), $("#mergeGraph").clone(),
+                this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]);
                 // terminate
                 this.stopSorting();
             }
@@ -317,7 +334,8 @@ var Operations = function (view) {
             else {
                 // change sorted part in correct color
                 $("#mergeGraph div").css("backgroundColor", view.sortedColor)
-                this.saveBackOperations.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]);
+                this.saveBackOperations.push([$("#graph").clone(), $("#mergeGraph").clone(),
+                this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]);
                 // Insert the sorted part(#mergeGraph) into the right position it #graph
                 if (startIndex === 0)
                     // put it at the begining
@@ -366,18 +384,18 @@ var Operations = function (view) {
         if (this.saveBackOperations.length > 0) {
             var currentOperation = this.saveBackOperations[this.saveBackOperations.length - 1];
             $("#graph").empty();
-            $("#graph").append(currentOperation[0].children())
-            allDivs = $("#graph div")
             $("#mergeGraph").empty();
+            $("#graph").append(currentOperation[0].children())
             $("#mergeGraph").append(currentOperation[1].children())
             this.operationCurrentIndex = currentOperation[2];
-            $("#disk_c").val(this.operationCurrentIndex);
             leftIndex = currentOperation[3];
             rightIndex = currentOperation[4];
             startIndex = currentOperation[5];
             newLeft = currentOperation[6]
             this.saveBackOperations.pop();
             console.log(this.saveBackOperations[this.saveBackOperations.length - 1]);
+            allDivs = $("#graph div")
+            $("#disk_c").val(this.operationCurrentIndex);
         }
     }
 
@@ -401,6 +419,7 @@ var Operations = function (view) {
     this.startMergeAnimation = function () {
         $("#disk_c").attr("max", this.sortOperations.length);
         this.isSorting = true;
+        this.isMoving = true;
         allDivs = $("#graph div");
         //  newLeft = parseInt($("#graph div").eq(startIndex).css("left"));
         this.saveBackOperations.push([$("#graph").clone(), $("#mergeGraph").clone(), this.operationCurrentIndex, leftIndex, rightIndex, startIndex, newLeft]);
@@ -411,6 +430,7 @@ var Operations = function (view) {
 
     this.startMergeInterval = function () {
         var that = this;
+        this.isMoving = true;
         this.interval = setInterval((function () {
             this.stepForwardMerge();
         }).bind(that), (view.initialSpeed * this.delta) + 100);
@@ -420,9 +440,9 @@ var Operations = function (view) {
 var Operation = function (_firstIndex, _secondIndex, _lastSortedIndex, _swap, _op_id) {
     this.firstIndex = _firstIndex;
     this.secondIndex = _secondIndex;
-    this.lastSortedIndex = _lastSortedIndex
+    this.lastSortedIndex = _lastSortedIndex;
     this.swap = _swap;
-    this.op_id = _op_id
+    this.op_id = _op_id;
 }
 
 var mergeOperation = function (_leftArray, _rightArray) {
