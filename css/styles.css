@@ -73,7 +73,7 @@
 
 .header {
   height: 10vh;
-  background-color: #70737f;
+  background-color: #181d31;
   text-align: center;
 }
 
@@ -142,7 +142,7 @@
 
 .footer {
   height: 5vh;
-  background-color: #70737f;
+  background-color: #181d31;
   justify-content: center;
   align-items: center;
 }
