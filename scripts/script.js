@@ -167,9 +167,7 @@ function handleRandom() {
  */
 function startSorting() {
     if (selectedSort == "mergeSort")
-        sortOperations.interval = setInterval((function () {
-            this.stepForwardMerge();
-        }).bind(sortOperations), (view.initialSpeed * sortOperations.delta) + 100);
+        sortOperations.startMergeInterval();
     else {
         sortOperations.startSortingAnimations();
     }
