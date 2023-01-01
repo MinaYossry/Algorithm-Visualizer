@@ -2,10 +2,21 @@ var view = new View();
 var calc = new Calculation();
 var sortOperations = new Operations(view);
 var sort = new Sort(view, calc, sortOperations);
-var selectedSort = $(".selected").attr("id");
+var selectedSort = (getCookie('selectedSort') === "undefined") ? 'bubbleSort' : getCookie('selectedSort');
 var isPaused = false;
-
 $(function () {
+    /**
+     * on pressing on new sorting method
+     * generate new random arrayh and divs (handleRandom)
+     * assign the new sort as selectedSort
+     */
+    selectSortTye(selectedSort)
+    $("ul li").click(function (e) {
+        $(".selected").removeClass("selected")
+        selectSortTye(e.target.id);
+        setCookie("selectedSort", selectedSort);
+    });
+
     /**
      * On the load of the page
      * 1- Generate random array
@@ -100,19 +111,7 @@ $(function () {
         }
     });
 
-    /**
-     * on pressing on new sorting method
-     * generate new random arrayh and divs (handleRandom)
-     * assign the new sort as selectedSort
-     */
-    $("ul li").click(function (e) {
-        handleRandom();
-        $(".selected").removeClass("selected")
-        $(e.target).addClass("selected");
-        selectedSort = $(".selected").attr("id");
-        view.generatePseudoCode(sort.PseudoCode[selectedSort])
 
-    });
 
     /**
      * pause button to stop sorting
@@ -177,3 +176,9 @@ function startSorting() {
 
 
 
+function selectSortTye(t) {
+    handleRandom();
+    $("#" + t).addClass("selected");
+    selectedSort = $(".selected").attr("id");
+    view.generatePseudoCode(sort.PseudoCode[selectedSort])
+}

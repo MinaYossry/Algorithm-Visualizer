@@ -68,10 +68,8 @@ var Operations = function (view) {
                 var temp = setInterval(() => {
                     if ($("#mergeGraph div").length === 0) {
                         clearInterval(temp)
-                        console.log("clear interval", this.isMoving);
                         this.startMergeInterval();
                     } else {
-                        console.log("start forward", this.isMoving);
                         this.forward();
                     }
                 }, (view.initialSpeed * this.delta) + 100);
@@ -168,7 +166,7 @@ var Operations = function (view) {
             // reset the flag after animation ends
             setTimeout(() => {
                 this.isMoving = false;
-            }, 600);
+            }, view.initialSpeed + this.delta - 50);
         }
     }.bind(this)
 
@@ -230,9 +228,8 @@ var Operations = function (view) {
             this.isMoving = true;
             // reset the flag after animation ends
             setTimeout(() => {
-                console.log("stop moving", this.isMoving);
                 this.isMoving = false;
-            }, (view.initialSpeed * this.delta) - 100);
+            }, (view.initialSpeed * this.delta) - 50);
         }
     }.bind(this)
 
