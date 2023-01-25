@@ -18,11 +18,6 @@ This project is created as a part of JavaScript and jQuery courses in ITI 9-Mont
 - Displays the pseudocode for each sorting algorithm.
 - A graph of the sorting process.
 
-Features
-
-
-
-
 
 ## How to Use
 
@@ -35,11 +30,10 @@ Features
 7. Use the "Range" slider to adjust the speed of the animation.
 
 
-
 ## Demo
 
 ![](https://github.com/MinaYossry/Algorithm-Visualizer/blob/master/Visual%20Algo.gif)
-
+- [Netlify](https://visual-algo-swa.netlify.app/)
 
 ## Team Members
 
