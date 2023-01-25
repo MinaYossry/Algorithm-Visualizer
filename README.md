@@ -38,7 +38,7 @@ Features
 
 ## Demo
 
-Insert gif or link to demo
+![](https://github.com/MinaYossry/Algorithm-Visualizer/blob/master/Visual%20Algo.gif)
 
 
 ## Team Members
